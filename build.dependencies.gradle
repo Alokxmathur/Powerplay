@@ -4,6 +4,10 @@ repositories {
     flatDir {
         dirs rootProject.file('libs')
     }
+    //for road runner
+    maven { url = 'https://maven.brott.dev/' }
+    //for VSLAM wrapper
+    maven { url = "https://maven.0x778.tk" }
 }
 
 dependencies {
@@ -18,5 +22,8 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
+
+    //dashboard for road runner
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.5'
 }
 
