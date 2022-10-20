@@ -8,21 +8,21 @@ import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 
 import java.util.Locale;
 
-public class WinchMotor {
+public class FourBeamMotor {
     private DcMotor motor;
 
-    public WinchMotor(HardwareMap hardwareMap) {
-        motor = hardwareMap.get(DcMotor.class, RobotConfig.WINCH);
+    public FourBeamMotor(HardwareMap hardwareMap) {
+        motor = hardwareMap.get(DcMotor.class, RobotConfig.FOUR_BEAM);
     }
 
     public void setSpeed(double speed) {
         double speedToSet =
-                Math.max((Math.min(speed, RobotConfig.MAX_WINCH_SPEED)),
-                        -RobotConfig.MAX_WINCH_SPEED);
+                Math.max((Math.min(speed, RobotConfig.MAX_FOUR_BEAM_SPEED)),
+                        -RobotConfig.MAX_FOUR_BEAM_SPEED);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.motor.setPower(speedToSet);
         if (speedToSet != 0) {
-            Match.log("Set winch speed to " + speedToSet);
+            Match.log("Set four beam speed to " + speedToSet);
         }
     }
 
