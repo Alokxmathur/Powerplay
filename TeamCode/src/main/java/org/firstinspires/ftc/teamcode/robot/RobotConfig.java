@@ -32,5 +32,6 @@ public class RobotConfig {
     public static final long SERVO_REQUIRED_TIME = 200; //200 milli-seconds for servo to function
 
     public static final double MAX_WINCH_SPEED = 0.08;
+    public static final double WINCH_REQUIRED_TIME = 1000;
     public static final double MAX_FOUR_BEAM_SPEED = 0.1;
 }
