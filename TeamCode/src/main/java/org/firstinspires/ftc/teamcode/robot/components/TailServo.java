@@ -8,10 +8,8 @@ import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import java.util.Locale;
 
 public class TailServo {
-    public static final int WITHIN_REACH = 5;
     Servo tail;
     boolean inUprightPosition;
-    int encoderOffset = 0;
     Object synchronizer = new Object();
 
     public TailServo(HardwareMap hardwareMap) {
