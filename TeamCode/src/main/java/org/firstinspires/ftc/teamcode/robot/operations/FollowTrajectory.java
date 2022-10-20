@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.operations;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
@@ -13,16 +14,18 @@ import java.util.Locale;
  * An operation to follow the specified road-runner trajectory
  */
 
-public class FollowTrajectory extends Operation {
+public class FollowTrajectory extends DriveTrainOperation {
     public static final int DEFAULT_CORRECTION_COUNT = 1;
 
     protected Trajectory trajectory;
-    DriveTrain driveTrain;
+    Telemetry telemetry;
 
-    public FollowTrajectory(Trajectory trajectory, DriveTrain driveTrain, String title) {
+    public FollowTrajectory(Trajectory trajectory, DriveTrain driveTrain, String title, Telemetry telemetry) {
+        super(driveTrain);
         this.trajectory = trajectory;
         this.driveTrain = driveTrain;
         this.title = title;
+        this.telemetry = telemetry;
     }
     public void setTrajectory(Trajectory trajectory) {
         this.trajectory = trajectory;
@@ -39,7 +42,7 @@ public class FollowTrajectory extends Operation {
         driveTrain.update();
         Pose2d currentPose = driveTrain.getPoseEstimate();
         String error = getError(currentPose, trajectory);
-        Match.getInstance().setTrajectoryError(error);
+        Match.getInstance(telemetry).setTrajectoryError(error);
         boolean busy = driveTrain.isBusy();
         if (!busy) {
             Match.log(String.format("Finished trajectory %s with error %s, at %s",
@@ -57,11 +60,6 @@ public class FollowTrajectory extends Operation {
     @Override
     public void startOperation() {
         this.driveTrain.handleOperation(this);
-    }
-
-    @Override
-    public void abortOperation() {
-        this.driveTrain.stop();
     }
 
     public static String getError(Pose2d currentPose, Trajectory trajectory) {

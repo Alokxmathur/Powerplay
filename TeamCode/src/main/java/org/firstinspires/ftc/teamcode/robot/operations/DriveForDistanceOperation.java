@@ -9,15 +9,14 @@ import java.util.Locale;
  * Created by Silver Titans on 10/12/17.
  */
 
-public class DriveForDistanceOperation extends Operation {
+public class DriveForDistanceOperation extends DriveTrainOperation {
     protected double distance;
     protected double speed;
-    protected DriveTrain driveTrain;
 
     public DriveForDistanceOperation(double distance, double speed, DriveTrain driveTrain, String title) {
+        super(driveTrain);
         this.distance = distance;
         this.speed = speed;
-        this.driveTrain = driveTrain;
         this.title = title;
     }
 
@@ -49,11 +48,6 @@ public class DriveForDistanceOperation extends Operation {
     @Override
     public void startOperation() {
         driveTrain.handleOperation(this);
-    }
-
-    @Override
-    public void abortOperation() {
-        driveTrain.stop();
     }
 }
 

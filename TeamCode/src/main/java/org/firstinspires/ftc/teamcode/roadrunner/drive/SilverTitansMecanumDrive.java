@@ -54,8 +54,8 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansDriveC
  */
 @Config
 public class SilverTitansMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0.2);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(20, 0, 0.2);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(15, 0, 0.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(26, 0, 0.8);
 
     public static double LATERAL_MULTIPLIER = 1;
 

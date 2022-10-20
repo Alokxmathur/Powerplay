@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansMecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 
 import java.util.Objects;
 
@@ -70,7 +72,11 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new SampleMecanumDrive(hardwareMap);
+        VslamCamera camera = new VslamCamera(hardwareMap);
+        camera.setCurrentPose(new Pose2d());
+        camera.start();
+        SilverTitansMecanumDrive drive = new SilverTitansMecanumDrive(hardwareMap, camera);
+        drive.ensureWheelDirection();
 
         mode = Mode.TUNING_MODE;
 

@@ -11,17 +11,24 @@ import java.util.Locale;
  * Created by Silver Titans on 10/12/17.
  */
 
-public class StrafeLeftForDistanceWithHeadingOperation extends Operation {
+public class StrafeLeftForDistanceWithHeadingOperation extends DriveTrainOperation {
     private double distance;
     private double speed;
     private double heading;
-    DriveTrain driveTrain;
 
+    /**
+     * Create a Strafe Left maintaining heading operation
+     * @param distance - in mm
+     * @param heading - in degrees
+     * @param speed
+     * @param driveTrain
+     * @param title
+     */
     public StrafeLeftForDistanceWithHeadingOperation(double distance, double heading, double speed, DriveTrain driveTrain, String title) {
+        super(driveTrain);
         this.distance = distance;
         this.heading = heading;
         this.speed = speed;
-        this.driveTrain = driveTrain;
         this.title = title;
     }
 
@@ -77,11 +84,6 @@ public class StrafeLeftForDistanceWithHeadingOperation extends Operation {
     @Override
     public void startOperation() {
         driveTrain.handleOperation(this);
-    }
-
-    @Override
-    public void abortOperation() {
-        driveTrain.stop();
     }
 }
 

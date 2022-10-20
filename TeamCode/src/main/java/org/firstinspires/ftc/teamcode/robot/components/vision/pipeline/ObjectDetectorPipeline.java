@@ -21,7 +21,7 @@ import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Co
 import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Constants.VALUE_MAX;
 import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Constants.VALUE_MIN;
 
-public class Pipeline extends OpenCvPipeline
+public class ObjectDetectorPipeline extends OpenCvPipeline
 {
     private boolean enableDashboard;
     private FtcDashboard dashboard;
@@ -36,7 +36,7 @@ public class Pipeline extends OpenCvPipeline
     private int largestX, largestY;
     private double largestArea;
 
-    public Pipeline(boolean enableDashboard) {
+    public ObjectDetectorPipeline(boolean enableDashboard) {
         this.enableDashboard = enableDashboard;
 
         if(enableDashboard)

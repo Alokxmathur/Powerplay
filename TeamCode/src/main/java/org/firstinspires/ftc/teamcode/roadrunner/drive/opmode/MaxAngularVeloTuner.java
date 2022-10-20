@@ -9,7 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansMecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 
 import java.util.Objects;
 
@@ -31,7 +32,10 @@ public class MaxAngularVeloTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        VslamCamera camera = new VslamCamera(hardwareMap);
+        camera.setCurrentPose(new Pose2d());
+        camera.start();
+        SilverTitansMecanumDrive drive = new SilverTitansMecanumDrive(hardwareMap, camera);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

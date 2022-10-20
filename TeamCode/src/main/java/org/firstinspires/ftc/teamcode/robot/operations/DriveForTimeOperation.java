@@ -9,11 +9,10 @@ import java.util.Locale;
  * Created by Silver Titans on 10/12/17.
  */
 
-public class DriveForTimeOperation extends Operation {
+public class DriveForTimeOperation extends DriveTrainOperation {
     private long time;
     private double robotRelativeHeading;
     private double speed;
-    private DriveTrain driveTrain;
 
     public void setSpeed(double speed) {
         this.speed = speed;
@@ -24,10 +23,10 @@ public class DriveForTimeOperation extends Operation {
     }
 
     public DriveForTimeOperation(long time, double heading, double speed, DriveTrain driveTrain, String title) {
+        super(driveTrain);
         this.time = time;
         this.robotRelativeHeading = heading;
         this.speed = speed;
-        this.driveTrain = driveTrain;
         this.title = title;
     }
 
@@ -56,9 +55,5 @@ public class DriveForTimeOperation extends Operation {
 
     }
 
-    @Override
-    public void abortOperation() {
-
-    }
 }
 

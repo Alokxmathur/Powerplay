@@ -61,7 +61,7 @@ import java.util.Date;
 //@Disabled
 public class DriverControlledOperation extends OpMode {
 
-    protected Robot robot = Match.getInstance().getRobot();
+    protected Robot robot = Match.getInstance(telemetry).getRobot();
 
     protected Match match;
     /*
@@ -69,7 +69,7 @@ public class DriverControlledOperation extends OpMode {
      */
     @Override
     public void init() {
-        this.match = Match.getInstance();
+        this.match = Match.getInstance(telemetry);
         match.setTeleopStartTime(new Date());
         robot.reset();
         if (match.getAlliance()== Alliance.Color.RED) {
@@ -82,7 +82,7 @@ public class DriverControlledOperation extends OpMode {
 
         try {
             robot.setState("Initialized");
-            Match.getInstance().updateTelemetry(telemetry, "Press start now");
+            Match.getInstance(telemetry).updateTelemetry("Press start now");
         } catch (Throwable e) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -103,7 +103,7 @@ public class DriverControlledOperation extends OpMode {
      */
     @Override
     public void init_loop() {
-        match.updateTelemetry(telemetry, "TeleOpReady");
+        match.updateTelemetry("TeleOpReady");
     }
 
     @Override
@@ -121,7 +121,7 @@ public class DriverControlledOperation extends OpMode {
         if (robot.fullyInitialized()) {
             try {
                 robot.handleGameControllers(gamepad1, gamepad2);
-                match.updateTelemetry(telemetry, robot.getState());
+                match.updateTelemetry(robot.getState());
             } catch (Throwable e) {
                 StringWriter stringWriter = new StringWriter();
                 PrintWriter printWriter = new PrintWriter(stringWriter);

@@ -4,9 +4,9 @@ import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.Field;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="BlueRight", group="Phoebe", preselectTeleOp="Phoebe: Driver Controlled")
-public class BlueRight extends NearCarouselAutonomous {
+public class BlueRight extends Autonomous {
     @Override
     public void init() {
-        super.init(Alliance.Color.BLUE, Field.StartingPosition.Right);
+        super.init(telemetry, Alliance.Color.BLUE, Field.StartingPosition.Right);
     }
 }

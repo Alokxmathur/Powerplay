@@ -16,7 +16,6 @@ public class DriveInDirectionOperation extends DriveForDistanceOperation {
     protected double distance;
     protected double speed;
     protected double direction;
-    protected DriveTrain driveTrain;
 
     public DriveInDirectionOperation(double travelDistance, double heading,
                                      double speed, DriveTrain driveTrain, String title) {

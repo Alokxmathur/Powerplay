@@ -66,6 +66,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     public VslamCamera(HardwareMap hardwareMap) {
         isInitialized = false;
         Thread cameraInitializationThread = new Thread(() -> {
+            Match.log("Started VSLAM initialization thread");
             synchronized (synchronizationObject) {
                 if (t265Camera == null) {
                     Match.log("Creating new T265 camera");
@@ -92,13 +93,17 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
 
     /**
      * Set the current position of the robot. We simply remember the offset from what the camera is telling us
-     * @param pose the pose to set
+     * @param newPose the pose to set
      */
-    public synchronized void setCurrentPose(com.arcrobotics.ftclib.geometry.Pose2d pose) {
+    public synchronized void setCurrentPose(com.arcrobotics.ftclib.geometry.Pose2d newPose) {
         synchronized (synchronizationObject) {
+            com.arcrobotics.ftclib.geometry.Pose2d cameraProvidedPose =
+                    lastCameraUpdate == null ? new com.arcrobotics.ftclib.geometry.Pose2d()
+                            : lastCameraUpdate.pose;
             originOffset =
-                    pose.relativeTo(
-                            lastCameraUpdate == null ? new com.arcrobotics.ftclib.geometry.Pose2d() : lastCameraUpdate.pose);
+                    newPose.relativeTo(cameraProvidedPose);
+            Match.log("Set new pose of " + newPose + ", camera provided pose = " + cameraProvidedPose
+                    + ", giving us an origin offset of " + originOffset);
         }
     }
 

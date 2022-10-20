@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.robot.operations.State;
 public class TestTrajectory extends AutonomousHelper {
     @Override
     public void init() {
-        super.init(Alliance.Color.RED, Field.StartingPosition.Right);
+        super.init(telemetry, Alliance.Color.RED, Field.StartingPosition.Right);
         //Create a state to navigate to warehouse
         State navigate = new State("Navigate");
         FollowTrajectory followTrajectory = new FollowTrajectory(
@@ -20,7 +20,7 @@ public class TestTrajectory extends AutonomousHelper {
                         .splineToLinearHeading
                                 (field.getStartingPose().plus(new Pose2d(-12,12,45)), 0)
                         .build(),
-                robot.getDriveTrain(), "Forward");
+                robot.getDriveTrain(), "Forward", telemetry);
         navigate.addPrimaryOperation(followTrajectory);
         states.add(navigate);
     }

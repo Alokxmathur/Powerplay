@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.game;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 
@@ -14,101 +13,200 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansMecanu
  */
 public class Field {
     public static final float MM_PER_INCH = 25.4f;
-    public static final double M_PER_INCH = MM_PER_INCH/1000;
+    public static final double M_PER_INCH = MM_PER_INCH / 1000;
     //the width of each tile
     public static final double TILE_WIDTH = 24 * MM_PER_INCH;
     // the width of the FTC field (from the center point to the outer panels)
     public static final double FIELD_WIDTH = 6 * TILE_WIDTH;
 
-    //the center point of robot travel to get through the channel
-    public static final double CHANNEL_CENTER = 69;
-
-    public static final double FORWARD_DISTANCE_FOR_BARCODE_1 = 17.0;
-    public static final double FORWARD_DISTANCE_FOR_BARCODE_2 = 15.0;
-    public static final double FORWARD_DISTANCE_FOR_BARCODE_3 = 19.0;
-
-    public static final double HUB_APPROACH_ANGLE = -150;
-
     public static volatile boolean initialized = false;
     public static final Object mutex = new Object();
+
+    public static final double sqrtOfTwo = Math.sqrt(2);
 
     public enum StartingPosition {
         Left, Right
     }
 
     public static final Pose2d redLeftStartingPose = new Pose2d(
-                        (-2*Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH/2)/MM_PER_INCH,
-                        (-Field.FIELD_WIDTH/2 + RobotConfig.ROBOT_CENTER_FROM_BACK)/MM_PER_INCH,
-                        Math.toRadians(90));
+            (-Field.TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+            (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+            Math.toRadians(90));
+    public static final Pose2d redLeftTurnaroundPose = new Pose2d(
+            (-Field.TILE_WIDTH/2) / MM_PER_INCH,
+            -(Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            Math.toRadians(-90));
+    public static final Pose2d redLeftDeliverLoadedConePose = new Pose2d(
+            (-RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            Math.toRadians(225));
+    public static final Pose2d redLeftPickupConeIntermediatePose = new Pose2d(
+            (-TILE_WIDTH) / MM_PER_INCH,
+            -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(0));
+    public static final Pose2d redLeftPickupConePose = new Pose2d(
+            -(FIELD_WIDTH/2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+            -(Field.TILE_WIDTH/2) / MM_PER_INCH,
+            Math.toRadians(0));
+
     public static final Pose2d redRightStartingPose =
-                new Pose2d(
-                        (RobotConfig.ROBOT_WIDTH/2)/MM_PER_INCH,
-                        (-Field.FIELD_WIDTH/2 + RobotConfig.ROBOT_CENTER_FROM_BACK)/MM_PER_INCH,
-                        Math.toRadians(90));
+            new Pose2d(
+                    (Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+                    Math.toRadians(90));
+    public static final Pose2d redRightTurnaroundPose = new Pose2d(
+            (Field.TILE_WIDTH/2) / MM_PER_INCH,
+            -(Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  + 1,
+            Math.toRadians(-90));
+    public static final Pose2d redRightDeliverLoadedConePose = new Pose2d(
+            (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            Math.toRadians(-45));
+    public static final Pose2d redRightPickupConeIntermediatePose = new Pose2d(
+            (TILE_WIDTH) / MM_PER_INCH,
+            -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(180));
+    public static final Pose2d redRightPickupConePose = new Pose2d(
+            (FIELD_WIDTH/2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+            -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(180));
+
     public static final Pose2d blueLeftStartingPose =
-                new Pose2d(
-                        (RobotConfig.ROBOT_WIDTH/2)/MM_PER_INCH,
-                        (Field.FIELD_WIDTH/2 - RobotConfig.ROBOT_CENTER_FROM_BACK)/MM_PER_INCH,
-                        Math.toRadians(-90));
+            new Pose2d(
+                    (Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+                    Math.toRadians(-90));
+    public static final Pose2d blueLeftTurnaroundPose = new Pose2d(
+            (Field.TILE_WIDTH/2) / MM_PER_INCH,
+            (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            Math.toRadians(90));
+    public static final Pose2d blueLeftDeliverLoadedConePose = new Pose2d(
+            (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            Math.toRadians(45));
+    public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
+            (TILE_WIDTH) / MM_PER_INCH,
+            (Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(180));
+    public static final Pose2d blueLeftPickupConePose = new Pose2d(
+            (FIELD_WIDTH/2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+            (Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(180));
+
     public static final Pose2d blueRightStartingPose =
-                new Pose2d(
-                        (-2*Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH/2)/MM_PER_INCH,
-                        (Field.FIELD_WIDTH /2 - RobotConfig.ROBOT_CENTER_FROM_BACK)/MM_PER_INCH,
-                        Math.toRadians(-90));
-    public static final Pose2d redSpinningPose =
-                new Pose2d(
-                        -58,
-                        -58,
-                        Math.toRadians(225));
-    public static final Pose2d blueSpinningPose =
-                new Pose2d(
-                        -58,
-                        58,
-                        Math.toRadians(135));
+            new Pose2d(
+                    (-Field.TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+                    Math.toRadians(-90));
+    public static final Pose2d blueRightTurnaroundPose = new Pose2d(
+            -(Field.TILE_WIDTH/2) / MM_PER_INCH,
+            (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            Math.toRadians(90));
+    public static final Pose2d blueRightDeliverLoadedConePose = new Pose2d(
+            -(RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            Math.toRadians(135));
+    public static final Pose2d blueRightPickupConeIntermediatePose = new Pose2d(
+            (-TILE_WIDTH) / MM_PER_INCH,
+            (Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(0));
+    public static final Pose2d blueRightPickupConePose = new Pose2d(
+            -(FIELD_WIDTH/2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
+            (Field.TILE_WIDTH / 2) / MM_PER_INCH,
+            Math.toRadians(0));
 
-    public Trajectory getReachCarouselTrajectory() {
-        return reachCarouselTrajectory;
+    Trajectory turnaroundTrajectory;
+    public Trajectory getTurnaroundTrajectory() {
+        return turnaroundTrajectory;
     }
 
-    Trajectory reachCarouselTrajectory = null;
-
-    public Trajectory getFirstTimeReachHubTrajectory() {
-        return firstTimeReachHubTrajectories[Match.getInstance().getBarcodeLevel()-1];
+    Trajectory deliverLoadedConeTrajectory;
+    public Trajectory getDeliverLoadedConeTrajectory() {
+        return deliverLoadedConeTrajectory;
     }
 
-    private final Trajectory[] firstTimeReachHubTrajectories = new Trajectory[3];
-
-    public Trajectory getFirstTimeReachWallTrajectory() {
-        return firstTimeReachWallTrajectories[Match.getInstance().getBarcodeLevel()-1];
+    Trajectory retractFromLoadedConeDeliveryTrajectory;
+    public Trajectory getRetractFromLoadedConeDeliveryTrajectory() {
+        return retractFromLoadedConeDeliveryTrajectory;
     }
 
-    public Trajectory getSubsequentTimeReachWallTrajectory() {
-        return firstTimeReachWallTrajectories[2];
+    Trajectory pickupConeTrajectory;
+    public Trajectory getPickupConeTrajectory() {
+        return pickupConeTrajectory;
     }
-
-    private Trajectory[] firstTimeReachWallTrajectories = new Trajectory[3];
-
-    public Trajectory getFirstTimeNavigateTrajectory() {
-        return firstTimeNavigateTrajectories[Match.getInstance().getBarcodeLevel()-1];
-    }
-    public Trajectory getSubsequentNavigateTrajectory() {
-        return firstTimeNavigateTrajectories[2];
-    }
-    private Trajectory[] firstTimeNavigateTrajectories = new Trajectory[3];
-
-    public Trajectory getReturnToWallTrajectory() {
-        return returnToWallTrajectory;
-    }
-
-    private Trajectory returnToWallTrajectory;
-
-    public Trajectory getReturnToHubTrajectory() {
-        return returnToHubTrajectory;
-    }
-
-    private Trajectory returnToHubTrajectory;
+    /*
+    The 12 possible locations for bonus points, three for each starting position (left or right)
+    based on the signal number for each alliance
+     */
+    public static final Pose2d[][][] destinations = {
+            {//Red
+                    {//Left
+                            //Red-left-1
+                            new Pose2d(
+                                    -2.5 * Field.TILE_WIDTH / MM_PER_INCH,
+                                    -Field.TILE_WIDTH / MM_PER_INCH,
+                                    Math.toRadians(90)
+                            ),
+                            //Red-left-2
+                            new Pose2d(
+                                    -1.5 * Field.TILE_WIDTH / MM_PER_INCH, -Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(90)
+                            ),
+                            //Red-left-3
+                            new Pose2d(
+                                    -0.5 * Field.TILE_WIDTH / MM_PER_INCH, -Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(90)
+                            )
+                    },
+                    {//Right
+                            //Red-right-1
+                            new Pose2d(
+                                    .5 * Field.TILE_WIDTH / MM_PER_INCH, -Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(90)
+                            ),
+                            //Red-right-2
+                            new Pose2d(
+                                    1.5 * Field.TILE_WIDTH / MM_PER_INCH, -Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(90)
+                            ),
+                            //Red-right-3
+                            new Pose2d(
+                                    2.5 * Field.TILE_WIDTH / MM_PER_INCH, -Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(90)
+                            )
+                    }
+            },
+            {//Blue
+                    {//Left
+                            //Blue-left-1
+                            new Pose2d(
+                                    2.5 * Field.TILE_WIDTH / MM_PER_INCH,
+                                    Field.TILE_WIDTH / MM_PER_INCH,
+                                    Math.toRadians(-90)
+                            ),
+                            //Red-left-2
+                            new Pose2d(
+                                    1.5 * Field.TILE_WIDTH / MM_PER_INCH, Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(-90)
+                            ),
+                            //Red-left-3
+                            new Pose2d(
+                                    .5 * Field.TILE_WIDTH / MM_PER_INCH, Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(-90)
+                            )
+                    },
+                    {//Right
+                            //Blue-right-1
+                            new Pose2d(
+                                    -.5 * Field.TILE_WIDTH / MM_PER_INCH, Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(-90)
+                            ),
+                            //Blue-right-2
+                            new Pose2d(
+                                    -1.5 * Field.TILE_WIDTH / MM_PER_INCH, Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(-90)
+                            ),
+                            //Blue-right-3
+                            new Pose2d(
+                                    -2.5 * Field.TILE_WIDTH / MM_PER_INCH, Field.TILE_WIDTH / MM_PER_INCH, Math.toRadians(-90)
+                            )}
+            }
+    };
 
     private Pose2d startingPose;
+    //our three trajectories based on the signal value
+    Trajectory[] locationTrajectory = new Trajectory[3];
 
     public void init(Alliance.Color alliance, StartingPosition startingPosition) {
         switch (alliance) {
@@ -139,22 +237,10 @@ public class Field {
                 break;
             }
         }
-        boolean nearCarousel = startingPose.getX() < 0;
         Thread initThread = new Thread(() -> {
             Match.log("Field initialization started for "
-                    + alliance.toString() + ", " + startingPosition.toString() + ", near " + (nearCarousel ? "carousel" : "warehouse"));
-            double yMultiplier;
-            if (alliance == Alliance.Color.RED) {
-                yMultiplier = -1;
-            }
-            else {
-                yMultiplier = 1;
-            }
-            if (nearCarousel) {
-                createNearCarouselTrajectories(alliance, yMultiplier);
-            } else { // Near warehouse
-                createNearWarehouseTrajectories(yMultiplier);
-            }
+                    + alliance + ", " + startingPosition.toString());
+            createTrajectories(alliance, startingPosition);
 
             synchronized (mutex) {
                 initialized = true;
@@ -163,123 +249,105 @@ public class Field {
         initThread.start();
     }
 
-    private void createNearWarehouseTrajectories(double yMultiplier) {
-        //create the reach hub trajectories for three different bar code levels
-        firstTimeReachHubTrajectories[0] =
-                accurateTrajectoryBuilder(getStartingPose())
-                    .splineToLinearHeading(getStartingPose().minus(new Pose2d(4, yMultiplier *FORWARD_DISTANCE_FOR_BARCODE_1, Math.toRadians(yMultiplier *HUB_APPROACH_ANGLE))),
-                            0)
-                    .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for bottom level");
-
-        firstTimeReachHubTrajectories[1] =
-                accurateTrajectoryBuilder(getStartingPose())
-                        .splineToLinearHeading(getStartingPose().minus(new Pose2d(4, yMultiplier *FORWARD_DISTANCE_FOR_BARCODE_2, Math.toRadians(yMultiplier *HUB_APPROACH_ANGLE))),
-                                0)
-                        .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for mid level");
-
-        firstTimeReachHubTrajectories[2] =
-                accurateTrajectoryBuilder(getStartingPose())
-                        .splineToLinearHeading(getStartingPose().minus(new Pose2d(4, yMultiplier *FORWARD_DISTANCE_FOR_BARCODE_3, Math.toRadians(yMultiplier *HUB_APPROACH_ANGLE))),
-                                0)
-                .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for top level");
-
-        //trajectories to get parallel to wall near starting position
-        for (int i=0; i < 3; i++) {
-            firstTimeReachWallTrajectories[i] = accurateTrajectoryBuilder(firstTimeReachHubTrajectories[i].end())
-                    .splineToLinearHeading(new Pose2d(getStartingPose().getX(), CHANNEL_CENTER * yMultiplier, 0.0), 0.0)
-                    .build();
-            Thread.yield();
-        }
-        Match.log("Built trajectories to reach wall");
-
-        //trajectories to navigate
-        for (int i=0; i < 3; i++) {
-            firstTimeNavigateTrajectories[i] = accurateTrajectoryBuilder(firstTimeReachWallTrajectories[i].end())
-                    .splineTo(new Vector2d(40.0, CHANNEL_CENTER* yMultiplier), 0.0)
-                    .build();
-            Thread.yield();
-        }
-        Match.log("Built trajectories to navigate");
-
-        returnToWallTrajectory = accurateTrajectoryBuilder(firstTimeNavigateTrajectories[0].end(), true)
-            .splineToLinearHeading(new Pose2d(startingPose.getX(), CHANNEL_CENTER* yMultiplier, 0.0), 0)
-            .build();
-        Thread.yield();
-        Match.log("Created return to wall trajectory");
-
-        returnToHubTrajectory = accurateTrajectoryBuilder(returnToWallTrajectory.end(), true)
-                .splineToLinearHeading(startingPose.minus(new Pose2d(4, yMultiplier *FORWARD_DISTANCE_FOR_BARCODE_3, Math.toRadians(yMultiplier *HUB_APPROACH_ANGLE))), 0.0)
-                .build();
-        Thread.yield();
-        Match.log("Created return to hub trajectory");
-    }
-
-    private void createNearCarouselTrajectories(Alliance.Color alliance, double yMultiplier) {
-        switch (alliance) {
-            case RED: {
-                reachCarouselTrajectory =
-                        accurateTrajectoryBuilder(startingPose)
-                                .splineTo(redSpinningPose.vec(), Math.toRadians(yMultiplier *135)).build();
-                break;
+    private void createTrajectories(Alliance.Color alliance, StartingPosition startingPosition) {
+        //create the three trajectories for each signal level
+        for (int signal = 0; signal < 3; signal++) {
+            Pose2d destinationPose = destinations[alliance.ordinal()][startingPosition.ordinal()][signal];
+            Pose2d intermediatePose1, intermediatePose2;
+            if (alliance == Alliance.Color.BLUE) {
+                intermediatePose1 = new Pose2d(
+                        startingPose.getX(),
+                        startingPose.getY() - 2,
+                        startingPose.getHeading()
+                );
+                //in case of blue, the intermediate point is one tile length more than the destination
+                intermediatePose2 = new Pose2d(
+                        destinationPose.getX(),
+                        startingPose.getY() - 2,
+                        destinationPose.getHeading()
+                );
             }
-            case BLUE: {
-                reachCarouselTrajectory =
-                        accurateTrajectoryBuilder(startingPose)
-                                .splineTo(blueSpinningPose.vec(), Math.toRadians(yMultiplier *135)).build();
-                break;
+            else {
+                intermediatePose1 = new Pose2d(
+                        startingPose.getX(),
+                        startingPose.getY() + 2,
+                        startingPose.getHeading()
+                );
+                //in case of red, the intermediate point is one tile length less than the destination
+                intermediatePose2 = new Pose2d(
+                        destinationPose.getX(),
+                        startingPose.getY() + 2,
+                        destinationPose.getHeading()
+                );
             }
+            locationTrajectory[signal] = accurateTrajectoryBuilder(startingPose)
+                    .splineToConstantHeading(intermediatePose1.vec(), 0)
+                    .splineToConstantHeading(intermediatePose2.vec(), 0)
+                    .splineToConstantHeading(destinationPose.vec(), 0).build();
+            Pose2d turnaroundPose = null;
+            Pose2d deliverLoadedConePose = null;
+            Pose2d pickConeIntermediatePose = null;
+            Pose2d pickupConePose = null;
+            switch (alliance) {
+                case RED:
+                {
+                    switch (startingPosition) {
+                        case Right: {
+                            turnaroundPose = redRightTurnaroundPose;
+                            deliverLoadedConePose = redRightDeliverLoadedConePose;
+                            pickConeIntermediatePose = redRightPickupConeIntermediatePose;
+                            pickupConePose = redRightPickupConePose;
+                            break;
+                        }
+                        case Left: {
+                            turnaroundPose = redLeftTurnaroundPose;
+                            deliverLoadedConePose = redLeftDeliverLoadedConePose;
+                            pickConeIntermediatePose = redLeftPickupConeIntermediatePose;
+                            pickupConePose = redRightPickupConePose;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case BLUE:
+                {
+                    switch (startingPosition) {
+                        case Right: {
+                            turnaroundPose = blueRightTurnaroundPose;
+                            deliverLoadedConePose = blueRightDeliverLoadedConePose;
+                            pickConeIntermediatePose = blueRightPickupConeIntermediatePose;
+                            pickupConePose = blueRightPickupConePose;
+                            break;
+                        }
+                        case Left: {
+                            turnaroundPose = blueLeftTurnaroundPose;
+                            deliverLoadedConePose = blueLeftDeliverLoadedConePose;
+                            pickConeIntermediatePose = blueLeftPickupConeIntermediatePose;
+                            pickupConePose = blueLeftPickupConePose;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            } // end switch (alliance)
+            turnaroundTrajectory =
+                    accurateTrajectoryBuilder(startingPose, startingPose.getHeading())
+                            .splineTo(turnaroundPose.vec(), turnaroundPose.getHeading())
+                            .build();
+            deliverLoadedConeTrajectory =
+                    accurateTrajectoryBuilder(turnaroundPose, true)
+                            .splineTo(deliverLoadedConePose.vec(), deliverLoadedConePose.getHeading()
+                                    + Math.toRadians(180))
+                            .build();
+            retractFromLoadedConeDeliveryTrajectory =
+                    accurateTrajectoryBuilder(deliverLoadedConeTrajectory.end(), deliverLoadedConeTrajectory.end().getHeading())
+                            .forward(12)
+                            .build();
+            pickupConeTrajectory = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
+                    .splineTo(pickConeIntermediatePose.vec(), pickConeIntermediatePose.getHeading() + Math.toRadians(180))
+                    .splineTo(pickupConePose.vec(), pickupConePose.getHeading() + Math.toRadians(180))
+                    .build();
         }
-        Thread.yield();
-        Match.log("Created reach carousel trajectory");
-
-        firstTimeReachHubTrajectories[0] =
-                accurateTrajectoryBuilder(reachCarouselTrajectory.end(), true)
-                .splineTo(new Vector2d(-50.0, 24.0* yMultiplier), 0.0)
-                .splineTo(new Vector2d(-42.2, 24.0* yMultiplier), 0.0)
-                        .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for bottom level");
-        firstTimeReachHubTrajectories[1] =
-                accurateTrajectoryBuilder(reachCarouselTrajectory.end(), true)
-                        .splineTo(new Vector2d(-50.0, 24.0* yMultiplier), 0.0)
-                        .splineTo(new Vector2d(-42.6, 24.0* yMultiplier), 0.0)
-                        .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for mid level");
-        firstTimeReachHubTrajectories[2] =
-                accurateTrajectoryBuilder(reachCarouselTrajectory.end(), true)
-                        .splineTo(new Vector2d(-50.0, 24.0* yMultiplier), 0.0)
-                        .splineTo(new Vector2d(-40.0, 24.0* yMultiplier), 0.0)
-                        .build();
-        Thread.yield();
-        Match.log("Created reach hub trajectory for top level");
-
-        firstTimeNavigateTrajectories[0] =
-                accurateTrajectoryBuilder(firstTimeReachHubTrajectories[0].end())
-                    .splineToLinearHeading(new Pose2d(-60, yMultiplier *36 , -45* yMultiplier), 0)
-                .build();
-        Thread.yield();
-        Match.log("Created navigate trajectory for bottom level");
-
-        firstTimeNavigateTrajectories[1] =
-                accurateTrajectoryBuilder(firstTimeReachHubTrajectories[1].end())
-                        .splineToLinearHeading(new Pose2d(-60, yMultiplier *36 , -45* yMultiplier), 0)
-                        .build();
-        Thread.yield();
-        Match.log("Created navigate trajectory for bottom level");
-
-        firstTimeNavigateTrajectories[2] =
-                accurateTrajectoryBuilder(firstTimeReachHubTrajectories[2].end())
-                        .splineToLinearHeading(new Pose2d(-60, yMultiplier *36 , -45* yMultiplier), 0)
-                        .build();
-        Thread.yield();
-        Match.log("Created navigate trajectory for top level");
     }
 
     public static boolean isNotInitialized() {
@@ -298,8 +366,8 @@ public class Field {
      */
     public static com.arcrobotics.ftclib.geometry.Pose2d roadRunnerToCameraPose(Pose2d roadRunnerPose) {
         return new com.arcrobotics.ftclib.geometry.Pose2d
-                    (roadRunnerPose.getX()*M_PER_INCH, roadRunnerPose.getY()*M_PER_INCH,
-                new Rotation2d(roadRunnerPose.getHeading()));
+                (roadRunnerPose.getX() * M_PER_INCH, roadRunnerPose.getY() * M_PER_INCH,
+                        new Rotation2d(roadRunnerPose.getHeading()));
     }
 
     /**
@@ -312,12 +380,16 @@ public class Field {
      */
     public static Pose2d cameraToRoadRunnerPose(com.arcrobotics.ftclib.geometry.Pose2d cameraPose) {
         return new Pose2d(
-                    cameraPose.getTranslation().getX()/M_PER_INCH,
-                    cameraPose.getTranslation().getY()/M_PER_INCH,
+                cameraPose.getTranslation().getX() / M_PER_INCH,
+                cameraPose.getTranslation().getY() / M_PER_INCH,
                 cameraPose.getHeading());
     }
 
     public Pose2d getStartingPose() {
         return startingPose;
+    }
+
+    public Trajectory getLocationTrajectory(int signal) {
+        return locationTrajectory[signal-1];
     }
 }

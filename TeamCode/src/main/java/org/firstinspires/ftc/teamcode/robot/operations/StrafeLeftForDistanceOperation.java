@@ -9,12 +9,12 @@ import java.util.Locale;
  * Created by Silver Titans on 10/12/17.
  */
 
-public class StrafeLeftForDistanceOperation extends Operation {
+public class StrafeLeftForDistanceOperation extends DriveTrainOperation {
     private double distance;
     private double speed;
-    DriveTrain driveTrain;
 
     public StrafeLeftForDistanceOperation(double distance, double speed, DriveTrain driveTrain, String title) {
+        super(driveTrain);
         this.distance = distance;
         this.speed = speed;
         this.driveTrain = driveTrain;
@@ -47,11 +47,6 @@ public class StrafeLeftForDistanceOperation extends Operation {
     @Override
     public void startOperation() {
         driveTrain.handleOperation(this);
-    }
-
-    @Override
-    public void abortOperation() {
-        driveTrain.stop();
     }
 }
 

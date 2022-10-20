@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
@@ -16,10 +17,12 @@ public class OperationThread extends Thread {
     //stack of operationsQueue to perform
     private ArrayList<Operation> operationsQueue = new ArrayList<Operation>();
     private Robot robot;
+    private Telemetry telemetry;
 
-    public OperationThread(Robot robot, String title) {
+    public OperationThread(Robot robot, String title, Telemetry telemetry) {
         this.robot = robot;
         this.title = title + " Operation Thread";
+        this.telemetry = telemetry;
         Match.log(title + " created");
     }
 
@@ -34,14 +37,14 @@ public class OperationThread extends Thread {
                     if (operation.getOperationIsBeingProcessed()) {
                         if (operation.isAborted()) {
                             Match.log(title + ": Aborted operation: " + operation.toString()
-                                    + " at " + Match.getInstance().getElapsed()
+                                    + " at " + Match.getInstance(telemetry).getElapsed()
                                     + " in " + (new Date().getTime() - operation.getStartTime().getTime())
                                     + " mSecs");
                         }
                         else if (operation.isComplete()) {
                             this.operationsQueue.remove(0);
                             Match.log(title + ": Completed operation: " + operation.toString()
-                                    + " at " + Match.getInstance().getElapsed()
+                                    + " at " + Match.getInstance(telemetry).getElapsed()
                                     + " in " + (new Date().getTime() - operation.getStartTime().getTime())
                                     + " mSecs");
                         }
@@ -56,7 +59,10 @@ public class OperationThread extends Thread {
                     }
                 }
             }
-            Thread.yield();
+            try {
+                Thread.sleep(10);
+            }
+            catch (Throwable e) {}
         }
     }
 

@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.roadrunner.drive.opmode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansMecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 
 /**
  * This is a simple teleop routine for debugging your motor configuration.
@@ -48,7 +50,10 @@ public class MotorDirectionDebugger extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        VslamCamera camera = new VslamCamera(hardwareMap);
+        camera.setCurrentPose(new Pose2d());
+        camera.start();
+        SilverTitansMecanumDrive drive = new SilverTitansMecanumDrive(hardwareMap, camera);
 
         telemetry.addLine("Press play to begin the debugging opmode");
         telemetry.update();

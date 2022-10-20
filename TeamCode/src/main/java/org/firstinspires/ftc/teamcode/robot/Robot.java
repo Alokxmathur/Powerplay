@@ -6,23 +6,18 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.spartronics4915.lib.T265Camera;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.components.CarouselSpinner;
-import org.firstinspires.ftc.teamcode.robot.components.Intake;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
-import org.firstinspires.ftc.teamcode.robot.components.OutPutter;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
+import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
-import org.firstinspires.ftc.teamcode.robot.operations.IntakeOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
-import org.firstinspires.ftc.teamcode.robot.operations.OutputOperation;
 
 /**
  * This class represents our robot.
@@ -64,16 +59,16 @@ import org.firstinspires.ftc.teamcode.robot.operations.OutputOperation;
  *          else open bucket
  *         Right trigger - close bucket
  *
- *         x - if left bumper is pressed, tell outputter that this is the correct intake level for intake
+ *         x - if left bumper is pressed, tell output that this is the correct intake level for intake
  *             otherwise
  *                  go to intake position
- *         a - if left bumper is pressed, tell outputter that this is the correct intake level for low level
+ *         a - if left bumper is pressed, tell output that this is the correct intake level for low level
  *             otherwise
  *                  go to lowest arm level
- *         b - if left bumper is pressed, tell outputter that this is the correct intake level for middle level
+ *         b - if left bumper is pressed, tell output that this is the correct intake level for middle level
  *             otherwise
  *                  go to middle arm level
- *         y - if left bumper is pressed, tell outputter that this is the correct intake level for top level
+ *         y - if left bumper is pressed, tell output that this is the correct intake level for top level
  *             otherwise
  *                  go to top arm level
  *
@@ -91,12 +86,9 @@ public class Robot {
     OperationThread operationThreadTertiary;
 
     DriveTrain driveTrain;
-    CarouselSpinner carouselSpinner;
-    Intake intake;
-    OutPutter outputter;
     LED led;
 
-    OpenCVWebcam webcam;
+    AprilTagsWebcam webcam;
     VslamCamera vslamCamera;
 
     boolean everythingButCamerasInitialized = false;
@@ -122,11 +114,7 @@ public class Robot {
         //initialize our components
         initCameras();
         initDriveTrain();
-        this.carouselSpinner = new CarouselSpinner(hardwareMap);
-        this.outputter = new OutPutter(hardwareMap);
-        this.intake = new Intake(hardwareMap, outputter);
         this.led = new LED(hardwareMap);
-
         this.led.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
 
 
@@ -134,11 +122,11 @@ public class Robot {
         telemetry.update();
 
         Match.log("Started operations threads");
-        this.operationThreadPrimary = new OperationThread(this, "Primary");
+        this.operationThreadPrimary = new OperationThread(this, "Primary", telemetry);
         operationThreadPrimary.start();
-        this.operationThreadSecondary = new OperationThread(this, "Secondary");
+        this.operationThreadSecondary = new OperationThread(this, "Secondary", telemetry);
         operationThreadSecondary.start();
-        this.operationThreadTertiary = new OperationThread(this, "Tertiary");
+        this.operationThreadTertiary = new OperationThread(this, "Tertiary", telemetry);
         operationThreadTertiary.start();
 
         this.everythingButCamerasInitialized = true;
@@ -162,7 +150,7 @@ public class Robot {
         Match.log("Initializing Webcam");
         telemetry.addData("Status", "Initializing Webcam, please wait");
         telemetry.update();
-        this.webcam = new OpenCVWebcam();
+        this.webcam = new AprilTagsWebcam();
         this.webcam.init(hardwareMap, telemetry, OpenCVWebcam.ELEMENT_COLOR_MIN, OpenCVWebcam.ELEMENT_COLOR_MAX);
     }
 
@@ -178,8 +166,6 @@ public class Robot {
         this.operationThreadTertiary.abort();
         this.driveTrain.stop();
         this.webcam.stop();
-        this.outputter.stop();
-        this.intake.stop();
         Match.log(("Robot stopped"));
     }
 
@@ -261,46 +247,45 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.carouselSpinner.setSpeed(-gamePad2.left_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
         handleLED(gamePad1, gamePad2);
     }
 
-    public void handleLED(Gamepad gamepad1, Gamepad gamepad2) {
-        if (gamepad1.a) {
+    public void handleLED(Gamepad gamePad1, Gamepad gamePad2) {
+        if (gamePad1.a) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         }
-        else if (gamepad1.b) {
+        else if (gamePad1.b) {
                 setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
         }
-        else if (gamepad1.y) {
+        else if (gamePad1.y) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
         }
-        else if (gamepad1.x) {
+        else if (gamePad1.x) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
         }
-        else if (gamepad2.a) {
+        else if (gamePad2.a) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE);
         }
-        else if (gamepad2.b) {
+        else if (gamePad2.b) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_LAVA_PALETTE);
         }
-        else if (gamepad2.y) {
+        else if (gamePad2.y) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_PARTY_PALETTE);
         }
-        else if (gamepad2.x) {
+        else if (gamePad2.x) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_OCEAN_PALETTE);
         }
     }
 
     public void handleDriveTrain(Gamepad gamePad1) {
         if (this.primaryOperationsCompleted()) {
-            double multiplier = gamePad1.right_trigger > 0.1 ? .3 : (gamePad1.left_trigger > 0.1 ? 1 : .6);
-            double x = Math.pow(gamePad1.left_stick_x, 3) * multiplier; // Get left joystick's x-axis value.
-            double y = -Math.pow(gamePad1.left_stick_y, 3) * multiplier; // Get left joystick's y-axis value.
+            double multiplier = gamePad1.right_trigger > 0.1 ? .6 : (gamePad1.left_trigger > 0.1 ? 1 : .3);
+            double x = Math.pow(gamePad1.left_stick_x, 5) * multiplier; // Get left joystick's x-axis value.
+            double y = -Math.pow(gamePad1.left_stick_y, 5) * multiplier; // Get left joystick's y-axis value.
 
-            double rotation = Math.pow(gamePad1.right_stick_x, 3) * 0.5; // Get right joystick's x-axis value for rotation
+            double rotation = Math.pow(gamePad1.right_stick_x, 5) * multiplier; // Get right joystick's x-axis value for rotation
 
             this.driveTrain.drive(Math.atan2(x, y), Math.hypot(x, y), rotation);
         }
@@ -309,21 +294,16 @@ public class Robot {
     public void handleInput(Gamepad gamePad1, Gamepad gamePad2) {
         //this.intake.setSpeed(gamePad2.left_stick_x);
         if (gamePad1.dpad_left) {
-            intake.setForIntake();
         }
         else if (gamePad1.dpad_right) {
             if (gamePad1.left_trigger > .1) {
-                queueTertiaryOperation(new IntakeOperation(intake, IntakeOperation.Type.Expel, "Expel"));
             }
             else {
-                queueTertiaryOperation(new IntakeOperation(intake, IntakeOperation.Type.Consume, "Consume"));
             }
         }
         else if (gamePad1.dpad_up) {
-            intake.incrementallyRaiseIntake();
         }
         else if (gamePad1.dpad_down) {
-            intake.incrementallyLowerIntake();
         }
     }
 
@@ -332,97 +312,77 @@ public class Robot {
         if (secondaryOperationsCompleted()) {
         /*
         game pads a, b, y control bucket levels for hub
-        if gamepad2 left bumper is pressed, the levels are not set, the outputter is told that the new
+        if gamePad2 left bumper is pressed, the levels are not set, the output is told that the new
         position for the specified level should be reset
 
         We don't honor a and b buttons if start is also pressed as this might be when drivers are
         trying to register the controllers
          */
             if (gamePad1.a && !gamePad1.start) {
-                queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_Pickup, "Pickup level"));
             }
             if (gamePad2.a && !gamePad2.start) {
                 if (gamePad2.left_bumper) {
-                    outputter.setEncoderOffset(OutputOperation.Type.Level_Low);
                 }
                 else {
-                    queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_Low, "Low level"));
                 }
             }
             if (gamePad2.b && !gamePad2.start) {
                 if (gamePad2.left_bumper) {
-                    outputter.setEncoderOffset(OutputOperation.Type.Level_Middle);
                 }
                 else {
-                    queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_Middle, "Middle level"));
                 }
             }
             if (gamePad1.b && !gamePad1.start) {
-                queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Vertical, "Vertical"));
             }
             if (gamePad1.y) {
-                queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_Llama, "Llama level"));
             }
             if (gamePad2.y) {
                 if (gamePad2.left_bumper) {
-                    outputter.setEncoderOffset(OutputOperation.Type.Level_High);
                 }
                 else {
-                    queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_High, "High level"));
                 }
             }
-            //gamepad 2 x gets the bucket to intake mode
+            //gamePad 2 x gets the bucket to intake mode
             if (gamePad2.x) {
                 if (gamePad2.left_bumper) {
-                    outputter.setEncoderOffset(OutputOperation.Type.Level_Intake);
                 }
                 else {
-                    queueSecondaryOperation(new OutputOperation(outputter, intake, OutputOperation.Type.Level_Intake, "Intake level"));
                 }
             }
 
             /*
-            gamepad 2 dpad up/down raise/lower shoulder
+            gamePad 2 dpad up/down raise/lower shoulder
              */
             if (gamePad2.dpad_up) {
-                outputter.raiseAtShoulder();
             }
             else if (gamePad2.dpad_down) {
-                outputter.lowerAtShoulder();
             }
             /*
-            gamepad 2 dpad left/right retract/extend forearm at elbow or open/close lid more if right bumper is pressed
+            gamePad 2 dpad left/right retract/extend forearm at elbow or open/close lid more if right bumper is pressed
              */
             if (gamePad2.dpad_left) {
                 if (gamePad2.right_bumper) {
-                    outputter.openLidMore();
                 }
                 else {
-                    outputter.retractForearm();
                 }
             }
             else if (gamePad2.dpad_right) {
                 if (gamePad2.right_bumper) {
-                    outputter.closeLidMore();
                 }
                 else {
-                    outputter.extendForearm();
                 }
             }
         }
 
-        //gamepad 2 left/right trigger open/close bucket
+        //gamePad 2 left/right trigger open/close bucket
         //if right bumper is pressed, open goes to capping position
         if (gamePad2.left_trigger > .2) {
             if (gamePad2.right_bumper) {
-                this.outputter.lidCappingPosition();
             }
             else {
-                outputter.open();
             }
         }
         if (gamePad2.right_trigger > .2) {
-            outputter.close();
         }
     }
 
@@ -442,51 +402,20 @@ public class Robot {
         return this.vslamCamera.getPoseEstimate();
     }
 
-    public OpenCVWebcam getWebcam() {
-        return this.webcam;
-    }
-
     public DriveTrain getDriveTrain() {
         return this.driveTrain;
     }
 
-    public OutPutter getOutPutter() {
-        return this.outputter;
-    }
-
-    public String getCarouselStatus() {
-        return this.carouselSpinner.getStatus();
-    }
-    public String getOutputStatus() {
-        return this.outputter.getStatus();
-    }
-
-
     public void setPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
         this.led.setPattern(pattern);
-    }
-    public CarouselSpinner getCarouselSpinner() {
-        return this.carouselSpinner;
     }
 
     public String getVSLAMStatus() {
         return this.vslamCamera.getStatus();
     }
 
-    public T265Camera.PoseConfidence getPoseConfidence() {
-        return vslamCamera.getPoseConfidence();
-    }
-
-    public int getBarCodeLevel() {
-        return this.webcam.getBarCodeLevel();
-    }
-
-    public Intake getIntake() {
-        return this.intake;
-    }
-
-    public String getIntakeStatus() {
-        return this.intake.getStatus();
+    public int getSignalNumber() {
+        return this.webcam.getSignalNumber();
     }
 
     public RevBlinkinLedDriver.BlinkinPattern getLEDStatus() {

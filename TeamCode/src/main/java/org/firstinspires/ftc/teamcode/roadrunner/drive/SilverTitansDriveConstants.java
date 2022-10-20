@@ -45,10 +45,10 @@ public class SilverTitansDriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 70.0/2/Field.MM_PER_INCH; // Rev mecanum: 70 mm diameter
+    public static double WHEEL_RADIUS = 70.0/2.0/Field.MM_PER_INCH; // Rev mecanum: 70 mm diameter
     public static double GEAR_RATIO = 26.0/15.0; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 9.625; // in
-    public static double TRACK_LENGTH = 10.25; // in
+    public static double TRACK_WIDTH = 11.50; // in
+    public static double TRACK_LENGTH = 7.0; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -67,10 +67,10 @@ public class SilverTitansDriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 180;
-    public static double MAX_ACCEL = 180;
-    public static double MAX_ANG_VEL = Math.toRadians(120);
-    public static double MAX_ANG_ACCEL = Math.toRadians(120);
+    public static double MAX_VEL = 50;
+    public static double MAX_ACCEL = 50;
+    public static double MAX_ANG_VEL = Math.toRadians(90);
+    public static double MAX_ANG_ACCEL = Math.toRadians(90);
 
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;

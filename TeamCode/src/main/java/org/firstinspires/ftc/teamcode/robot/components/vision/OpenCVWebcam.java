@@ -31,12 +31,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
-import org.jetbrains.annotations.TestOnly;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -52,10 +50,6 @@ public class OpenCVWebcam {
     public static final double CAMERA_OFFSET_FRONT = 6.5;
     public static final int FOCAL_LENGTH = 1500;
 
-    public static final Scalar BOX_COLOR_MIN = new Scalar(12, 50, 50);
-    public static final Scalar BOX_COLOR_MAX = new Scalar(22, 255, 255);
-    public static final Scalar SILVER_COLOR_MIN = new Scalar(220, 0, 128);
-    public static final Scalar SILVER_COLOR_MAX = new Scalar(255, 20, 220);
     public static final Scalar ELEMENT_COLOR_MIN = new Scalar(0, 0, 205);
     public static final Scalar ELEMENT_COLOR_MAX = new Scalar(255, 45, 255);
 
@@ -68,12 +62,9 @@ public class OpenCVWebcam {
     Scalar colorMin;
     Scalar colorMax;
 
+    Telemetry telemetry;
+
     public static final Object synchronizer = new Object();
-    @TestOnly
-    public static void main(String[] args) {
-        Imgcodecs imgcodecs = new Imgcodecs();
-        Mat input = imgcodecs.imread("~/Desktop/teagan");
-    }
     public void init(HardwareMap hardwareMap, Telemetry telemetry, Scalar colorMin, Scalar colorMax) {
         this.colorMin = colorMin;
         this.colorMax = colorMax;
@@ -256,8 +247,8 @@ public class OpenCVWebcam {
      *
      * @return 1,2, or 3 depending on whether the object is on the left, center or right
      */
-    public int getBarCodeLevel() {
-        if (Match.getInstance().getAlliance() == Alliance.Color.RED) {
+    public int getSignalNumber() {
+        if (Match.getInstance(telemetry).getAlliance() == Alliance.Color.RED) {
             if (seeingObject()) {
                 if (getMinY() > 650) {
                     return 1;

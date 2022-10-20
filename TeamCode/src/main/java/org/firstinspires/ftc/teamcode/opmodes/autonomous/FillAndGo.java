@@ -25,7 +25,7 @@ public class FillAndGo extends LinearOpMode {
     public static final double SPEED = 0.5;
     @Override
     public void runOpMode() {
-        Match match = Match.getNewInstance();
+        Match match = Match.getNewInstance(telemetry);
         try {
             match.init();
             Robot robot = match.getRobot();

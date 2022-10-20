@@ -27,25 +27,30 @@ public class Match {
     public static String TEAM = "SilverTitans";
     private Robot robot = null;
     private Field field = null;
+    private Telemetry telemetry;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
+    private final Telemetry dashboardTelemetry = dashboard.getTelemetry();
     private Date startTime = new Date();
     private Date teleopStartTime = new Date();
     private Alliance.Color alliance;
 
-    private int barcodeLevel;
+    private int signalNumber;
 
     private Field.StartingPosition startingPosition;
     private String trajectoryError = "";
     private double distanceTraveledForFreight;
 
-    synchronized public static Match getNewInstance() {
-        match = new Match();
+    public Match(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
+    synchronized public static Match getNewInstance(Telemetry telemetry) {
+        match = new Match(telemetry);
         return match;
     }
 
-    synchronized public static Match getInstance() {
+    synchronized public static Match getInstance(Telemetry telemetry) {
         if (match == null) {
-            return getNewInstance();
+            return getNewInstance(telemetry);
         }
         else {
             return match;
@@ -102,20 +107,16 @@ public class Match {
     /**
      * Give the driver station a state of the union
      *
-     * @param telemetry Opmode telemetry
      */
-    public void updateTelemetry(Telemetry telemetry, String status) {
+    public void updateTelemetry(String status) {
 
         if (robot != null && field != null) {
             // Send telemetry message to signify robot context;
-            telemetry.addData("State:", status + ", barCode: " + getBarcodeLevel());
+            telemetry.addData("State", status + ", signal: " + getSignalNumber());
             telemetry.addData("Position", robot.getPosition());
-            telemetry.addData("Carousel", robot.getCarouselStatus());
-            telemetry.addData("Input", robot.getIntakeStatus());
-            telemetry.addData("Output", robot.getOutputStatus());
             telemetry.addData("Drive", robot.getDriveTrain().getStatus());
             telemetry.addData("LED", robot.getLEDStatus().toString());
-            telemetry.addData("TrajectoryErr", trajectoryError);
+            telemetry.addData("TrajectoryErr", getTrajectoryError());
             updateDashBoard();
         }
         else {
@@ -208,12 +209,12 @@ public class Match {
         this.trajectoryError = lastError;
     }
 
-    public int getBarcodeLevel() {
-        return barcodeLevel;
+    public int getSignalNumber() {
+        return signalNumber;
     }
 
-    public void setBarcodeLevel(int barcodeLevel) {
-        this.barcodeLevel = barcodeLevel;
+    public void setSignalNumber(int signalNumber) {
+        this.signalNumber = signalNumber;
     }
 
     public void setLed(RevBlinkinLedDriver.BlinkinPattern pattern) {
