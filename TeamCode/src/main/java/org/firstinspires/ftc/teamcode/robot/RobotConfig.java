@@ -16,6 +16,9 @@ public class RobotConfig {
     public static final String FOUR_BEAM = "fourBeam";
 
     public static final String TAIL = "tail";
+    public static final double TAIL_INITIAL_POSITION = 0;
+    public static final double TAIL_PICKUP_POSITION = .75;
+    public static final double TAIL_INCREMENT = .01;
 
     public static double ROBOT_CENTER_FROM_BACK = (6.0 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     public static double ROBOT_CENTER_FROM_FRONT = (2.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
