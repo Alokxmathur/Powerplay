@@ -14,6 +14,8 @@ public class RobotConfig {
 
     public static final String WINCH = "winch";
 
+    public static final String TAIL = "tail";
+
     public static double ROBOT_CENTER_FROM_BACK = (6.0 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     public static double ROBOT_CENTER_FROM_FRONT = (2.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     public static final double ROBOT_WIDTH = 13.5 * Field.MM_PER_INCH;
@@ -24,4 +26,6 @@ public class RobotConfig {
     public static final double REGULAR_SPEED = .8;
 
     public static final long SERVO_REQUIRED_TIME = 200; //200 milli-seconds for servo to function
+
+    public static final double MAX_WINCH_SPEED = 0.08;
 }
