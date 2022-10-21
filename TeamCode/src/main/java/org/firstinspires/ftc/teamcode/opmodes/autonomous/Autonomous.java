@@ -46,6 +46,18 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Reach pickup area",
                 telemetry
         ));
+        state.addPrimaryOperation(new FollowTrajectory(
+                field.getRetractFromStackTrajectory(),
+                robot.getDriveTrain(),
+                "Retract from stack",
+                telemetry
+        ));
+        state.addPrimaryOperation(new FollowTrajectory(
+                field.getDeliverSecondConeTracetory(),
+                robot.getDriveTrain(),
+                "Deliver second cone",
+                telemetry
+        ));
         states.add(state);
         Match.log("Created and added state");
     }
