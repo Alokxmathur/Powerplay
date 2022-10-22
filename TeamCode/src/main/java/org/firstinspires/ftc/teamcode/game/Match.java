@@ -117,6 +117,9 @@ public class Match {
             telemetry.addData("Drive", robot.getDriveTrain().getStatus());
             telemetry.addData("LED", robot.getLEDStatus().toString());
             telemetry.addData("TrajectoryErr", getTrajectoryError());
+            telemetry.addData("Tail", robot.getTailStatus());
+            telemetry.addData("FourBeam", robot.getFourBeamStatus());
+            telemetry.addData("Winch", robot.getWinchStatus());
             updateDashBoard();
         }
         else {

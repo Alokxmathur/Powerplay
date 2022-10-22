@@ -428,6 +428,18 @@ public class Robot {
         return this.winchMotor;
     }
 
+    public String getTailStatus() {
+        return this.tail.getStatus();
+    }
+
+    public String getFourBeamStatus() {
+        return this.fourBeam.getStatus();
+    }
+
+    public String getWinchStatus() {
+        return this.winch.getStatus();
+    }
+
     public String getVSLAMStatus() {
         return this.vslamCamera.getStatus();
     }

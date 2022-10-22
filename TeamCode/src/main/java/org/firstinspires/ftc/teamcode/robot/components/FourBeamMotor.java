@@ -35,7 +35,7 @@ public class FourBeamMotor {
     }
 
     public String getStatus() {
-        return String.format(Locale.getDefault(),"FourBeam:%d->%d@%.2f(Offset:%d)",
+        return String.format(Locale.getDefault(),"FourBeam:%d->%d@%.2f",
                 this.FBMotor.getCurrentPosition(),
                 this.FBMotor.getTargetPosition(),
                 this.FBMotor.getPower());
