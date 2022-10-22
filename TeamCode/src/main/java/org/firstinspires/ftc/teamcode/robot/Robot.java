@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
+import org.firstinspires.ftc.teamcode.robot.components.TailServo;
 import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
+import org.firstinspires.ftc.teamcode.robot.operations.TailOperation;
 
 /**
  * This class represents our robot.
@@ -89,6 +91,7 @@ public class Robot {
     DriveTrain driveTrain;
     LED led;
     WinchMotor winch;
+    TailServo tail;
 
     AprilTagsWebcam webcam;
     VslamCamera vslamCamera;
@@ -250,7 +253,7 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.winchMotor.setSpeed(-gamePad2.left_stick_y);
+        this.winch.setSpeed(-gamePad2.left_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
         handleLED(gamePad1, gamePad2);
@@ -270,10 +273,10 @@ public class Robot {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
         }
         else if (gamePad2.a) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE);
+            queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Initial, "Initial"));
         }
         else if (gamePad2.b) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_LAVA_PALETTE);
+            queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Pickup, "Pickup"));
         }
         else if (gamePad2.y) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_PARTY_PALETTE);

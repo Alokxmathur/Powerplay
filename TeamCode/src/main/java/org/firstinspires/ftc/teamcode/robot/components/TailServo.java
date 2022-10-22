@@ -36,6 +36,10 @@ public class TailServo {
         this.tail.setPosition(RobotConfig.TAIL_INITIAL_POSITION);
     }
 
+    public void assumePickupPosition() {
+        this.tail.setPosition(RobotConfig.TAIL_PICKUP_POSITION);
+    }
+
     public void changeTailPositionForward() {
         this.tail.setPosition(tail.getPosition() - RobotConfig.TAIL_INCREMENT);
     }
