@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
-import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
 import org.firstinspires.ftc.teamcode.robot.operations.FollowTrajectory;
 import org.firstinspires.ftc.teamcode.robot.operations.State;
-import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
 
 public abstract class Autonomous extends AutonomousHelper {
 
@@ -49,11 +46,6 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Reach pickup area",
                 telemetry
         ));
-        state.addPrimaryOperation(
-                new WinchOperation(
-                        robot.getWinchMotor(),
-                        match.getAlliance() != Alliance.Color.RED,
-                        "Extend winch"));
         states.add(state);
         Match.log("Created and added state");
     }
