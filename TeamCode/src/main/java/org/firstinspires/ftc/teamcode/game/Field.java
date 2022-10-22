@@ -102,7 +102,7 @@ public class Field {
             Math.toRadians(180));
     public static final Pose2d blueLeftDeliverSecondConePose = new Pose2d(
             (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
-            -(RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
 
     public static final Pose2d blueRightStartingPose =
@@ -129,7 +129,7 @@ public class Field {
     public static final Pose2d blueRightDeliverSecondConePose = new Pose2d(
             -(TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
             (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
-            Math.toRadians(225));
+            Math.toRadians(45));
 
     Trajectory turnaroundTrajectory;
     public Trajectory getTurnaroundTrajectory() {
@@ -159,6 +159,16 @@ public class Field {
     Trajectory deliverSecondConeTrajectory;
     public Trajectory getDeliverSecondConeTracetory() {
         return deliverSecondConeTrajectory;
+    }
+
+    Trajectory retractFromSecondConeDeliveryTrajectory;
+    public Trajectory getRetractFromSecondConeDeliveryTrajectory() {
+        return retractFromSecondConeDeliveryTrajectory;
+    }
+
+    Trajectory navigationTrajectories[] = new Trajectory[3];
+    public Trajectory getNavigationTrajectory(int signalNumber) {
+        return navigationTrajectories[signalNumber-1];
     }
     /*
     The 12 possible locations for bonus points, three for each starting position (left or right)
@@ -382,8 +392,16 @@ public class Field {
                     .forward(55)
                     .build();
             deliverSecondConeTrajectory = accurateTrajectoryBuilder(retractFromStackTrajectory.end(), true)
-                    .splineTo(deliverSecondConePose.vec(), deliverSecondConePose.getHeading())
+                    .splineTo(deliverSecondConePose.vec(), deliverSecondConePose.getHeading() + Math.toRadians(180))
                     .build();
+            retractFromSecondConeDeliveryTrajectory = accurateTrajectoryBuilder(deliverSecondConeTrajectory.end(), deliverSecondConeTrajectory.end().getHeading())
+                    .splineTo(retractFromStackTrajectory.end().vec(), retractFromStackTrajectory.end().getHeading())
+                    .build();
+            for (int i = 0; i < 3; i++) {
+                navigationTrajectories[i] = accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+                        .forward(-(i * TILE_WIDTH / MM_PER_INCH + 5))
+                        .build();
+            }
         }
     }
 
