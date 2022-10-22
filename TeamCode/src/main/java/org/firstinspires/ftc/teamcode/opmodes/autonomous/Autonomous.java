@@ -10,18 +10,6 @@ public abstract class Autonomous extends AutonomousHelper {
     public void start() {
         super.start();
         State state = new State("Deliver held cone");
-        /*
-        //Create a state to reach the desired location
-        state = new State("Reach Destination");
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getLocationTrajectory(match.getSignalNumber()),
-                robot.getDriveTrain(),
-                "Reach our destination",
-                telemetry
-                ));
-        states.add(state);
-
-         */
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getTurnaroundTrajectory(),
                 robot.getDriveTrain(),
