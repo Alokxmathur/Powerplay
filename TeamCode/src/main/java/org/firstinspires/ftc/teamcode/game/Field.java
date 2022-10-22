@@ -102,7 +102,7 @@ public class Field {
             Math.toRadians(180));
     public static final Pose2d blueLeftDeliverSecondConePose = new Pose2d(
             (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
-            -(RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
 
     public static final Pose2d blueRightStartingPose =
@@ -159,6 +159,18 @@ public class Field {
     Trajectory deliverSecondConeTrajectory;
     public Trajectory getDeliverSecondConeTracetory() {
         return deliverSecondConeTrajectory;
+    }
+
+    Trajectory navigationTrajectory;
+    public Trajectory getNavigationTrajectory() {
+        return navigationTrajectory;
+    }
+
+    public Trajectory getParkingTrajectory(int signalNumber) {
+        Trajectory parkingTrajectory = accurateTrajectoryBuilder(navigationTrajectory.end(), true)
+                .forward(-((signalNumber-1) * TILE_WIDTH / MM_PER_INCH + 5))
+                .build();
+        return parkingTrajectory;
     }
     /*
     The 12 possible locations for bonus points, three for each starting position (left or right)
@@ -383,6 +395,9 @@ public class Field {
                     .build();
             deliverSecondConeTrajectory = accurateTrajectoryBuilder(retractFromStackTrajectory.end(), true)
                     .splineTo(deliverSecondConePose.vec(), deliverSecondConePose.getHeading())
+                    .build();
+            navigationTrajectory = accurateTrajectoryBuilder(deliverSecondConeTrajectory.end(), deliverSecondConeTrajectory.end().getHeading())
+                    .splineTo(retractFromStackTrajectory.end().vec(), retractFromStackTrajectory.end().getHeading())
                     .build();
         }
     }
