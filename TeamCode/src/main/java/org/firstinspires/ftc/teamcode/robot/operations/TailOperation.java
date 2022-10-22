@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
+import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.TailServo;
 
@@ -42,6 +43,7 @@ public class TailOperation extends Operation {
                     break;
                 }
             }
+        Match.log("Tail State: " + tail.getStatus());
         }
     @Override
     public void startOperation() {

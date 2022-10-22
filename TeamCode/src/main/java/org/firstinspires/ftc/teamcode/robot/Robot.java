@@ -126,6 +126,10 @@ public class Robot {
         this.led = new LED(hardwareMap);
         this.led.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
 
+        this.winch = new WinchMotor(hardwareMap);
+        this.tail = new TailServo(hardwareMap);
+        this.fourBeam = new FourBeamMotor(hardwareMap);
+
 
         telemetry.addData("Status", "Creating operations thread, please wait");
         telemetry.update();
@@ -275,7 +279,7 @@ public class Robot {
         else if (gamePad1.x) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
         }
-        else if (gamePad2.a) {
+        if (gamePad2.a) {
             queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Initial, "Initial"));
         }
         else if (gamePad2.b) {

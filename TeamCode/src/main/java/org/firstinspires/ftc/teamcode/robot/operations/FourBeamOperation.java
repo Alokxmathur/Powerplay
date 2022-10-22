@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
+import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.FourBeamMotor;
 
@@ -8,7 +9,6 @@ import java.util.Locale;
 
 public class FourBeamOperation extends Operation {
     FourBeamMotor fourBeam;
-    boolean clockwise;
     Type type;
 
     public enum Type {
@@ -38,7 +38,7 @@ public class FourBeamOperation extends Operation {
     }
 
     public void setFourBeamPosition() {
-        switch (type){
+        switch (type) {
             case Level_Top:
                 fourBeam.setToTopPosition();
                 break;
@@ -46,7 +46,10 @@ public class FourBeamOperation extends Operation {
                 fourBeam.setToBottomPosition();
                 break;
         }
+        Match.log("FourBar State: " + fourBeam.getStatus());
     }
+
+
 
     @Override
     public void startOperation() {

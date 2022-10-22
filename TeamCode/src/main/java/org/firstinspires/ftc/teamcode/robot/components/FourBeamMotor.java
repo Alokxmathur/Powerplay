@@ -34,14 +34,14 @@ public class FourBeamMotor {
         this.FBMotor.setTargetPosition(RobotConfig.FOUR_BEAM_TOP_POSITION);
     }
 
-    public void stop() {
-        this.FBMotor.setPower(0);
-    }
-
     public String getStatus() {
-        return String.format(Locale.getDefault(), "C:%d->%d@%.2f",
+        return String.format(Locale.getDefault(),"FourBeam:%d->%d@%.2f(Offset:%d)",
                 this.FBMotor.getCurrentPosition(),
                 this.FBMotor.getTargetPosition(),
                 this.FBMotor.getPower());
+    }
+
+    public void stop() {
+        this.FBMotor.setPower(0);
     }
 }
