@@ -48,13 +48,7 @@ public class TailOperation extends Operation {
     @Override
     public void startOperation() {
         tail.setUprightPosition(false);
-        switch (type) {
-            case Level_Pickup:
-            case Level_Initial:{
-                tail.setTailPosition(RobotConfig.TAIL_INITIAL_POSITION);
-                break;
-            }
-        }
+        setTailPosition();
     }
     @Override
     public void abortOperation() {

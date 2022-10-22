@@ -14,11 +14,15 @@ public class RobotConfig {
 
     public static final String WINCH = "winch";
     public static final String FOUR_BEAM = "fourBeam";
-
     public static final String TAIL = "tail";
+    public static final String CLAW = "claw";
+
     public static final double TAIL_INITIAL_POSITION = 0;
     public static final double TAIL_PICKUP_POSITION = .75;
     public static final double TAIL_INCREMENT = .01;
+    public static final double CLAW_INITIAL_POSITION = 0;
+    public static final double CLAW_CLENCH_POSITION = .5;
+    public static final double CLAW_INCREMENT = .01;
     public static final int FOUR_BEAM_INITIAL_POSITION = 160;
     public static final int FOUR_BEAM_TOP_POSITION = 300;
 
@@ -35,7 +39,7 @@ public class RobotConfig {
 
     public static final long SERVO_REQUIRED_TIME = 200; //200 milli-seconds for servo to function
 
-    public static final double MAX_WINCH_SPEED = 0.08;
+    public static final double MAX_WINCH_SPEED = 0.4;
     public static final double WINCH_REQUIRED_TIME = 1000;
-    public static final double MAX_FOUR_BEAM_SPEED = 0.2;
+    public static final double MAX_FOUR_BEAM_SPEED = 0.4;
 }

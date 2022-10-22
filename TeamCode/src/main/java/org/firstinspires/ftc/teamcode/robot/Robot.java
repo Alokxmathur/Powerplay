@@ -260,7 +260,8 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.winch.setSpeed(-gamePad2.left_stick_y);
+        this.winch.setSpeed(gamePad2.left_stick_y);
+        this.fourBeam.setSpeed(gamePad2.right_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
         handleLED(gamePad1, gamePad2);
