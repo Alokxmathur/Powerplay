@@ -37,5 +37,5 @@ public class RobotConfig {
 
     public static final double MAX_WINCH_SPEED = 0.08;
     public static final double WINCH_REQUIRED_TIME = 1000;
-    public static final double MAX_FOUR_BEAM_SPEED = 0.1;
+    public static final double MAX_FOUR_BEAM_SPEED = 0.2;
 }
