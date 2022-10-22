@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
+import org.firstinspires.ftc.teamcode.robot.components.FourBeamMotor;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
 import org.firstinspires.ftc.teamcode.robot.components.TailServo;
 import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
+import org.firstinspires.ftc.teamcode.robot.operations.FourBeamOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
 import org.firstinspires.ftc.teamcode.robot.operations.TailOperation;
@@ -92,6 +94,7 @@ public class Robot {
     LED led;
     WinchMotor winch;
     TailServo tail;
+    FourBeamMotor fourBeam;
 
     AprilTagsWebcam webcam;
     VslamCamera vslamCamera;
@@ -122,6 +125,10 @@ public class Robot {
         initDriveTrain();
         this.led = new LED(hardwareMap);
         this.led.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+
+        this.winch = new WinchMotor(hardwareMap);
+        this.tail = new TailServo(hardwareMap);
+        this.fourBeam = new FourBeamMotor(hardwareMap);
 
 
         telemetry.addData("Status", "Creating operations thread, please wait");
@@ -272,17 +279,17 @@ public class Robot {
         else if (gamePad1.x) {
             setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
         }
-        else if (gamePad2.a) {
+        if (gamePad2.a) {
             queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Initial, "Initial"));
         }
         else if (gamePad2.b) {
             queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Pickup, "Pickup"));
         }
         else if (gamePad2.y) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_PARTY_PALETTE);
+            queueSecondaryOperation(new FourBeamOperation(fourBeam, FourBeamOperation.Type.Level_Bottom, "Bottom"));
         }
         else if (gamePad2.x) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_OCEAN_PALETTE);
+            queueSecondaryOperation(new FourBeamOperation(fourBeam, FourBeamOperation.Type.Level_Top, "Top"));
         }
     }
 
@@ -419,6 +426,18 @@ public class Robot {
 
     public WinchMotor getWinchMotor() {
         return this.winchMotor;
+    }
+
+    public String getTailStatus() {
+        return this.tail.getStatus();
+    }
+
+    public String getFourBeamStatus() {
+        return this.fourBeam.getStatus();
+    }
+
+    public String getWinchStatus() {
+        return this.winch.getStatus();
     }
 
     public String getVSLAMStatus() {

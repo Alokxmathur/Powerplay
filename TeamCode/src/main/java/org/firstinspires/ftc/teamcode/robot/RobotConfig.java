@@ -19,6 +19,8 @@ public class RobotConfig {
     public static final double TAIL_INITIAL_POSITION = 0;
     public static final double TAIL_PICKUP_POSITION = .75;
     public static final double TAIL_INCREMENT = .01;
+    public static final int FOUR_BEAM_INITIAL_POSITION = 160;
+    public static final int FOUR_BEAM_TOP_POSITION = 300;
 
     //Robot center from back is six inches and half of track length away
     public static double ROBOT_CENTER_FROM_BACK = (6.0 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
