@@ -49,6 +49,7 @@ public class ClawSystem {
     public void openAuto() {
         this.claw.setPosition(RobotConfig.CLAW_INITIAL_POSITION);
     }
+
     public void closeAuto() {
         this.claw.setPosition(RobotConfig.CLAW_CLENCH_POSITION);
     }
