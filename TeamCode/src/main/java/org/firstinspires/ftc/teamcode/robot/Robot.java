@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
+import org.firstinspires.ftc.teamcode.robot.components.ClawSystem;
 import org.firstinspires.ftc.teamcode.robot.components.FourBeamMotor;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
 import org.firstinspires.ftc.teamcode.robot.components.TailServo;
@@ -95,6 +96,7 @@ public class Robot {
     WinchMotor winch;
     TailServo tail;
     FourBeamMotor fourBeam;
+    ClawSystem claw;
 
     AprilTagsWebcam webcam;
     VslamCamera vslamCamera;
@@ -259,7 +261,8 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.winch.setSpeed(-gamePad2.left_stick_y);
+        this.winch.setSpeed(gamePad2.left_stick_y);
+        this.fourBeam.setSpeed(gamePad2.right_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
         handleLED(gamePad1, gamePad2);
@@ -367,8 +370,10 @@ public class Robot {
             gamePad 2 dpad up/down raise/lower shoulder
              */
             if (gamePad2.dpad_up) {
+                claw.openClaw();
             }
             else if (gamePad2.dpad_down) {
+                claw.closeClaw();
             }
             /*
             gamePad 2 dpad left/right retract/extend forearm at elbow or open/close lid more if right bumper is pressed
@@ -377,12 +382,14 @@ public class Robot {
                 if (gamePad2.right_bumper) {
                 }
                 else {
+                    claw.openAuto();
                 }
             }
             else if (gamePad2.dpad_right) {
                 if (gamePad2.right_bumper) {
                 }
                 else {
+                    claw.closeAuto();
                 }
             }
         }

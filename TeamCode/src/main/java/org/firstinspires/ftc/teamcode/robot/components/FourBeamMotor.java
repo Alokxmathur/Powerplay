@@ -28,10 +28,12 @@ public class FourBeamMotor {
 
     public void setToTopPosition() {
         this.FBMotor.setTargetPosition(RobotConfig.FOUR_BEAM_INITIAL_POSITION);
+        this.FBMotor.setPower(RobotConfig.MAX_FOUR_BEAM_SPEED);
     }
 
     public void setToBottomPosition() {
         this.FBMotor.setTargetPosition(RobotConfig.FOUR_BEAM_TOP_POSITION);
+        this.FBMotor.setPower(RobotConfig.MAX_FOUR_BEAM_SPEED);
     }
 
     public String getStatus() {
