@@ -399,7 +399,7 @@ public class Field {
                     .build();
             for (int i = 0; i < 3; i++) {
                 navigationTrajectories[i] = accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
-                        .forward(-(i * TILE_WIDTH / MM_PER_INCH + 5))
+                        .forward(-(i * TILE_WIDTH / MM_PER_INCH + 7))
                         .build();
             }
         }

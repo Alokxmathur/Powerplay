@@ -251,7 +251,6 @@ public class Robot {
         return this.everythingButCamerasInitialized && this.vslamCamera.isInitialized();
     }
 
-
     public void handleGameControllers(Gamepad gamePad1, Gamepad gamePad2) {
         if (gamePad1.x) {
             this.operationThreadPrimary.abort();
