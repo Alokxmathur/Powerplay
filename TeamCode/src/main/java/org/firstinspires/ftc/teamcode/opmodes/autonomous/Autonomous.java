@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import org.firstinspires.ftc.teamcode.game.Match;
+import org.firstinspires.ftc.teamcode.robot.operations.ClawOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.FollowTrajectory;
 import org.firstinspires.ftc.teamcode.robot.operations.State;
+import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
 
 public abstract class Autonomous extends AutonomousHelper {
 
@@ -10,6 +12,10 @@ public abstract class Autonomous extends AutonomousHelper {
     public void start() {
         super.start();
         State state = new State("Deliver held cone");
+        state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
+        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), WinchOperation.Type.High, "Go High"));
+        states.add(state);
+
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getTurnaroundTrajectory(),
                 robot.getDriveTrain(),
@@ -22,6 +28,9 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Deliver loaded cone",
                 telemetry
         ));
+        states.add(state);
+
+        state = new State("Pickup cone");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromLoadedConeDeliveryTrajectory(),
                 robot.getDriveTrain(),
@@ -34,6 +43,9 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Reach pickup area",
                 telemetry
         ));
+        states.add(state);
+
+        state = new State("Deliver second cone");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromStackTrajectory(),
                 robot.getDriveTrain(),
@@ -46,6 +58,9 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Deliver second cone",
                 telemetry
         ));
+        states.add(state);
+
+        state = new State("Navigate");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromSecondConeDeliveryTrajectory(),
                 robot.getDriveTrain(),
@@ -55,10 +70,11 @@ public abstract class Autonomous extends AutonomousHelper {
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getNavigationTrajectory(match.getSignalNumber()),
                 robot.getDriveTrain(),
-                "Reach right tile to park",
+                "Reach right tile to navigate",
                 telemetry
         ));
         states.add(state);
+
         Match.log("Created and added state");
     }
 }

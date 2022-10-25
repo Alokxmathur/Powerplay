@@ -30,11 +30,11 @@ public class Field {
 
     public static final Pose2d redLeftStartingPose = new Pose2d(
             (-Field.TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
-            (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
-            Math.toRadians(90));
+            (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
+            Math.toRadians(-90));
     public static final Pose2d redLeftTurnaroundPose = new Pose2d(
             (-Field.TILE_WIDTH/2) / MM_PER_INCH,
-            -(Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            -(2*Field.TILE_WIDTH),
             Math.toRadians(-90));
     public static final Pose2d redLeftDeliverLoadedConePose = new Pose2d(
             (-RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
@@ -56,11 +56,11 @@ public class Field {
     public static final Pose2d redRightStartingPose =
             new Pose2d(
                     (Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
-                    (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
-                    Math.toRadians(90));
+                    (-Field.FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
+                    Math.toRadians(-90));
     public static final Pose2d redRightTurnaroundPose = new Pose2d(
             (Field.TILE_WIDTH/2) / MM_PER_INCH,
-            -(Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  + 1,
+            -(2*Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(-90));
     public static final Pose2d redRightDeliverLoadedConePose = new Pose2d(
             (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
@@ -81,12 +81,12 @@ public class Field {
 
     public static final Pose2d blueLeftStartingPose =
             new Pose2d(
-                    (Field.TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
-                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
-                    Math.toRadians(-90));
+                    (Field.TILE_WIDTH) / MM_PER_INCH,
+                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
+                    Math.toRadians(90));
     public static final Pose2d blueLeftTurnaroundPose = new Pose2d(
             (Field.TILE_WIDTH/2) / MM_PER_INCH,
-            (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            (2*Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(90));
     public static final Pose2d blueLeftDeliverLoadedConePose = new Pose2d(
             (RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
@@ -108,11 +108,11 @@ public class Field {
     public static final Pose2d blueRightStartingPose =
             new Pose2d(
                     (-Field.TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
-                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK) / MM_PER_INCH,
-                    Math.toRadians(-90));
+                    (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
+                    Math.toRadians(90));
     public static final Pose2d blueRightTurnaroundPose = new Pose2d(
             -(Field.TILE_WIDTH/2) / MM_PER_INCH,
-            (Field.FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH  - 1,
+            (2*Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(90));
     public static final Pose2d blueRightDeliverLoadedConePose = new Pose2d(
             -(RobotConfig.ROBOT_CENTER_FROM_BACK/sqrtOfTwo) / MM_PER_INCH,
@@ -373,7 +373,7 @@ public class Field {
             } // end switch (alliance)
             turnaroundTrajectory =
                     accurateTrajectoryBuilder(startingPose, startingPose.getHeading())
-                            .splineTo(turnaroundPose.vec(), turnaroundPose.getHeading())
+                            .splineToConstantHeading(turnaroundPose.vec(), turnaroundPose.getHeading())
                             .build();
             deliverLoadedConeTrajectory =
                     accurateTrajectoryBuilder(turnaroundPose, true)

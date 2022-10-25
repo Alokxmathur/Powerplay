@@ -107,8 +107,6 @@ public class Robot {
 
     //our state
     String state = "pre-initialized";
-    private WinchMotor winchMotor;
-
     public Robot() {
         Log.d("SilverTitans", "Robot: got created");
     }
@@ -131,7 +129,7 @@ public class Robot {
         this.winch = new WinchMotor(hardwareMap);
         this.tail = new TailServo(hardwareMap);
         this.fourBeam = new FourBeamMotor(hardwareMap);
-
+        this.claw = new ClawSystem(hardwareMap);
 
         telemetry.addData("Status", "Creating operations thread, please wait");
         telemetry.update();
@@ -261,7 +259,7 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.winch.setSpeed(gamePad2.left_stick_y);
+        this.winch.setSpeed(-gamePad2.left_stick_y);
         this.fourBeam.setSpeed(gamePad2.right_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
@@ -416,6 +414,9 @@ public class Robot {
             this.driveTrain.ensureWheelDirection();
             this.driveTrain.reset();
         }
+        if (this.winch != null) {
+            this.winch.ensureDirection();
+        }
     }
 
     public Pose2d getPose() {
@@ -430,8 +431,11 @@ public class Robot {
         this.led.setPattern(pattern);
     }
 
-    public WinchMotor getWinchMotor() {
-        return this.winchMotor;
+    public WinchMotor getWinch() {
+        return this.winch;
+    }
+    public ClawSystem getClaw() {
+        return this.claw;
     }
 
     public String getTailStatus() {
@@ -445,7 +449,9 @@ public class Robot {
     public String getWinchStatus() {
         return this.winch.getStatus();
     }
-
+    public String getClawStatus() {
+        return this.claw.getStatus();
+    }
     public String getVSLAMStatus() {
         return this.vslamCamera.getStatus();
     }

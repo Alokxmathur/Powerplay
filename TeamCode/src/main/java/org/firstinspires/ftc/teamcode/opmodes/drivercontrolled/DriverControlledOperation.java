@@ -70,15 +70,6 @@ public class DriverControlledOperation extends OpMode {
         this.match = Match.getInstance(telemetry);
         match.setTeleopStartTime(new Date());
         robot.reset();
-        /*
-        if (match.getAlliance()== Alliance.Color.RED) {
-            robot.setPattern(RevBlinkinLedDriver.BlinkinPattern.SHOT_RED);
-        }
-        else {
-            robot.setPattern(RevBlinkinLedDriver.BlinkinPattern.SHOT_BLUE);
-        }
-        */
-        //robot.startVSLAM();
 
         try {
             robot.setState("Initialized");

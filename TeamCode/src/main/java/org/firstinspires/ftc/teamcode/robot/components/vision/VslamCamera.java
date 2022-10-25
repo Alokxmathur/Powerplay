@@ -52,7 +52,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     private Pose2d currentPose = new Pose2d();
     private com.arcrobotics.ftclib.geometry.Pose2d initialPose = new com.arcrobotics.ftclib.geometry.Pose2d();
     private T265Camera.CameraUpdate lastCameraUpdate;
-    private final Pose2d pose2dVelocity = new Pose2d();
+    private Pose2d pose2dVelocity = new Pose2d();
     private volatile boolean isInitialized;
 
     private com.arcrobotics.ftclib.geometry.Pose2d originOffset =
@@ -101,8 +101,8 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
             initialPose = newPose;
             originOffset =
                     newPose.relativeTo(lastCameraUpdate.pose);
-            Match.log("Set new pose of " + newPose + ", camera provided pose = " + lastCameraUpdate.pose
-                    + ", giving us an origin offset of " + originOffset);
+            //force an update to current pose
+            accept(lastCameraUpdate);
         }
     }
 
@@ -187,6 +187,10 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
         synchronized (synchronizationObject) {
             //process latest received update
             try {
+                pose2dVelocity = new Pose2d(
+                        cameraUpdate.velocity.vxMetersPerSecond / Field.M_PER_INCH,
+                        cameraUpdate.velocity.vyMetersPerSecond / Field.M_PER_INCH,
+                        cameraUpdate.velocity.omegaRadiansPerSecond);
                 lastCameraUpdate = cameraUpdate;
                 //set last pose to be the current one
                 com.arcrobotics.ftclib.geometry.Pose2d newPose = originOffset.transformBy(
@@ -201,10 +205,11 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     public String getStatus() {
         synchronized (synchronizationObject) {
             if (havePosition()) {
-                return String.format(Locale.getDefault(), "Position:%s,CameraPose:%s,Initial:%s,Confidence:%s",
+                return String.format(Locale.getDefault(), "%s,Camera:%s,Initial:%s,Offset:%s,Confidence:%s",
                         getPoseEstimate(),
                         Field.cameraToRoadRunnerPose(lastCameraUpdate.pose),
                         Field.cameraToRoadRunnerPose(initialPose),
+                        Field.cameraToRoadRunnerPose(originOffset),
                         getPoseConfidence().toString());
             }
             else {
@@ -225,6 +230,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
             return lastCameraUpdate.confidence;
         }
     }
+    /*
     public static void main(String[] args) {
         com.arcrobotics.ftclib.geometry.Pose2d setPose = new com.arcrobotics.ftclib.geometry.Pose2d(
                 50,
@@ -248,4 +254,6 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
 
         System.out.println("Result offset = " + newLocation.relativeTo(setPose));
     }
+
+     */
 }

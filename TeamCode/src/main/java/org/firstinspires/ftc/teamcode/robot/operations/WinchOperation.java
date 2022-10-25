@@ -3,16 +3,18 @@ package org.firstinspires.ftc.teamcode.robot.operations;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
 
-import java.util.Date;
 import java.util.Locale;
 
 public class WinchOperation extends Operation {
+    public enum Type {
+        Ground, Low, Mid, High
+    }
     WinchMotor winch;
-    boolean clockwise;
+    Type type;
 
-    public WinchOperation(WinchMotor winch, boolean clockwise, String title) {
+    public WinchOperation(WinchMotor winch, Type type, String title) {
         this.winch = winch;
-        this.clockwise = clockwise;
+        this.type = type;
         this.title = title;
     }
 
@@ -22,20 +24,28 @@ public class WinchOperation extends Operation {
     }
 
     public boolean isComplete() {
-        if (new Date().getTime() - getStartTime().getTime() > RobotConfig.WINCH_REQUIRED_TIME) {
-            winch.stop();
-            return true;
-        }
-        return false;
+        return winch.isWithinRange();
     }
 
     @Override
     public void startOperation() {
-        if (clockwise) {
-            winch.setSpeed(RobotConfig.MAX_WINCH_SPEED);
-        }
-        else {
-            winch.setSpeed(-RobotConfig.MAX_WINCH_SPEED);
+        switch (this.type) {
+            case Ground: {
+                winch.setPosition(RobotConfig.WINCH_GROUND_POSITION);
+                break;
+            }
+            case Low: {
+                winch.setPosition(RobotConfig.WINCH_LOW_POSITION);
+                break;
+            }
+            case Mid: {
+                winch.setPosition(RobotConfig.WINCH_MID_POSITION);
+                break;
+            }
+            case High: {
+                winch.setPosition(RobotConfig.WINCH_HIGH_POSITION);
+                break;
+            }
         }
     }
 

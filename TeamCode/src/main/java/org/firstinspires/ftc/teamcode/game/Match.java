@@ -120,6 +120,7 @@ public class Match {
             telemetry.addData("Tail", robot.getTailStatus());
             telemetry.addData("FourBeam", robot.getFourBeamStatus());
             telemetry.addData("Winch", robot.getWinchStatus());
+            telemetry.addData("Claw", robot.getClawStatus());
             updateDashBoard();
         }
         else {

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.components;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -58,7 +57,7 @@ public class ClawSystem {
     }
 
     public String getStatus() {
-        return String.format(Locale.getDefault(),"Shoulder:%d->%d@%.2f(Offset:%d),Elbow:%.3f,Lid:%.3f",
+        return String.format(Locale.getDefault(),"Claw:%.3f",
                 this.claw.getPosition());
     }
 }

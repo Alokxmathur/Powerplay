@@ -48,8 +48,8 @@ import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Co
 
 public class AprilTagsWebcam {
 
-    public static final int Y_PIXEL_COUNT = 1920;
-    public static final int X_PIXEL_COUNT = 1080;
+    public static final int Y_PIXEL_COUNT = 1280;
+    public static final int X_PIXEL_COUNT = 720;
 
     OpenCvWebcam webcam;
     AprilTagsPipeline pipeline;
@@ -69,14 +69,14 @@ public class AprilTagsWebcam {
         pipeline = new AprilTagsPipeline(tagsize, fx, fy, cx, cy, telemetry);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, RobotConfig.WEBCAM_ID), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, RobotConfig.WEBCAM_ID_2), cameraMonitorViewId);
         //pipeline.setTelemetry(telemetry);
         webcam.setPipeline(pipeline);
         start();
     }
 
     public void start() {
-        Match.log("Attempting to start " + RobotConfig.WEBCAM_ID + " usage");
+        Match.log("Attempting to start " + RobotConfig.WEBCAM_ID_2 + " usage");
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
         // out when the RC activity is in portrait. We do our actual image processing assuming
