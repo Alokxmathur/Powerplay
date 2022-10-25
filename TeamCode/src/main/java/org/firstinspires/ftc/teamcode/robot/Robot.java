@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
+import org.firstinspires.ftc.teamcode.robot.operations.ClawOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.FourBeamOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
@@ -380,14 +381,14 @@ public class Robot {
                 if (gamePad2.right_bumper) {
                 }
                 else {
-                    claw.openAuto();
+                    queueSecondaryOperation(new ClawOperation(claw, ClawOperation.Type.Open, "Opened"));
                 }
             }
             else if (gamePad2.dpad_right) {
                 if (gamePad2.right_bumper) {
                 }
                 else {
-                    claw.closeAuto();
+                    queueSecondaryOperation(new ClawOperation(claw, ClawOperation.Type.Close, "Closed"));
                 }
             }
         }

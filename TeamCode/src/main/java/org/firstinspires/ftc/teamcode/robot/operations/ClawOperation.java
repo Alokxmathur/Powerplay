@@ -32,11 +32,11 @@ public class ClawOperation extends Operation {
     private void setClawPosition() {
         switch (type) {
             case Open: {
-                claw.setClawPosition(RobotConfig.TAIL_INITIAL_POSITION);
+                claw.setClawPosition(RobotConfig.CLAW_INITIAL_POSITION);
                 break;
             }
             case Close: {
-                claw.setClawPosition(RobotConfig.TAIL_PICKUP_POSITION);
+                claw.setClawPosition(RobotConfig.CLAW_CLENCH_POSITION);
                 break;
             }
         }
