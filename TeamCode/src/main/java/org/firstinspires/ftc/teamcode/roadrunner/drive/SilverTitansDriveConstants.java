@@ -48,7 +48,7 @@ public class SilverTitansDriveConstants {
     public static double WHEEL_RADIUS = 70.0/2.0/Field.MM_PER_INCH; // Rev mecanum: 70 mm diameter
     public static double GEAR_RATIO = 26.0/15.0; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 11.50; // in
-    public static double TRACK_LENGTH = 7.0; // in
+    public static double TRACK_LENGTH = 11.325; // 11 3/8 in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using

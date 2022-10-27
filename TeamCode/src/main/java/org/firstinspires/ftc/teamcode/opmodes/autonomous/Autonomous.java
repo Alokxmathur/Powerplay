@@ -13,7 +13,7 @@ public abstract class Autonomous extends AutonomousHelper {
         super.start();
         State state = new State("Deliver held cone");
         state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
-        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), WinchOperation.Type.High, "Go High"));
+        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
         states.add(state);
 
         state.addPrimaryOperation(new FollowTrajectory(

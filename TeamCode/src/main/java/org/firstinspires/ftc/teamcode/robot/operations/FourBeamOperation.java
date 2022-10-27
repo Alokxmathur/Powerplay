@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
-import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.RobotConfig;
-import org.firstinspires.ftc.teamcode.robot.components.FourBeamMotor;
+import org.firstinspires.ftc.teamcode.robot.components.FourBarMotor;
 
-import java.util.Date;
 import java.util.Locale;
 
 public class FourBeamOperation extends Operation {
-    FourBeamMotor fourBeam;
+    FourBarMotor fourBeam;
     Type type;
 
     public enum Type {
@@ -16,7 +13,7 @@ public class FourBeamOperation extends Operation {
         Level_Bottom,
     }
 
-    public FourBeamOperation(FourBeamMotor fourBeam, Type type, String title) {
+    public FourBeamOperation(FourBarMotor fourBeam, Type type, String title) {
         this.fourBeam = fourBeam;
         this.type = type;
         this.title = title;
@@ -31,25 +28,8 @@ public class FourBeamOperation extends Operation {
     //Use Limit Switches?
 
     public boolean isComplete() {
-        if (new Date().getTime() - getStartTime().getTime() > RobotConfig.SERVO_REQUIRED_TIME) {
-            return true;
-        }
-        return false;
+        return fourBeam.isWithinRange();
     }
-
-    public void setFourBeamPosition() {
-        switch (type) {
-            case Level_Top:
-                fourBeam.setToTopPosition();
-                break;
-            case Level_Bottom:
-                fourBeam.setToBottomPosition();
-                break;
-        }
-        Match.log("FourBar State: " + fourBeam.getStatus());
-    }
-
-
 
     @Override
     public void startOperation() {

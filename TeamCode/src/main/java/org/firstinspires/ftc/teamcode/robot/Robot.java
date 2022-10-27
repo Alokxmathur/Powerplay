@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.components.ClawSystem;
-import org.firstinspires.ftc.teamcode.robot.components.FourBeamMotor;
+import org.firstinspires.ftc.teamcode.robot.components.FourBarMotor;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
 import org.firstinspires.ftc.teamcode.robot.components.TailServo;
 import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
@@ -20,10 +20,9 @@ import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
-import org.firstinspires.ftc.teamcode.robot.operations.FourBeamOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
-import org.firstinspires.ftc.teamcode.robot.operations.TailOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
 
 /**
  * This class represents our robot.
@@ -95,7 +94,7 @@ public class Robot {
     LED led;
     WinchMotor winch;
     TailServo tail;
-    FourBeamMotor fourBeam;
+    FourBarMotor fourBeam;
     ClawSystem claw;
 
     AprilTagsWebcam webcam;
@@ -128,7 +127,7 @@ public class Robot {
 
         this.winch = new WinchMotor(hardwareMap);
         this.tail = new TailServo(hardwareMap);
-        this.fourBeam = new FourBeamMotor(hardwareMap);
+        this.fourBeam = new FourBarMotor(hardwareMap);
         this.claw = new ClawSystem(hardwareMap);
 
         telemetry.addData("Status", "Creating operations thread, please wait");
@@ -259,38 +258,12 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        this.winch.setSpeed(-gamePad2.left_stick_y);
-        this.fourBeam.setSpeed(gamePad2.right_stick_y);
         handleOutput(gamePad1, gamePad2);
         handleInput(gamePad1, gamePad2);
-        handleLED(gamePad1, gamePad2);
     }
 
     public void handleLED(Gamepad gamePad1, Gamepad gamePad2) {
-        if (gamePad1.a) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-        }
-        else if (gamePad1.b) {
-                setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
-        }
-        else if (gamePad1.y) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-        }
-        else if (gamePad1.x) {
-            setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-        }
-        if (gamePad2.a) {
-            queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Initial, "Initial"));
-        }
-        else if (gamePad2.b) {
-            queueSecondaryOperation(new TailOperation(tail, TailOperation.Type.Level_Pickup, "Pickup"));
-        }
-        else if (gamePad2.y) {
-            queueSecondaryOperation(new FourBeamOperation(fourBeam, FourBeamOperation.Type.Level_Bottom, "Bottom"));
-        }
-        else if (gamePad2.x) {
-            queueSecondaryOperation(new FourBeamOperation(fourBeam, FourBeamOperation.Type.Level_Top, "Top"));
-        }
+
     }
 
     public void handleDriveTrain(Gamepad gamePad1) {
@@ -306,22 +279,29 @@ public class Robot {
     }
 
     public void handleInput(Gamepad gamePad1, Gamepad gamePad2) {
-        //this.intake.setSpeed(gamePad2.left_stick_x);
-        if (gamePad1.dpad_left) {
-        }
-        else if (gamePad1.dpad_right) {
-            if (gamePad1.left_trigger > .1) {
-            }
-            else {
-            }
-        }
-        else if (gamePad1.dpad_up) {
-        }
-        else if (gamePad1.dpad_down) {
-        }
+
     }
 
     public void handleOutput(Gamepad gamePad1, Gamepad gamePad2) {
+
+        /*
+            gamePad 2 dpad left/right open/close claw totally
+        */
+        if (gamePad2.dpad_left) {
+            claw.openAuto();
+        }
+        if (gamePad2.dpad_right) {
+            claw.closeAuto();;
+        }
+        /*
+            gamePad 2 dpad up/down open/close claw incrementally
+        */
+        if (gamePad2.dpad_up) {
+            claw.openClaw();
+        }
+        else if (gamePad2.dpad_down) {
+            claw.closeClaw();
+        }
 
         if (secondaryOperationsCompleted()) {
         /*
@@ -332,75 +312,24 @@ public class Robot {
         We don't honor a and b buttons if start is also pressed as this might be when drivers are
         trying to register the controllers
          */
-            if (gamePad1.a && !gamePad1.start) {
+            if (gamePad2.a) {
+                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Ground, "Ground"));
             }
-            if (gamePad2.a && !gamePad2.start) {
-                if (gamePad2.left_bumper) {
-                }
-                else {
-                }
+            else if (gamePad2.b) {
+                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Low, "Low"));
             }
-            if (gamePad2.b && !gamePad2.start) {
-                if (gamePad2.left_bumper) {
-                }
-                else {
-                }
+            else if (gamePad2.y) {
+                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Mid, "Mid"));
             }
-            if (gamePad1.b && !gamePad1.start) {
+            else if (gamePad2.x) {
+                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.High, "High"));
             }
-            if (gamePad1.y) {
+            else if (gamePad2.left_stick_y < -.2) {
+                this.winch.raise();
             }
-            if (gamePad2.y) {
-                if (gamePad2.left_bumper) {
-                }
-                else {
-                }
+            else if (gamePad2.left_stick_y > .2) {
+                this.winch.lower();
             }
-            //gamePad 2 x gets the bucket to intake mode
-            if (gamePad2.x) {
-                if (gamePad2.left_bumper) {
-                }
-                else {
-                }
-            }
-
-            /*
-            gamePad 2 dpad up/down raise/lower shoulder
-             */
-            if (gamePad2.dpad_up) {
-                claw.openClaw();
-            }
-            else if (gamePad2.dpad_down) {
-                claw.closeClaw();
-            }
-            /*
-            gamePad 2 dpad left/right retract/extend forearm at elbow or open/close lid more if right bumper is pressed
-             */
-            if (gamePad2.dpad_left) {
-                if (gamePad2.right_bumper) {
-                }
-                else {
-                    claw.openAuto();
-                }
-            }
-            else if (gamePad2.dpad_right) {
-                if (gamePad2.right_bumper) {
-                }
-                else {
-                    claw.closeAuto();
-                }
-            }
-        }
-
-        //gamePad 2 left/right trigger open/close bucket
-        //if right bumper is pressed, open goes to capping position
-        if (gamePad2.left_trigger > .2) {
-            if (gamePad2.right_bumper) {
-            }
-            else {
-            }
-        }
-        if (gamePad2.right_trigger > .2) {
         }
     }
 
@@ -436,6 +365,9 @@ public class Robot {
     }
     public ClawSystem getClaw() {
         return this.claw;
+    }
+    public FourBarMotor getFourBar() {
+        return this.fourBeam;
     }
 
     public String getTailStatus() {
