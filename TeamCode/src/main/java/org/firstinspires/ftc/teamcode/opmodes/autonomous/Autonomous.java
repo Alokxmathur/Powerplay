@@ -23,7 +23,6 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Turn around",
                 telemetry
         ));
-        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Level High"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverLoadedConeTrajectory(),
                 robot.getDriveTrain(),
