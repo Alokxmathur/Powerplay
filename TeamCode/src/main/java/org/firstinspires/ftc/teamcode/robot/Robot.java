@@ -324,6 +324,9 @@ public class Robot {
             else if (gamePad2.x) {
                 queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.High, "High"));
             }
+            else if (gamePad1.a) {
+                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Pickup, "Pickup"));
+            }
             else if (gamePad2.left_stick_y < -.2) {
                 this.winch.raise();
             }

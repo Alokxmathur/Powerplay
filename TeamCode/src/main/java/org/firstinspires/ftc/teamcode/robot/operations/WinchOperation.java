@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class WinchOperation extends Operation {
     public enum Type {
-        Ground, Low, Mid, High
+        Ground, Low, Mid, High, Pickup
     }
     WinchMotor winch;
     FourBarMotor fourBarMotor;
@@ -33,6 +33,11 @@ public class WinchOperation extends Operation {
     @Override
     public void startOperation() {
         switch (this.type) {
+            case Pickup: {
+                winch.setPosition(RobotConfig.WINCH_PICKUP_POSITION);
+                fourBarMotor.setToBottomPosition();
+                break;
+            }
             case Ground: {
                 winch.setPosition(RobotConfig.WINCH_GROUND_POSITION);
                 fourBarMotor.setToBottomPosition();
