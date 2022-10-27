@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
 import java.util.Locale;
 
 public class WinchOperation extends Operation {
+
     public enum Type {
         Ground, Low, Mid, High
     }
