@@ -21,13 +21,13 @@ import java.util.function.Consumer;
  * This class implements our VSLAM camera. It holds on to an instance of the camera in a
  * static class member. It also maintains other variables like the current position,
  * velocity etc.
- *
+ * <p>
  * One should call start and stop on this class to start and stop the camera. The constructor
  * starts the camera.
- *
+ * <p>
  * This class implements the localizer interface of RoadRunner to be able to be used in that
  * library.
- *
+ * <p>
  * It also implements the T265Camera.CameraUpdate interface to accept position updates from the
  * camera in an asynchronous manner.
  */
@@ -36,7 +36,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     //Remember all measurements for ftc-lib geometry are in meters
 
     public static final double CENTER_OFFSET_X =
-            -RobotConfig.ROBOT_CENTER_FROM_FRONT/1000; //in meters
+            -RobotConfig.ROBOT_CENTER_FROM_FRONT / 1000; //in meters
     //How far left of the camera the center is
     public static final double CENTER_OFFSET_Y = 0;
     public static final double T265_ROTATION = 0;
@@ -55,13 +55,14 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     private Pose2d pose2dVelocity = new Pose2d();
     private volatile boolean isInitialized;
 
-    private com.arcrobotics.ftclib.geometry.Pose2d originOffset =
-            new com.arcrobotics.ftclib.geometry.Pose2d();
+    private com.arcrobotics.ftclib.geometry.Transform2d originOffset =
+            new com.arcrobotics.ftclib.geometry.Transform2d();
 
     /**
      * Constructor. Note that you call this constructor with the hardwareMap to get an instance
      * of the vslam camera. The constructor creates a thread to create the instance and then to
      * start it.
+     *
      * @param hardwareMap - hardware map
      */
     public VslamCamera(HardwareMap hardwareMap) {
@@ -72,8 +73,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
                 if (t265Camera == null) {
                     Match.log("Creating new T265 camera");
                     t265Camera = new T265Camera(robotCenterOffsetFromCamera, 1.0, hardwareMap.appContext);
-                }
-                else {
+                } else {
                     Match.log("Using already defined T265 camera");
                 }
                 start();
@@ -86,6 +86,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
 
     /**
      * Set the current position of the robot. We simply remember the offset from what the camera is telling us
+     *
      * @param pose the pose to set
      */
     public synchronized void setCurrentPose(Pose2d pose) {
@@ -94,13 +95,14 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
 
     /**
      * Set the current position of the robot. We simply remember the offset from what the camera is telling us
+     *
      * @param newPose the pose to set
      */
     public synchronized void setCurrentPose(com.arcrobotics.ftclib.geometry.Pose2d newPose) {
         synchronized (synchronizationObject) {
             initialPose = newPose;
             originOffset =
-                    newPose.relativeTo(lastCameraUpdate.pose);
+                    newPose.minus(lastCameraUpdate.pose);
             //force an update to current pose
             accept(lastCameraUpdate);
         }
@@ -134,6 +136,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     @Override
     public void update() {
     }
+
     /**
      * Method to set current pose estimate, as required by the RoadRunner interface. Since we
      * are using a VSLAM camera, we don't do anything here as we are totally dependent on the
@@ -169,8 +172,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
                     t265Camera.start(this);
                     Match.log("Started T265 camera");
                 }
-            }
-            catch(Throwable e){
+            } catch (Throwable e) {
                 RobotLog.logStackTrace("SilverTitans: Error starting real sense", e);
             }
         }
@@ -180,6 +182,7 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
      * Accept the asynchronous update sent by the camera.
      * Our current pose is kept in inches and radians. We also maintain our pose velocity
      * by converting the velocity provided to inches/second.
+     *
      * @param cameraUpdate - the camera update provided by the camera
      */
     @Override
@@ -193,8 +196,8 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
                         cameraUpdate.velocity.omegaRadiansPerSecond);
                 lastCameraUpdate = cameraUpdate;
                 //set last pose to be the current one
-                com.arcrobotics.ftclib.geometry.Pose2d newPose = originOffset.transformBy(
-                        new Transform2d(cameraUpdate.pose.getTranslation(), cameraUpdate.pose.getRotation()));
+                com.arcrobotics.ftclib.geometry.Pose2d newPose = cameraUpdate.pose.plus(
+                        originOffset);
                 currentPose = Field.cameraToRoadRunnerPose(newPose);
             } catch (Throwable e) {
                 RobotLog.ee("Vslam", e, "Error getting position");
@@ -205,14 +208,12 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
     public String getStatus() {
         synchronized (synchronizationObject) {
             if (havePosition()) {
-                return String.format(Locale.getDefault(), "%s,Camera:%s,Initial:%s,Offset:%s,Confidence:%s",
+                return String.format(Locale.getDefault(), "%s,Camera:%s,Initial:%s,Confidence:%s",
                         getPoseEstimate(),
                         Field.cameraToRoadRunnerPose(lastCameraUpdate.pose),
                         Field.cameraToRoadRunnerPose(initialPose),
-                        Field.cameraToRoadRunnerPose(originOffset),
                         getPoseConfidence().toString());
-            }
-            else {
+            } else {
                 return "No camera update yet";
             }
         }
@@ -230,30 +231,39 @@ public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate>
             return lastCameraUpdate.confidence;
         }
     }
-    /*
+
     public static void main(String[] args) {
-        com.arcrobotics.ftclib.geometry.Pose2d setPose = new com.arcrobotics.ftclib.geometry.Pose2d(
-                50,
-                20,
-                new Rotation2d(Math.toRadians(32)));
+        com.arcrobotics.ftclib.geometry.Pose2d setPose =
+                new com.arcrobotics.ftclib.geometry.Pose2d(
+                        -0.78,
+                        -1.59,
+                        new Rotation2d(Math.toRadians(90)));
         System.out.println("Setting initial pose to be: " + setPose);
 
-        com.arcrobotics.ftclib.geometry.Pose2d initialCameraPose = new com.arcrobotics.ftclib.geometry.Pose2d();
+        com.arcrobotics.ftclib.geometry.Pose2d initialCameraPose =
+                Field.roadRunnerToCameraPose(new Pose2d(
+                        -0.02,
+                        1.19,
+                        Math.toRadians(-2.36)));
         System.out.println("Initial camera pose = " + initialCameraPose);
 
-        com.arcrobotics.ftclib.geometry.Pose2d offset = setPose.relativeTo(initialCameraPose);
-        System.out.println("Offset=" + Field.cameraToRoadRunnerPose(offset));
+        com.arcrobotics.ftclib.geometry.Transform2d offset = setPose.minus(initialCameraPose);
+        //System.out.println("Offset=" + Field.cameraToRoadRunnerPose(offset));
 
-        com.arcrobotics.ftclib.geometry.Pose2d newCameraPose =
-                new com.arcrobotics.ftclib.geometry.Pose2d(1, 1, new Rotation2d(Math.toRadians(-90)));
+        com.arcrobotics.ftclib.geometry.Pose2d newCameraPose = Field.roadRunnerToCameraPose(
+               new Pose2d(-20.02, 21.19, Math.toRadians(-2.36)));
         System.out.println("New camera pose = " + newCameraPose);
 
         com.arcrobotics.ftclib.geometry.Pose2d newLocation =
-                offset.transformBy(new Transform2d(newCameraPose.getTranslation(), newCameraPose.getRotation()));
+                newCameraPose.plus(offset);
+        //offset.transformBy(new Transform2d(newCameraPose.getTranslation(), newCameraPose.getRotation()));
         System.out.println("Result = " + newLocation);
 
-        System.out.println("Result offset = " + newLocation.relativeTo(setPose));
+        System.out.println("Resultant camera movement = " + Field.cameraToRoadRunnerPose(
+                newCameraPose.relativeTo(initialCameraPose)));
+        System.out.println("Resultant robot movement = " + Field.cameraToRoadRunnerPose(
+                newLocation.relativeTo(setPose)));
     }
 
-     */
+
 }

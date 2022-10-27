@@ -14,7 +14,7 @@ public class RobotConfig {
     public static final String BLINKIN = "blinkin";
 
     public static final String WINCH = "winch";
-    public static final String FOUR_BEAM = "fourBeam";
+    public static final String FOUR_BAR = "fourBeam";
     public static final String TAIL = "tail";
     public static final String CLAW = "claw";
 
@@ -24,13 +24,13 @@ public class RobotConfig {
     public static final double CLAW_INITIAL_POSITION = 0;
     public static final double CLAW_CLENCH_POSITION = 1.0;
     public static final double CLAW_INCREMENT = .01;
-    public static final int FOUR_BEAM_INITIAL_POSITION = 160;
-    public static final int FOUR_BEAM_TOP_POSITION = 300;
+    public static final int FOUR_BAR_INITIAL_POSITION = 0;
+    public static final int FOUR_BAR_TOP_POSITION = 125;
 
     //Robot center from back is six inches and half of track length away
-    public static double ROBOT_CENTER_FROM_BACK = (6.0 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
+    public static double ROBOT_CENTER_FROM_BACK = (2.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     //Robot center from front is two and a half inches and half of track length away
-    public static double ROBOT_CENTER_FROM_FRONT = (2.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
+    public static double ROBOT_CENTER_FROM_FRONT = (3.325 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     public static final double ROBOT_WIDTH = 13.5 * Field.MM_PER_INCH;
     public static final double ROBOT_LENGTH = ROBOT_CENTER_FROM_BACK + ROBOT_CENTER_FROM_FRONT;
     public static final double ALLOWED_BEARING_ERROR = 0.5;
@@ -38,12 +38,16 @@ public class RobotConfig {
 
     public static final long SERVO_REQUIRED_TIME = 500; //500 milli-seconds for servo to function
 
-    public static final double MAX_WINCH_SPEED = 0.4;
-    public static final int WINCH_GROUND_POSITION = 0;
+    public static final double MAX_WINCH_SPEED = 0.6;
+    public static final int WINCH_GROUND_POSITION = 500;
     public static final int WINCH_LOW_POSITION = 1000;
-    public static final int WINCH_MID_POSITION = 3000;
-    public static final int WINCH_HIGH_POSITION = 3990;
+    public static final int WINCH_MID_POSITION = 2550;
+    public static final int WINCH_HIGH_POSITION = 4000;
     public static final int ACCEPTABLE_WINCH_ERROR = 10;
+    public static final int WINCH_INCREMENT = 5;
 
-    public static final double MAX_FOUR_BEAM_SPEED = 0.4;
+    public static final int ACCEPTABLE_FOUR_BAR_ERROR = 10;
+
+
+    public static final double MAX_FOUR_BAR_SPEED = 0.6;
 }

@@ -63,4 +63,12 @@ public class WinchMotor {
     public boolean isWithinRange() {
         return Math.abs(winchMotor.getTargetPosition() - winchMotor.getCurrentPosition()) <= RobotConfig.ACCEPTABLE_WINCH_ERROR;
     }
+
+    public void raise() {
+        this.setPosition(this.winchMotor.getTargetPosition() + RobotConfig.WINCH_INCREMENT);
+    }
+
+    public void lower() {
+        this.setPosition(this.winchMotor.getTargetPosition() - RobotConfig.WINCH_INCREMENT);
+    }
 }
