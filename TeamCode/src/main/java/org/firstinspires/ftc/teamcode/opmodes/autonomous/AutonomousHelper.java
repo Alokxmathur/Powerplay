@@ -115,7 +115,7 @@ public abstract class AutonomousHelper extends OpMode {
                     telemetry.addData("State", positionError);
                     telemetry.addData("Position", robot.getVSLAMStatus());
                     telemetry.addData("Signal", String.valueOf(match.getSignalNumber()));
-                    robot.setInitialPose(field.getStartingPose());
+                    //robot.setInitialPose(field.getStartingPose());
                 } else {
                     match.updateTelemetry("Ready");
                 }
