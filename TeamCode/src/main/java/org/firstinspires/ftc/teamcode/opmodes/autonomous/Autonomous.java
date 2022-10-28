@@ -12,11 +12,7 @@ public abstract class Autonomous extends AutonomousHelper {
     @Override
     public void start() {
         super.start();
-        State state = new State("Deliver held cone");
-        state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
-        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
-        states.add(state);
-
+        State state = new State("Clear starting position");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getTurnaroundTrajectory(),
                 robot.getDriveTrain(),
@@ -26,13 +22,14 @@ public abstract class Autonomous extends AutonomousHelper {
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverLoadedConeTrajectory(),
                 robot.getDriveTrain(),
-                "Deliver loaded cone",
+                "Get to delivery point of loaded cone",
                 telemetry
         ));
-        state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
-        state.addPrimaryOperation(new WaitOperation(250, "Wait quarter a sec before closing Claw"));
-        state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close Claw"));
-        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Low, "Level for Stack"));
+        state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
+        state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
+        states.add(state);
+
+        state = new State("Deliver loaded cone");
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
         states.add(state);
 
@@ -43,6 +40,7 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Retract from loaded cone delivery",
                 telemetry
         ));
+        state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw after retraction"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getPickupConeTrajectory(),
                 robot.getDriveTrain(),
@@ -67,7 +65,7 @@ public abstract class Autonomous extends AutonomousHelper {
                 telemetry
         ));
         state.addPrimaryOperation(new FollowTrajectory(
-                field.getDeliverSecondConeTracetory(),
+                field.getDeliverSecondConeTrajectory(),
                 robot.getDriveTrain(),
                 "Deliver second cone",
                 telemetry
