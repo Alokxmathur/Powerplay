@@ -11,9 +11,10 @@ public abstract class Autonomous extends AutonomousHelper {
     @Override
     public void start() {
         super.start();
-        State state = new State("Clear starting position");
-        //grab cone
-        state.addSecondaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
+        State state = new State("Grab Preloaded Cone");
+        state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
+
+        state = new State("Clear starting position");
         //raise cone to high level
         state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
         state.addPrimaryOperation(new FollowTrajectory(
