@@ -38,19 +38,19 @@ public class Field {
             Math.toRadians(-90));
     public static final Pose2d redLeftDeliverLoadedConePose = new Pose2d(
             (-RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(225));
     public static final Pose2d redLeftPickupConeIntermediatePose = new Pose2d(
             (-TILE_WIDTH) / MM_PER_INCH,
             -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftPickupConePose = new Pose2d(
-            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK - 120) / MM_PER_INCH,
+            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
             -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftDeliverSecondConePose = new Pose2d(
-            -(RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            -(TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            -(RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            -(TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
 
     public static final Pose2d redRightStartingPose =
@@ -63,20 +63,20 @@ public class Field {
             -(2.5 * Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(-90));
     public static final Pose2d redRightDeliverLoadedConePose = new Pose2d(
-            (RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            -(Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(-45));
     public static final Pose2d redRightPickupConeIntermediatePose = new Pose2d(
             (TILE_WIDTH) / MM_PER_INCH,
             -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightPickupConePose = new Pose2d(
-            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK - 120) / MM_PER_INCH,
+            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
             -(Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightDeliverSecondConePose = new Pose2d(
-            (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            -(RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            -(RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(225));
 
     public static final Pose2d blueLeftStartingPose =
@@ -89,20 +89,20 @@ public class Field {
             (2.5 * Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(90));
     public static final Pose2d blueLeftDeliverLoadedConePose = new Pose2d(
-            (RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
     public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
             (TILE_WIDTH) / MM_PER_INCH,
             (Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftPickupConePose = new Pose2d(
-            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK - 120) / MM_PER_INCH,
+            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
             (Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftDeliverSecondConePose = new Pose2d(
-            (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            (RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            (TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
 
     public static final Pose2d blueRightStartingPose =
@@ -115,20 +115,20 @@ public class Field {
             (2.5 * Field.TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(90));
     public static final Pose2d blueRightDeliverLoadedConePose = new Pose2d(
-            -(RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            -(RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            (Field.TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
     public static final Pose2d blueRightPickupConeIntermediatePose = new Pose2d(
             (-TILE_WIDTH) / MM_PER_INCH,
             (Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightPickupConePose = new Pose2d(
-            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_BACK - 120) / MM_PER_INCH,
+            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
             (Field.TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightDeliverSecondConePose = new Pose2d(
-            -(TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
-            (RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
+            -(TILE_WIDTH - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
 
     Trajectory turnaroundTrajectory;
