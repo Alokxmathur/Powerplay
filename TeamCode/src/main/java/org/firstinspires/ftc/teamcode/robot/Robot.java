@@ -333,6 +333,12 @@ public class Robot {
             else if (gamePad2.left_stick_y > .2) {
                 this.winch.lower();
             }
+            if (gamePad2.right_stick_y < -.2) {
+                this.fourBeam.raise();
+            }
+            else if (gamePad2.right_stick_y > .2) {
+                this.fourBeam.lower();
+            }
         }
     }
 

@@ -29,16 +29,29 @@ public class FourBarMotor {
         }
     }
 
-    public void setToTopPosition() {
-        this.fourBarMotor.setTargetPosition(RobotConfig.FOUR_BAR_TOP_POSITION);
+    private void setPosition(int position) {
+        this.fourBarMotor.setTargetPosition(position);
         this.fourBarMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.fourBarMotor.setPower(RobotConfig.MAX_FOUR_BAR_SPEED);
     }
 
+    public void setToTopPosition() {
+        this.setPosition(RobotConfig.FOUR_BAR_TOP_POSITION);
+    }
+
     public void setToBottomPosition() {
-        this.fourBarMotor.setTargetPosition(RobotConfig.FOUR_BAR_INITIAL_POSITION);
-        this.fourBarMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.fourBarMotor.setPower(RobotConfig.MAX_FOUR_BAR_SPEED);
+        this.setPosition(RobotConfig.FOUR_BAR_INITIAL_POSITION);
+    }
+
+    public void setToReleasePosition() {
+        this.setPosition(RobotConfig.FOUR_BAR_RELEASE_POSITION);
+    }
+    public void raise() {
+        this.setPosition(this.fourBarMotor.getTargetPosition() + RobotConfig.FOUR_BAR_INCREMENT);
+    }
+
+    public void lower() {
+        this.setPosition(this.fourBarMotor.getTargetPosition() - RobotConfig.FOUR_BAR_INCREMENT);
     }
 
     public String getStatus() {
@@ -55,5 +68,9 @@ public class FourBarMotor {
     public boolean isWithinRange() {
         return Math.abs(fourBarMotor.getTargetPosition() - fourBarMotor.getCurrentPosition())
                 <= RobotConfig.ACCEPTABLE_FOUR_BAR_ERROR;
+    }
+
+    public boolean isReleased() {
+        return Math.abs(fourBarMotor.getCurrentPosition() - RobotConfig.FOUR_BAR_RELEASE_POSITION) <= RobotConfig.ACCEPTABLE_FOUR_BAR_ERROR;
     }
 }
