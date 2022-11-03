@@ -41,7 +41,7 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(225));
     public static final Pose2d redLeftPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH) / MM_PER_INCH,
+            (-TILE_WIDTH/2) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftPickupConePose = new Pose2d(
@@ -67,7 +67,7 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(-45));
     public static final Pose2d redRightPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH) / MM_PER_INCH,
+            (TILE_WIDTH/2) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightPickupConePose = new Pose2d(
@@ -81,7 +81,7 @@ public class Field {
 
     public static final Pose2d blueLeftStartingPose =
             new Pose2d(
-                    (TILE_WIDTH) / MM_PER_INCH,
+                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
                     (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(90));
     public static final Pose2d blueLeftTurnaroundPose = new Pose2d(
@@ -93,7 +93,7 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
     public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH) / MM_PER_INCH,
+            (TILE_WIDTH/2) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftPickupConePose = new Pose2d(
@@ -119,7 +119,7 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
     public static final Pose2d blueRightPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH) / MM_PER_INCH,
+            (-TILE_WIDTH/2) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightPickupConePose = new Pose2d(
@@ -312,7 +312,7 @@ public class Field {
                             navigationPose = new Pose2d(
                                     intermediateNavigationPose.getX() + TILE_WIDTH/4*MM_PER_INCH,
                                     TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(90));
+                                    Math.toRadians(-90));
                             break;
                         }
                         case Right: {
@@ -323,7 +323,7 @@ public class Field {
                             navigationPose = new Pose2d(
                                     intermediateNavigationPose.getX() - TILE_WIDTH /4/MM_PER_INCH,
                                     TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(90));
+                                    Math.toRadians(-90));
                             break;
                         }
                     }
