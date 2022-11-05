@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
-import org.firstinspires.ftc.teamcode.robot.components.FourBarMotor;
 import org.firstinspires.ftc.teamcode.robot.components.VirtualFourBar;
 
 import java.util.Locale;
@@ -27,15 +26,7 @@ public class VirtualFourBarOperation extends Operation {
                 this.title);
     }
 
-
-
-    @Override
-    public boolean isComplete() {
-        return virtualFourBar.isWithinRange();
-    }
-
-    @Override
-    public void startOperation() {
+    private void setVirtualFourBarPosition(){
         switch (type) {
             case Level_Drop: {
                 virtualFourBar.setToDropOffPosition();
@@ -46,6 +37,16 @@ public class VirtualFourBarOperation extends Operation {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean isComplete() {
+        return virtualFourBar.isWithinRange();
+    }
+
+    @Override
+    public void startOperation() {
+        setVirtualFourBarPosition();
     }
 
     @Override

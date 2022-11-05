@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
 import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.VirtualFourBarOperation;
 
 /**
  * This class represents our robot.

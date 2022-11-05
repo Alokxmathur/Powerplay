@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 
+import java.lang.reflect.Type;
 import java.util.Locale;
 
 public class VirtualFourBar {
@@ -34,8 +35,7 @@ public class VirtualFourBar {
 
     public void stayVertical(){
         double x = this.virtualFourBarMotor.getCurrentPosition();
-        double y = -x * 1/288;
-        setEndServoPosition(y);
+        setEndServoPosition(x * 1/288);
     }
 
     public boolean isVertical() {
