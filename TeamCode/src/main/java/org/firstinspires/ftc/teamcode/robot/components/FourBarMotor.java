@@ -46,6 +46,7 @@ public class FourBarMotor {
     public void setToReleasePosition() {
         this.setPosition(RobotConfig.FOUR_BAR_RELEASE_POSITION);
     }
+
     public void raise() {
         this.setPosition(this.fourBarMotor.getTargetPosition() + RobotConfig.FOUR_BAR_INCREMENT);
     }

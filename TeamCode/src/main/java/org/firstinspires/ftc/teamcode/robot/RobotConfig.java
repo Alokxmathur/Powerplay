@@ -17,6 +17,7 @@ public class RobotConfig {
     public static final String FOUR_BAR = "fourBeam";
     public static final String TAIL = "tail";
     public static final String CLAW = "claw";
+    public static final String ENDSERVO = "endServo";
 
     public static final double TAIL_INITIAL_POSITION = 0;
     public static final double TAIL_PICKUP_POSITION = .75;
@@ -30,6 +31,10 @@ public class RobotConfig {
     public static final int ACCEPTABLE_FOUR_BAR_ERROR = 10;
     public static final double MAX_FOUR_BAR_SPEED = 1.0;
     public static final int FOUR_BAR_INCREMENT = 2;
+    public static final double ENDSERVO_INITIAL_POSITION = 0;
+    public static final double MAX_VIRTUAL_FOUR_BAR_SPEED = 1.0;
+    public static final int VIRTUAL_FOUR_BAR_INITIAL_POSITION = 0;
+    public static final int VIRTUAL_FOUR_BAR_DROP_POSITION = 120;
 
     //Robot center from back is two and half inches and half of track length away
     public static double ROBOT_CENTER_FROM_BACK = (2.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
