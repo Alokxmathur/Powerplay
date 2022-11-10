@@ -69,14 +69,14 @@ public class AprilTagsWebcam {
         pipeline = new AprilTagsPipeline(tagsize, fx, fy, cx, cy, telemetry);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, RobotConfig.WEBCAM_ID_2), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, RobotConfig.WEBCAM_ID), cameraMonitorViewId);
         //pipeline.setTelemetry(telemetry);
         webcam.setPipeline(pipeline);
         start();
     }
 
     public void start() {
-        Match.log("Attempting to start " + RobotConfig.WEBCAM_ID_2 + " usage");
+        Match.log("Attempting to start " + RobotConfig.WEBCAM_ID + " usage");
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
         // out when the RC activity is in portrait. We do our actual image processing assuming

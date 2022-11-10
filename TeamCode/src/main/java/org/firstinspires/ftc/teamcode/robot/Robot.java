@@ -11,18 +11,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.components.ClawSystem;
-import org.firstinspires.ftc.teamcode.robot.components.FourBarMotor;
 import org.firstinspires.ftc.teamcode.robot.components.LED;
-import org.firstinspires.ftc.teamcode.robot.components.TailServo;
-import org.firstinspires.ftc.teamcode.robot.components.WinchMotor;
+import org.firstinspires.ftc.teamcode.robot.components.arm.Arm;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
-import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
 
 /**
  * This class represents our robot.
@@ -92,10 +89,7 @@ public class Robot {
 
     DriveTrain driveTrain;
     LED led;
-    WinchMotor winch;
-    TailServo tail;
-    FourBarMotor fourBeam;
-    ClawSystem claw;
+    Arm arm;
 
     AprilTagsWebcam webcam;
     VslamCamera vslamCamera;
@@ -112,7 +106,7 @@ public class Robot {
 
     /**
      * Initialize our robot
-     * We set our alliance and our starting position based on finding a VuMark
+     *
      */
     public void init(HardwareMap hardwareMap, Telemetry telemetry, Match match) {
         this.hardwareMap = hardwareMap;
@@ -125,10 +119,7 @@ public class Robot {
         this.led = new LED(hardwareMap);
         this.led.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
 
-        this.winch = new WinchMotor(hardwareMap);
-        this.tail = new TailServo(hardwareMap);
-        this.fourBeam = new FourBarMotor(hardwareMap);
-        this.claw = new ClawSystem(hardwareMap);
+        this.arm = new Arm(hardwareMap);
 
         telemetry.addData("Status", "Creating operations thread, please wait");
         telemetry.update();
@@ -165,7 +156,6 @@ public class Robot {
         this.webcam = new AprilTagsWebcam();
         this.webcam.init(hardwareMap, telemetry, OpenCVWebcam.ELEMENT_COLOR_MIN, OpenCVWebcam.ELEMENT_COLOR_MAX);
     }
-
 
     /**
      * Stop the robot
@@ -249,7 +239,10 @@ public class Robot {
     public boolean fullyInitialized() {
         return this.everythingButCamerasInitialized && this.vslamCamera.isInitialized();
     }
-
+    /*
+        gamePad 2 dpad up/down open/close claw incrementally
+        gamePad 2 dpad left/right open/close claw totally
+    */
     public void handleGameControllers(Gamepad gamePad1, Gamepad gamePad2) {
         if (gamePad1.x) {
             this.operationThreadPrimary.abort();
@@ -258,8 +251,7 @@ public class Robot {
         }
 
         this.handleDriveTrain(gamePad1);
-        handleOutput(gamePad1, gamePad2);
-        handleInput(gamePad1, gamePad2);
+        handleArm(gamePad1, gamePad2);
     }
 
     public void handleLED(Gamepad gamePad1, Gamepad gamePad2) {
@@ -278,66 +270,73 @@ public class Robot {
         }
     }
 
-    public void handleInput(Gamepad gamePad1, Gamepad gamePad2) {
+    public void handleArm(Gamepad gamePad1, Gamepad gamePad2) {
+        /*
+            gamePad 2 dpad left/right open/close claw totally
+        */
+        if (gamePad1.dpad_left) {
+            arm.forwardWrist();
+        }
+        if (gamePad2.dpad_right) {
+            arm.backwardWrist();;
+        }
 
-    }
-
-    public void handleOutput(Gamepad gamePad1, Gamepad gamePad2) {
+        /*
+            gamePad 1 dpad up/down move wrist incrementally
+        */
+        if (gamePad1.dpad_up) {
+            arm.backwardWristIncrementally();
+        }
+        else if (gamePad1.dpad_down) {
+            arm.forwardWristIncrementally();
+        }
 
         /*
             gamePad 2 dpad left/right open/close claw totally
         */
         if (gamePad2.dpad_left) {
-            claw.openAuto();
+            arm.openClaw();
         }
         if (gamePad2.dpad_right) {
-            claw.closeAuto();;
+            arm.closeClaw();;
         }
         /*
             gamePad 2 dpad up/down open/close claw incrementally
         */
         if (gamePad2.dpad_up) {
-            claw.openClaw();
+            arm.openClawIncrementally();
         }
         else if (gamePad2.dpad_down) {
-            claw.closeClaw();
+            arm.closeClawIncrementally();
         }
 
         if (secondaryOperationsCompleted()) {
-        /*
-        game pads a, b, y control bucket levels for hub
-        if gamePad2 left bumper is pressed, the levels are not set, the output is told that the new
-        position for the specified level should be reset
-
-        We don't honor a and b buttons if start is also pressed as this might be when drivers are
-        trying to register the controllers
-         */
             if (gamePad2.a) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Ground, "Ground"));
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Ground, "Ground"));
             }
             else if (gamePad2.b) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Low, "Low"));
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Low, "Low"));
             }
             else if (gamePad2.y) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Mid, "Mid"));
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid"));
             }
             else if (gamePad2.x) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.High, "High"));
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High"));
             }
             else if (gamePad1.a) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Pickup, "Pickup"));
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
             }
             else if (gamePad2.left_stick_y < -.2) {
-                this.winch.raise();
+                this.arm.raise();
             }
             else if (gamePad2.left_stick_y > .2) {
-                this.winch.lower();
+                this.arm.lower();
             }
             if (gamePad2.right_stick_y < -.2) {
-                this.fourBeam.raise();
+                this.arm.raise();
             }
             else if (gamePad2.right_stick_y > .2) {
-                this.fourBeam.lower();
+                this.arm.lower();
             }
         }
     }
@@ -352,8 +351,8 @@ public class Robot {
             this.driveTrain.ensureWheelDirection();
             this.driveTrain.reset();
         }
-        if (this.winch != null) {
-            this.winch.ensureDirection();
+        if (this.arm != null) {
+            this.arm.ensureMotorDirections();
         }
     }
 
@@ -368,31 +367,6 @@ public class Robot {
     public void setPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
         this.led.setPattern(pattern);
     }
-
-    public WinchMotor getWinch() {
-        return this.winch;
-    }
-    public ClawSystem getClaw() {
-        return this.claw;
-    }
-    public FourBarMotor getFourBar() {
-        return this.fourBeam;
-    }
-
-    public String getTailStatus() {
-        return this.tail.getStatus();
-    }
-
-    public String getFourBeamStatus() {
-        return this.fourBeam.getStatus();
-    }
-
-    public String getWinchStatus() {
-        return this.winch.getStatus();
-    }
-    public String getClawStatus() {
-        return this.claw.getStatus();
-    }
     public String getVSLAMStatus() {
         return this.vslamCamera.getStatus();
     }
@@ -403,5 +377,13 @@ public class Robot {
 
     public RevBlinkinLedDriver.BlinkinPattern getLEDStatus() {
         return led.getPattern();
+    }
+
+    public String getArmStatus() {
+        return this.arm.getStatus();
+    }
+
+    public Arm getArm() {
+        return this.arm;
     }
 }
