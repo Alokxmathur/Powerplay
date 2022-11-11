@@ -327,16 +327,16 @@ public class Robot {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
             }
             else if (gamePad2.left_stick_y < -.2) {
-                this.arm.raise();
+                this.arm.raiseShoulder();
             }
             else if (gamePad2.left_stick_y > .2) {
-                this.arm.lower();
+                this.arm.lowerShoulder();
             }
             if (gamePad2.right_stick_y < -.2) {
-                this.arm.raise();
+                this.arm.raiseElbow();
             }
             else if (gamePad2.right_stick_y > .2) {
-                this.arm.lower();
+                this.arm.lowerElbow();
             }
         }
     }

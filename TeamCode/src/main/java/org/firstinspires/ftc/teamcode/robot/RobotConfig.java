@@ -41,10 +41,10 @@ public class RobotConfig {
     public static final long SERVO_REQUIRED_TIME = 500; //500 milli-seconds for servo to function
 
     public static final int ACCEPTABLE_ELBOW_ERROR = 10;
-    public static final int ELBOW_INCREMENT = 10;
+    public static final int ELBOW_INCREMENT = 1;
     public static final double ELBOW_POWER = 1.0;
 
     public static final int ACCEPTABLE_SHOULDER_ERROR = 10;
-    public static final int SHOULDER_INCREMENT = 10;
+    public static final int SHOULDER_INCREMENT = 2;
     public static final double SHOULDER_POWER = 1.0;
 }

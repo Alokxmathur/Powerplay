@@ -33,7 +33,7 @@ public class Arm {
     }
 
     public void ensureMotorDirections() {
-        this.elbow.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.shoulder.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void setClawPosition(double position) {
@@ -43,6 +43,8 @@ public class Arm {
     public void assumeInitialPosition() {
         this.wrist.setPosition(RobotConfig.WRIST_INITIAL_POSITION);
         this.claw.setPosition(RobotConfig.CLAW_OPEN_POSITION);
+        this.setElbowPosition(0);
+        this.setShoulderPosition(0);
     }
 
     public void openClawIncrementally() {
@@ -115,14 +117,28 @@ public class Arm {
     }
 
     public void raise() {
-        this.shoulder.setTargetPosition(this.shoulder.getTargetPosition() + RobotConfig.SHOULDER_INCREMENT);
-        this.elbow.setTargetPosition(this.elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
+        raiseShoulder();
+        raiseElbow();
     }
 
     public void lower() {
-        this.shoulder.setTargetPosition(this.shoulder.getTargetPosition() - RobotConfig.SHOULDER_INCREMENT);
-        this.elbow.setTargetPosition(this.elbow.getTargetPosition() - RobotConfig.ELBOW_INCREMENT);
+        lowerShoulder();
+        lowerElbow();
     }
+
+    public void raiseShoulder() {
+        setShoulderPosition(this.shoulder.getTargetPosition() + RobotConfig.SHOULDER_INCREMENT);
+    }
+    public void lowerShoulder() {
+        setShoulderPosition(this.shoulder.getTargetPosition() - RobotConfig.SHOULDER_INCREMENT);
+    }
+    public void raiseElbow() {
+        setElbowPosition(this.elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
+    }
+    public void lowerElbow() {
+        setElbowPosition(this.elbow.getTargetPosition() - RobotConfig.ELBOW_INCREMENT);
+    }
+
 
     /**
      * Returns the status of the arm
