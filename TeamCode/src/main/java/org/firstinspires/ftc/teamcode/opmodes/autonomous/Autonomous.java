@@ -40,13 +40,14 @@ public abstract class Autonomous extends AutonomousHelper {
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
         states.add(state);
 
-        state = new State("Reach stack");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromLoadedConeDeliveryTrajectory(),
                 robot.getDriveTrain(),
                 "Retract from loaded cone delivery",
                 telemetry
         ));
+        /*
+        state = new State("Reach stack");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getPickupConeTrajectory(),
                 robot.getDriveTrain(),
@@ -64,7 +65,7 @@ public abstract class Autonomous extends AutonomousHelper {
                 robot.getDriveTrain(),
                 "Retract from stack",
                 telemetry
-        ));
+        ));*/
 
         /*
         state.addPrimaryOperation(new FollowTrajectory(

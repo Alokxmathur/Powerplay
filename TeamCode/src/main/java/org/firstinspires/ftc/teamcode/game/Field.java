@@ -225,26 +225,26 @@ public class Field {
     private void createTrajectories(Alliance.Color alliance, StartingPosition startingPosition) {
         Pose2d turnaroundPose = null;
         Pose2d deliverLoadedConePose = null;
-        Pose2d pickConeIntermediatePose = null;
-        Pose2d pickupConePose = null;
-        Pose2d deliverSecondConePose = null;
+        //Pose2d pickConeIntermediatePose = null;
+        //Pose2d pickupConePose = null;
+        //Pose2d deliverSecondConePose = null;
         switch (alliance) {
             case RED: {
                 switch (startingPosition) {
                     case Right: {
                         turnaroundPose = redRightTurnaroundPose;
                         deliverLoadedConePose = redRightDeliverLoadedConePose;
-                        pickConeIntermediatePose = redRightPickupConeIntermediatePose;
-                        pickupConePose = redRightPickupConePose;
-                        deliverSecondConePose = redRightDeliverSecondConePose;
+                        //pickConeIntermediatePose = redRightPickupConeIntermediatePose;
+                        //pickupConePose = redRightPickupConePose;
+                        //deliverSecondConePose = redRightDeliverSecondConePose;
                         break;
                     }
                     case Left: {
                         turnaroundPose = redLeftTurnaroundPose;
                         deliverLoadedConePose = redLeftDeliverLoadedConePose;
-                        pickConeIntermediatePose = redLeftPickupConeIntermediatePose;
-                        pickupConePose = redLeftPickupConePose;
-                        deliverSecondConePose = redLeftDeliverSecondConePose;
+                        //pickConeIntermediatePose = redLeftPickupConeIntermediatePose;
+                        //pickupConePose = redLeftPickupConePose;
+                        //deliverSecondConePose = redLeftDeliverSecondConePose;
                         break;
                     }
                 }
@@ -255,17 +255,17 @@ public class Field {
                     case Right: {
                         turnaroundPose = blueRightTurnaroundPose;
                         deliverLoadedConePose = blueRightDeliverLoadedConePose;
-                        pickConeIntermediatePose = blueRightPickupConeIntermediatePose;
-                        pickupConePose = blueRightPickupConePose;
-                        deliverSecondConePose = blueRightDeliverSecondConePose;
+                        //pickConeIntermediatePose = blueRightPickupConeIntermediatePose;
+                        //pickupConePose = blueRightPickupConePose;
+                        //deliverSecondConePose = blueRightDeliverSecondConePose;
                         break;
                     }
                     case Left: {
                         turnaroundPose = blueLeftTurnaroundPose;
                         deliverLoadedConePose = blueLeftDeliverLoadedConePose;
-                        pickConeIntermediatePose = blueLeftPickupConeIntermediatePose;
-                        pickupConePose = blueLeftPickupConePose;
-                        deliverSecondConePose = blueLeftDeliverSecondConePose;
+                        //pickConeIntermediatePose = blueLeftPickupConeIntermediatePose;
+                        //pickupConePose = blueLeftPickupConePose;
+                        //deliverSecondConePose = blueLeftDeliverSecondConePose;
                         break;
                     }
                 }
@@ -285,7 +285,7 @@ public class Field {
                 accurateTrajectoryBuilder(deliverLoadedConeTrajectory.end(), deliverLoadedConeTrajectory.end().getHeading())
                         .forward(12)
                         .build();
-        pickupConeTrajectory = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
+        /*pickupConeTrajectory = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
                 .splineTo(pickConeIntermediatePose.vec(), pickConeIntermediatePose.getHeading() + Math.toRadians(180))
                 .splineTo(pickupConePose.vec(), pickupConePose.getHeading() + Math.toRadians(180))
                 .build();
@@ -297,7 +297,7 @@ public class Field {
                 .build();
         retractFromSecondConeDeliveryTrajectory = accurateTrajectoryBuilder(deliverSecondConeTrajectory.end(), deliverSecondConeTrajectory.end().getHeading())
                 .splineTo(retractFromStackTrajectory.end().vec(), retractFromStackTrajectory.end().getHeading())
-                .build();
+                .build();*/
         for (int i = 0; i < 3; i++) {
             Pose2d intermediateNavigationPose = null;
             Pose2d navigationPose = null;
@@ -355,7 +355,7 @@ public class Field {
                     }
                 }
             }
-            navigationTrajectories[i] = accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+            navigationTrajectories[i] = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
                     .splineTo(intermediateNavigationPose.vec(), intermediateNavigationPose.getHeading() + Math.toRadians(180))
                     .splineTo(navigationPose.vec(), navigationPose.getHeading() + Math.toRadians(180))
                     .build();
