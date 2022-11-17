@@ -40,15 +40,15 @@ public class RobotConfig {
 
     public static final long SERVO_REQUIRED_TIME = 500; //500 milli-seconds for servo to function
 
-    public static final int WRIST_INCREMENT = 10;
+    public static final double WRIST_INCREMENT = 0.01;
     public static final double WRIST_INITIAL_POSITION = .08;
-    public static final double WRIST_RELEASED_POSITION = .7;
+    public static final double WRIST_RELEASED_POSITION = .85;
 
     public static final int ACCEPTABLE_ELBOW_ERROR = 10;
-    public static final int ELBOW_INCREMENT = 10;
-    public static final double ELBOW_POWER = 1.0;
+    public static final double MAX_ELBOW_POWER = 1.0;
+    public static final double DRIVERS_ELBOW_POWER = 0.3;
 
     public static final int ACCEPTABLE_SHOULDER_ERROR = 10;
-    public static final int SHOULDER_INCREMENT = 2;
-    public static final double SHOULDER_POWER = 1.0;
+    public static final double MAX_SHOULDER_POWER = 1.0;
+    public static final double DRIVERS_SHOULDER_POWER = 0.5;
 }

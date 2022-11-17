@@ -13,6 +13,7 @@ import java.util.Locale;
 public class Arm {
     DcMotor shoulder, elbow;
     Servo wrist, rotator, claw;
+    int lastShoulderPosition, lastElbowPosition;
 
     public Arm(HardwareMap hardwareMap) {
         //initialize our shoulder motor
@@ -99,14 +100,14 @@ public class Arm {
     public void setShoulderPosition(int position) {
         this.shoulder.setTargetPosition(position);
         this.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.shoulder.setPower(RobotConfig.SHOULDER_POWER);
+        this.shoulder.setPower(RobotConfig.MAX_SHOULDER_POWER);
     }
 
     /**
      * Retain shoulder in its current position
      */
     public void retainShoulder() {
-        setShoulderPosition(this.shoulder.getCurrentPosition());
+        setShoulderPosition(lastShoulderPosition);
     }
 
     /**
@@ -116,6 +117,7 @@ public class Arm {
     public void setShoulderPower(double power) {
         this.shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.shoulder.setPower(power);
+        lastShoulderPosition = shoulder.getCurrentPosition();
     }
 
     /**
@@ -125,14 +127,14 @@ public class Arm {
     public void setElbowPosition(int position) {
         this.elbow.setTargetPosition(position);
         this.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.elbow.setPower(RobotConfig.ELBOW_POWER);
+        this.elbow.setPower(RobotConfig.MAX_ELBOW_POWER);
     }
 
     /**
      * Retain elbow in its current position
      */
     public void retainElbow() {
-        setElbowPosition(this.elbow.getCurrentPosition());
+        setElbowPosition(lastElbowPosition);
     }
 
     /**
@@ -142,6 +144,7 @@ public class Arm {
     public void setElbowPower(double power) {
         this.elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.elbow.setPower(power);
+        lastElbowPosition = elbow.getCurrentPosition();
     }
 
     /**
@@ -160,27 +163,11 @@ public class Arm {
         return Math.abs(shoulder.getTargetPosition() - shoulder.getCurrentPosition()) <= RobotConfig.ACCEPTABLE_SHOULDER_ERROR;
     }
 
-    public void raise() {
-        raiseShoulder();
-        raiseElbow();
+    public void raiseWrist() {
+        wrist.setPosition(wrist.getPosition() + RobotConfig.WRIST_INCREMENT);
     }
-
-    public void lower() {
-        lowerShoulder();
-        lowerElbow();
-    }
-
-    public void raiseShoulder() {
-        setShoulderPosition(this.shoulder.getTargetPosition() + RobotConfig.SHOULDER_INCREMENT);
-    }
-    public void lowerShoulder() {
-        setShoulderPosition(this.shoulder.getTargetPosition() - RobotConfig.SHOULDER_INCREMENT);
-    }
-    public void raiseElbow() {
-        setElbowPosition(this.elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
-    }
-    public void lowerElbow() {
-        setElbowPosition(this.elbow.getTargetPosition() - RobotConfig.ELBOW_INCREMENT);
+    public void lowerWrist() {
+        wrist.setPosition(wrist.getPosition() - RobotConfig.WRIST_INCREMENT);
     }
     public void releaseWrist() {
         this.wrist.setPosition(RobotConfig.WRIST_RELEASED_POSITION);

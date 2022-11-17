@@ -272,23 +272,34 @@ public class Robot {
 
     public void handleArm(Gamepad gamePad1, Gamepad gamePad2) {
         /*
-            gamePad 2 dpad left/right open/close claw totally
+            gamePad 1 dpad left/right open/close claw totally
         */
         if (gamePad1.dpad_left) {
             arm.forwardRotator();
         }
-        if (gamePad2.dpad_right) {
+        if (gamePad1.dpad_right) {
             arm.backwardRotator();
         }
 
         /*
-            gamePad 1 dpad up/down move wrist incrementally
+            gamePad 1 dpad up/down move wrist incrementally if right trigger is also pressed
+            otherwise move rotator incrementally
         */
         if (gamePad1.dpad_up) {
-            arm.backwardRotatorIncrementally();
+            if (gamePad1.right_trigger > .2) {
+                arm.raiseWrist();
+            }
+            else {
+                arm.backwardRotatorIncrementally();
+            }
         }
         else if (gamePad1.dpad_down) {
-            arm.forwardRotatorIncrementally();
+            if (gamePad1.right_trigger > .2) {
+                arm.lowerWrist();
+            }
+            else {
+                arm.forwardRotatorIncrementally();
+            }
         }
 
         /*
@@ -328,14 +339,14 @@ public class Robot {
             }
             //handle shoulder movement
             if (Math.abs(gamePad2.left_stick_y) > 0.05) {
-                this.arm.setShoulderPower(gamePad2.left_stick_y);
+                this.arm.setShoulderPower(Math.pow(gamePad2.left_stick_y, 3) * RobotConfig.DRIVERS_SHOULDER_POWER);
             }
             else {
                 this.arm.retainShoulder();
             }
             //handle elbow position
             if (Math.abs(gamePad2.right_stick_y) > 0.05) {
-                this.arm.setElbowPower(gamePad2.right_stick_y);
+                this.arm.setElbowPower(Math.pow(gamePad2.right_stick_y, 7) * RobotConfig.DRIVERS_ELBOW_POWER);
             }
             else {
                 this.arm.retainElbow();

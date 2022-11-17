@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Silver Titans on 9/19/17. This is Cameron's comment
@@ -220,14 +219,5 @@ public class Match {
 
     public void setLed(RevBlinkinLedDriver.BlinkinPattern pattern) {
         this.robot.setPattern(pattern);
-    }
-
-    public double getDistanceTraveledForFreight() {
-        return distanceTraveledForFreight;
-    }
-
-    public void setDistanceTraveledForFreight(double distanceTraveledForFreight) {
-        log(String.format(Locale.getDefault(), "Setting distance traveled for freight = %.2f(%.2f\")", distanceTraveledForFreight, distanceTraveledForFreight/Field.MM_PER_INCH));
-        this.distanceTraveledForFreight = distanceTraveledForFreight;
     }
 }
