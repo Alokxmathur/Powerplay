@@ -14,6 +14,7 @@ public class WinchOperation extends Operation {
     WinchMotor winch;
     FourBarMotor fourBarMotor;
     Type type;
+    boolean startedRaisingFourBar, raisedFourBar, startedMovingWinch, movedWinch, startedLoweringFourBar, loweredFourBar;
 
     public WinchOperation(WinchMotor winch, FourBarMotor fourBarMotor, Type type, String title) {
         this.winch = winch;
@@ -28,38 +29,53 @@ public class WinchOperation extends Operation {
     }
 
     public boolean isComplete() {
-        return winch.isWithinRange() && fourBarMotor.isWithinRange();
+        raisedFourBar = fourBarMotor.isWithinRange();
+        if (raisedFourBar) {
+            if (!startedMovingWinch) {
+                startedMovingWinch = true;
+                switch (this.type) {
+                    case Pickup: {
+                        winch.setPosition(RobotConfig.WINCH_PICKUP_POSITION);
+                        break;
+                    }
+                    case Ground: {
+                        winch.setPosition(RobotConfig.WINCH_GROUND_POSITION);
+                        break;
+                    }
+                    case Low: {
+                        winch.setPosition(RobotConfig.WINCH_LOW_POSITION);
+                        break;
+                    }
+                    case Mid: {
+                        winch.setPosition(RobotConfig.WINCH_MID_POSITION);
+                        break;
+                    }
+                    case High: {
+                        winch.setPosition(RobotConfig.WINCH_HIGH_POSITION);
+                        break;
+                    }
+                }
+            }
+            movedWinch = winch.isWithinRange();
+            if (movedWinch) {
+                switch (this.type) {
+                    case Ground:
+                    case Pickup: {
+                        fourBarMotor.setToBottomPosition();
+                        break;
+                    }
+                }
+                return fourBarMotor.isWithinRange();
+            }
+            return false;
+        }
+        return  false;
     }
 
     @Override
     public void startOperation() {
-        switch (this.type) {
-            case Pickup: {
-                winch.setPosition(RobotConfig.WINCH_PICKUP_POSITION);
-                fourBarMotor.setToBottomPosition();
-                break;
-            }
-            case Ground: {
-                winch.setPosition(RobotConfig.WINCH_GROUND_POSITION);
-                fourBarMotor.setToBottomPosition();
-                break;
-            }
-            case Low: {
-                winch.setPosition(RobotConfig.WINCH_LOW_POSITION);
-                fourBarMotor.setToTopPosition();
-                break;
-            }
-            case Mid: {
-                winch.setPosition(RobotConfig.WINCH_MID_POSITION);
-                fourBarMotor.setToTopPosition();
-                break;
-            }
-            case High: {
-                winch.setPosition(RobotConfig.WINCH_HIGH_POSITION);
-                fourBarMotor.setToTopPosition();
-                break;
-            }
-        }
+        fourBarMotor.setToTopPosition();
+        startedRaisingFourBar = true;
     }
 
     @Override
