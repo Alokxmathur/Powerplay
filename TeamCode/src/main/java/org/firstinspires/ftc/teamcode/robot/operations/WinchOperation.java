@@ -9,7 +9,7 @@ import java.util.Locale;
 public class WinchOperation extends Operation {
 
     public enum Type {
-        Ground, Low, Mid, High, Pickup
+        Ground, Low, Mid, High, Pickup,
     }
     WinchMotor winch;
     FourBarMotor fourBarMotor;
