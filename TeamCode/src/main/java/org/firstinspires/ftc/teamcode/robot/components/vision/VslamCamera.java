@@ -35,10 +35,11 @@ import java.util.function.Consumer;
 public class VslamCamera implements Localizer, Consumer<T265Camera.CameraUpdate> {
     //Remember all measurements for ftc-lib geometry are in meters
 
+    //How far back the center of the robot is from the camera
     public static final double CAMERA_OFFSET_FRONT =
             -RobotConfig.ROBOT_CENTER_FROM_VSLAM / 1000; //in meters
     //How far left of the camera the center is
-    public static final double CENTER_OFFSET_Y = 0;
+    public static final double CENTER_OFFSET_Y = 1.5*Field.M_PER_INCH;
     public static final double T265_ROTATION = 0;
     public static final Transform2d robotCenterOffsetFromCamera =
             new Transform2d(new Translation2d(CAMERA_OFFSET_FRONT, CENTER_OFFSET_Y),

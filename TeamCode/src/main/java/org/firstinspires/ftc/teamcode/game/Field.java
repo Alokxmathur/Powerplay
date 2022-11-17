@@ -29,7 +29,7 @@ public class Field {
     }
 
     public static final Pose2d redLeftStartingPose = new Pose2d(
-            (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+            (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2 - 0.25 * Field.MM_PER_INCH) / MM_PER_INCH,
             (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
             Math.toRadians(-90));
     public static final Pose2d redLeftTurnaroundPose = new Pose2d(
@@ -41,7 +41,7 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(225));
     public static final Pose2d redLeftPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH/2) / MM_PER_INCH,
+            (-TILE_WIDTH / 2) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftPickupConePose = new Pose2d(
@@ -55,7 +55,7 @@ public class Field {
 
     public static final Pose2d redRightStartingPose =
             new Pose2d(
-                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2 + 0.25 * Field.MM_PER_INCH) / MM_PER_INCH,
                     (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(-90));
     public static final Pose2d redRightTurnaroundPose = new Pose2d(
@@ -67,11 +67,11 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(-45));
     public static final Pose2d redRightPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH/2) / MM_PER_INCH,
-            -(TILE_WIDTH / 2) / MM_PER_INCH,
+            (TILE_WIDTH) / MM_PER_INCH,
+            -(0.8 * TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightPickupConePose = new Pose2d(
-            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
+            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 150) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightDeliverSecondConePose = new Pose2d(
@@ -81,7 +81,7 @@ public class Field {
 
     public static final Pose2d blueLeftStartingPose =
             new Pose2d(
-                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2 + 0.25 * Field.MM_PER_INCH) / MM_PER_INCH,
                     (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(90));
     public static final Pose2d blueLeftTurnaroundPose = new Pose2d(
@@ -93,7 +93,7 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
     public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH/2) / MM_PER_INCH,
+            (TILE_WIDTH / 2) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftPickupConePose = new Pose2d(
@@ -107,7 +107,7 @@ public class Field {
 
     public static final Pose2d blueRightStartingPose =
             new Pose2d(
-                    (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
+                    (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2 - 0.25 * Field.MM_PER_INCH) / MM_PER_INCH,
                     (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(90));
     public static final Pose2d blueRightTurnaroundPose = new Pose2d(
@@ -119,7 +119,7 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
     public static final Pose2d blueRightPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH/2) / MM_PER_INCH,
+            (-TILE_WIDTH / 2) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightPickupConePose = new Pose2d(
@@ -299,31 +299,21 @@ public class Field {
                 .splineTo(retractFromStackTrajectory.end().vec(), retractFromStackTrajectory.end().getHeading())
                 .build();
         for (int i = 0; i < 3; i++) {
-            Pose2d intermediateNavigationPose = null;
-            Pose2d navigationPose = null;
             switch (alliance) {
                 case BLUE: {
                     switch (startingPosition) {
                         case Left: {
-                            intermediateNavigationPose = new Pose2d(
-                                    (TILE_WIDTH / 4 + TILE_WIDTH * i) / MM_PER_INCH,
-                                    TILE_WIDTH / 2 / MM_PER_INCH,
-                                    Math.toRadians(180));
-                            navigationPose = new Pose2d(
-                                    intermediateNavigationPose.getX() + TILE_WIDTH/4*MM_PER_INCH,
-                                    TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(-90));
+                            navigationTrajectories[i] =
+                                    accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+                                            .forward(-((2-i) * TILE_WIDTH + 10 * MM_PER_INCH) / MM_PER_INCH)
+                                            .build();
                             break;
                         }
                         case Right: {
-                            intermediateNavigationPose = new Pose2d(
-                                    -(TILE_WIDTH / 4 + TILE_WIDTH * i) / MM_PER_INCH,
-                                    TILE_WIDTH / 2 / MM_PER_INCH,
-                                    Math.toRadians(0));
-                            navigationPose = new Pose2d(
-                                    intermediateNavigationPose.getX() - TILE_WIDTH /4/MM_PER_INCH,
-                                    TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(-90));
+                            navigationTrajectories[i] =
+                                    accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+                                            .forward(-((i) * TILE_WIDTH + 10 * MM_PER_INCH) / MM_PER_INCH)
+                                            .build();
                             break;
                         }
                     }
@@ -331,34 +321,21 @@ public class Field {
                 case RED: {
                     switch (startingPosition) {
                         case Left: {
-                            intermediateNavigationPose = new Pose2d(
-                                    -(TILE_WIDTH / 4 + TILE_WIDTH * i) / MM_PER_INCH,
-                                    -TILE_WIDTH / 2 / MM_PER_INCH,
-                                    Math.toRadians(0));
-                            navigationPose = new Pose2d(
-                                    intermediateNavigationPose.getX() - TILE_WIDTH /4/MM_PER_INCH,
-                                    -TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(-90));
+                            accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+                                    .forward(-((2-i) * TILE_WIDTH + 10 * MM_PER_INCH) / MM_PER_INCH)
+                                    .build();
                             break;
                         }
                         case Right: {
-                            intermediateNavigationPose = new Pose2d(
-                                    (TILE_WIDTH / 4 + TILE_WIDTH * i) / MM_PER_INCH,
-                                    -TILE_WIDTH / 2 / MM_PER_INCH,
-                                    Math.toRadians(180));
-                            navigationPose = new Pose2d(
-                                    intermediateNavigationPose.getX() + TILE_WIDTH /4/MM_PER_INCH,
-                                    -TILE_WIDTH/MM_PER_INCH,
-                                    Math.toRadians(-90));
+                            navigationTrajectories[i] =
+                                    accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
+                                            .forward(-((i) * TILE_WIDTH + 10 * MM_PER_INCH) / MM_PER_INCH)
+                                            .build();
                             break;
                         }
                     }
                 }
             }
-            navigationTrajectories[i] = accurateTrajectoryBuilder(retractFromSecondConeDeliveryTrajectory.end(), true)
-                    .splineTo(intermediateNavigationPose.vec(), intermediateNavigationPose.getHeading() + Math.toRadians(180))
-                    .splineTo(navigationPose.vec(), navigationPose.getHeading() + Math.toRadians(180))
-                    .build();
         }
     }
 

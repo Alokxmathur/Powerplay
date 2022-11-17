@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
+import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.arm.Arm;
 
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Locale;
 public class ArmOperation extends Operation {
 
     public enum Type {
-        Open, Close, Ground, Low, Mid, High, Pickup, Stack5, Stack4, Stack3, Stack2, Stack1
+        Release, Open, Close, Ground, Low, Mid, High, Pickup, Stack5, Stack4, Stack3, Stack2, Stack1
     }
     Arm arm;
     Type type;
@@ -40,12 +42,18 @@ public class ArmOperation extends Operation {
     }
 
     public boolean isComplete() {
-        return arm.isWithinRange();
+        if (type == Type.Open || type == Type.Close) {
+            return (new Date().getTime() - this.getStartTime().getTime() > RobotConfig.SERVO_REQUIRED_TIME);
+        }
+        else {
+            return arm.isWithinRange();
+        }
     }
 
     @Override
     public void startOperation() {
         switch (this.type) {
+            case Release:
             case Pickup:
             case Ground:
             case Low:

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
-import org.firstinspires.ftc.teamcode.robot.operations.BearingOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.FollowTrajectory;
 import org.firstinspires.ftc.teamcode.robot.operations.State;
 import org.firstinspires.ftc.teamcode.robot.operations.WaitOperation;
@@ -65,20 +64,19 @@ public abstract class Autonomous extends AutonomousHelper {
                 telemetry
         ));
 
-        /*
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverSecondConeTrajectory(),
                 robot.getDriveTrain(),
                 "Deliver second cone",
                 telemetry
         ));
-        state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
-         */
+        //state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
+
         states.add(state);
 
         state = new State("Navigate");
 
-        /*
+
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromSecondConeDeliveryTrajectory(),
                 robot.getDriveTrain(),
@@ -86,17 +84,12 @@ public abstract class Autonomous extends AutonomousHelper {
                 telemetry
         ));
 
-         */
-
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getNavigationTrajectory(match.getSignalNumber()),
                 robot.getDriveTrain(),
                 "Reach right tile to navigate",
                 telemetry
         ));
-        state.addPrimaryOperation
-                (new BearingOperation(Math.toDegrees(field.getNavigationTrajectory(match.getSignalNumber()).end().getHeading() + Math.toRadians(180)),
-                        robot.getDriveTrain(), "Align", telemetry));
         //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Lower"));
         states.add(state);
 

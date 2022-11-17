@@ -275,20 +275,20 @@ public class Robot {
             gamePad 2 dpad left/right open/close claw totally
         */
         if (gamePad1.dpad_left) {
-            arm.forwardWrist();
+            arm.forwardRotator();
         }
         if (gamePad2.dpad_right) {
-            arm.backwardWrist();;
+            arm.backwardRotator();
         }
 
         /*
             gamePad 1 dpad up/down move wrist incrementally
         */
         if (gamePad1.dpad_up) {
-            arm.backwardWristIncrementally();
+            arm.backwardRotatorIncrementally();
         }
         else if (gamePad1.dpad_down) {
-            arm.forwardWristIncrementally();
+            arm.forwardRotatorIncrementally();
         }
 
         /*
@@ -298,7 +298,7 @@ public class Robot {
             arm.openClaw();
         }
         if (gamePad2.dpad_right) {
-            arm.closeClaw();;
+            arm.closeClaw();
         }
         /*
             gamePad 2 dpad up/down open/close claw incrementally
@@ -326,17 +326,26 @@ public class Robot {
             else if (gamePad1.a) {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
             }
-            else if (gamePad2.left_stick_y < -.2) {
-                this.arm.raiseShoulder();
+            //handle shoulder movement
+            if (Math.abs(gamePad2.left_stick_y) > 0.05) {
+                this.arm.setShoulderPower(gamePad2.left_stick_y);
             }
-            else if (gamePad2.left_stick_y > .2) {
-                this.arm.lowerShoulder();
+            else {
+                this.arm.retainShoulder();
             }
-            if (gamePad2.right_stick_y < -.2) {
-                this.arm.raiseElbow();
+            //handle elbow position
+            if (Math.abs(gamePad2.right_stick_y) > 0.05) {
+                this.arm.setElbowPower(gamePad2.right_stick_y);
             }
-            else if (gamePad2.right_stick_y > .2) {
-                this.arm.lowerElbow();
+            else {
+                this.arm.retainElbow();
+            }
+            //release / fold wrist
+            if (gamePad2.left_bumper) {
+                this.arm.releaseWrist();
+            }
+            else if (gamePad2.right_bumper) {
+                this.arm.foldWrist();
             }
         }
     }
