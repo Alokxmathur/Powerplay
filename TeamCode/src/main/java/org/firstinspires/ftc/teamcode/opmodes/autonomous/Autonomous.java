@@ -28,6 +28,7 @@ public abstract class Autonomous extends AutonomousHelper {
                 "Slide over",
                 telemetry
         ));
+        //Not close enough
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverLoadedConeTrajectory(),
                 robot.getDriveTrain(),
@@ -89,7 +90,7 @@ public abstract class Autonomous extends AutonomousHelper {
         ));
 
          */
-
+        //
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getNavigationTrajectory(match.getSignalNumber()),
                 robot.getDriveTrain(),
@@ -99,6 +100,7 @@ public abstract class Autonomous extends AutonomousHelper {
         state.addPrimaryOperation
                 (new BearingOperation(Math.toDegrees(field.getNavigationTrajectory(match.getSignalNumber()).end().getHeading() + Math.toRadians(180)),
                         robot.getDriveTrain(), "Align", telemetry));
+        state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
         state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Lower"));
         states.add(state);
 

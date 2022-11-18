@@ -1,4 +1,4 @@
- package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot;
 
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansDriveConstants;
@@ -22,10 +22,10 @@ public class RobotConfig {
     public static final double TAIL_INITIAL_POSITION = 0;
     public static final double TAIL_PICKUP_POSITION = .75;
     public static final double TAIL_INCREMENT = .01;
-    public static final double CLAW_INITIAL_POSITION = 0;
-    public static final double CLAW_CLENCH_POSITION = .85;
+    public static final double CLAW_INITIAL_POSITION = .075;
+    public static final double CLAW_CLENCH_POSITION = 1.0;
     public static final double CLAW_INCREMENT = .01;
-     public static final int FOUR_BAR_INITIAL_POSITION = 0;
+    public static final int FOUR_BAR_INITIAL_POSITION = 0;
     public static final int FOUR_BAR_TOP_POSITION = 115;
     public static final int FOUR_BAR_RELEASE_POSITION = 60;
     public static final int ACCEPTABLE_FOUR_BAR_ERROR = 10;

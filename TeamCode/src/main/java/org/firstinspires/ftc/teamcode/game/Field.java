@@ -347,7 +347,7 @@ public class Field {
                                     -TILE_WIDTH / 2 / MM_PER_INCH,
                                     Math.toRadians(180));
                             navigationPose = new Pose2d(
-                                    intermediateNavigationPose.getX() + TILE_WIDTH /4/MM_PER_INCH,
+                                    intermediateNavigationPose.getX() + TILE_WIDTH /4 /MM_PER_INCH,
                                     -TILE_WIDTH/MM_PER_INCH,
                                     Math.toRadians(-90));
                             break;
