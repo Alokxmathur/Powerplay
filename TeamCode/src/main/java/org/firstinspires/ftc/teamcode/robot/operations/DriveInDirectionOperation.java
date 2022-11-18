@@ -9,27 +9,36 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Silver Titans on 10/12/17.
+ * Operation to drive in a particular direction for a particular distance
+ *
  */
 
 public class DriveInDirectionOperation extends DriveForDistanceOperation {
     protected double distance;
     protected double speed;
-    protected double direction;
+    protected double heading;
 
+    /**
+     * Create operation to drive distance in direction
+     * @param travelDistance
+     * @param heading - direction in radians
+     * @param speed
+     * @param driveTrain
+     * @param title
+     */
     public DriveInDirectionOperation(double travelDistance, double heading,
                                      double speed, DriveTrain driveTrain, String title) {
         super(travelDistance, travelDistance, driveTrain, title);
         this.distance = travelDistance;
         this.speed = speed;
-        this.direction = heading;
+        this.heading = Math.toDegrees(heading);
         this.driveTrain = driveTrain;
         this.title = title;
     }
 
     public String toString() {
         return String.format(Locale.getDefault(), "DriveInDirection: %.2f(%.2f\")@%.2f --%s",
-                this.distance, (this.distance / Field.MM_PER_INCH), this.direction,
+                this.distance, (this.distance / Field.MM_PER_INCH), this.heading,
                 this.title);
     }
 
@@ -39,7 +48,7 @@ public class DriveInDirectionOperation extends DriveForDistanceOperation {
             return true;
         } else {
             // adjust relative speed based on heading error.
-            double bearingError = AngleUnit.normalizeDegrees(direction - currentBearing);
+            double bearingError = AngleUnit.normalizeDegrees(heading - currentBearing);
             double steer = DriveTrain.getSteer(bearingError, DriveTrain.P_DRIVE_COEFFICIENT);
 
             // if driving in reverse, the motor correction also needs to be reversed
@@ -56,7 +65,7 @@ public class DriveInDirectionOperation extends DriveForDistanceOperation {
                 rightSpeed /= max;
             }
 
-            Match.log(String.format(Locale.getDefault(), "Setting power LF:%.2f,LR:%.2f,RF:%.2f,RR%.2f", leftSpeed, leftSpeed, rightSpeed, rightSpeed));
+            Match.log(String.format(Locale.getDefault(), "Setting power LF:%.2f,LR:%.2f,RF:%.2f,RR%.2f,Err:%.2f", leftSpeed, leftSpeed, rightSpeed, rightSpeed, bearingError));
 
             driveTrain.setLeftFrontPower(leftSpeed);
             driveTrain.setLeftRearPower(leftSpeed);

@@ -213,6 +213,11 @@ public class Match {
         this.trajectoryError = lastError;
     }
 
+    /**
+     * Returns the signal number detected at the beginning of the match
+     * It is a number between 1-3
+     * @return
+     */
     public int getSignalNumber() {
         return signalNumber;
     }

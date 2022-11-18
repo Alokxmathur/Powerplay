@@ -32,6 +32,20 @@ public class Field {
             (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
             (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
             Math.toRadians(-90));
+    public static final Pose2d[] redLeftNoConeTurnAroundPoses = {
+            new Pose2d(
+                    -(2.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90)),
+            new Pose2d(
+                    -(1.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90)),
+            new Pose2d(
+                    -(0.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90))
+    };
     public static final Pose2d redLeftTurnaroundPose = new Pose2d(
             (-TILE_WIDTH / 2) / MM_PER_INCH,
             -(2.5 * TILE_WIDTH),
@@ -41,11 +55,11 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(225));
     public static final Pose2d redLeftPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH/2) / MM_PER_INCH,
-            -(TILE_WIDTH / 2) / MM_PER_INCH,
+            (-TILE_WIDTH*.6) / MM_PER_INCH,
+            -(TILE_WIDTH)*.6 / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftPickupConePose = new Pose2d(
-            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
+            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 200) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d redLeftDeliverSecondConePose = new Pose2d(
@@ -58,6 +72,20 @@ public class Field {
                     (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
                     (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(-90));
+    public static final Pose2d[] redRightNoConeTurnAroundPoses = {
+            new Pose2d(
+                    (0.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90)),
+            new Pose2d(
+                    (1.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90)),
+            new Pose2d(
+                    (2.5*TILE_WIDTH) / MM_PER_INCH,
+                    -(2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(-90))
+    };
     public static final Pose2d redRightTurnaroundPose = new Pose2d(
             (TILE_WIDTH / 2) / MM_PER_INCH,
             -(2.5 * TILE_WIDTH) / MM_PER_INCH,
@@ -67,11 +95,11 @@ public class Field {
             -(TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(-45));
     public static final Pose2d redRightPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH/2) / MM_PER_INCH,
-            -(TILE_WIDTH / 2) / MM_PER_INCH,
+            (TILE_WIDTH*.6) / MM_PER_INCH,
+            -(TILE_WIDTH*.6) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightPickupConePose = new Pose2d(
-            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
+            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 200) / MM_PER_INCH,
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d redRightDeliverSecondConePose = new Pose2d(
@@ -84,6 +112,20 @@ public class Field {
                     (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
                     (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(90));
+    public static final Pose2d[] blueLeftNoConeTurnAroundPoses = {
+            new Pose2d(
+                    (2.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90)),
+            new Pose2d(
+                    (1.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90)),
+            new Pose2d(
+                    (0.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90))
+    };
     public static final Pose2d blueLeftTurnaroundPose = new Pose2d(
             (TILE_WIDTH / 2) / MM_PER_INCH,
             (2.5 * TILE_WIDTH) / MM_PER_INCH,
@@ -93,11 +135,11 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(45));
     public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
-            (TILE_WIDTH/2) / MM_PER_INCH,
-            (TILE_WIDTH / 2) / MM_PER_INCH,
+            (TILE_WIDTH*.6) / MM_PER_INCH,
+            (TILE_WIDTH*.6) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftPickupConePose = new Pose2d(
-            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
+            (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 200) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(180));
     public static final Pose2d blueLeftDeliverSecondConePose = new Pose2d(
@@ -110,6 +152,20 @@ public class Field {
                     (-TILE_WIDTH - RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
                     (FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
                     Math.toRadians(90));
+    public static final Pose2d[] blueRightNoConeTurnAroundPoses = {
+            new Pose2d(
+                    -(0.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90)),
+            new Pose2d(
+                    -(1.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90)),
+            new Pose2d(
+                    -(2.5*TILE_WIDTH) / MM_PER_INCH,
+                    (2.5 * TILE_WIDTH) / MM_PER_INCH,
+                    Math.toRadians(90))
+    };
     public static final Pose2d blueRightTurnaroundPose = new Pose2d(
             -(TILE_WIDTH / 2) / MM_PER_INCH,
             (2.5 * TILE_WIDTH) / MM_PER_INCH,
@@ -119,11 +175,11 @@ public class Field {
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             Math.toRadians(135));
     public static final Pose2d blueRightPickupConeIntermediatePose = new Pose2d(
-            (-TILE_WIDTH/2) / MM_PER_INCH,
-            (TILE_WIDTH / 2) / MM_PER_INCH,
+            (-TILE_WIDTH*.6) / MM_PER_INCH,
+            (TILE_WIDTH*.6) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightPickupConePose = new Pose2d(
-            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 120) / MM_PER_INCH,
+            -(FIELD_WIDTH / 2 - RobotConfig.ROBOT_CENTER_FROM_HELD_CONE - 200) / MM_PER_INCH,
             (TILE_WIDTH / 2) / MM_PER_INCH,
             Math.toRadians(0));
     public static final Pose2d blueRightDeliverSecondConePose = new Pose2d(
@@ -132,9 +188,14 @@ public class Field {
             Math.toRadians(45));
 
     Trajectory turnaroundTrajectory;
+    Trajectory[] noConeTurnAroundTrajectories = new Trajectory[3];
 
     public Trajectory getTurnaroundTrajectory() {
         return turnaroundTrajectory;
+    }
+
+    public Trajectory getNoConeTurnAroundTrajectory(int signalNumber) {
+        return noConeTurnAroundTrajectories[signalNumber-1];
     }
 
     Trajectory deliverLoadedConeTrajectory;
@@ -147,6 +208,12 @@ public class Field {
 
     public Trajectory getRetractFromLoadedConeDeliveryTrajectory() {
         return retractFromLoadedConeDeliveryTrajectory;
+    }
+
+    Trajectory retractFor1CNavigationTrajectory;
+
+    public Trajectory getRetractFor1CNavigationTrajectory() {
+        return retractFor1CNavigationTrajectory;
     }
 
     Trajectory pickupConeTrajectory;
@@ -224,27 +291,30 @@ public class Field {
 
     private void createTrajectories(Alliance.Color alliance, StartingPosition startingPosition) {
         Pose2d turnaroundPose = null;
+        Pose2d[] noConeTurnaroundPoses = null;
         Pose2d deliverLoadedConePose = null;
-        //Pose2d pickConeIntermediatePose = null;
-        //Pose2d pickupConePose = null;
-        //Pose2d deliverSecondConePose = null;
+        Pose2d pickConeIntermediatePose = null;
+        Pose2d pickupConePose = null;
+        Pose2d deliverSecondConePose = null;
         switch (alliance) {
             case RED: {
                 switch (startingPosition) {
                     case Right: {
                         turnaroundPose = redRightTurnaroundPose;
+                        noConeTurnaroundPoses = redRightNoConeTurnAroundPoses;
                         deliverLoadedConePose = redRightDeliverLoadedConePose;
-                        //pickConeIntermediatePose = redRightPickupConeIntermediatePose;
-                        //pickupConePose = redRightPickupConePose;
-                        //deliverSecondConePose = redRightDeliverSecondConePose;
+                        pickConeIntermediatePose = redRightPickupConeIntermediatePose;
+                        pickupConePose = redRightPickupConePose;
+                        deliverSecondConePose = redRightDeliverSecondConePose;
                         break;
                     }
                     case Left: {
                         turnaroundPose = redLeftTurnaroundPose;
+                        noConeTurnaroundPoses = redLeftNoConeTurnAroundPoses;
                         deliverLoadedConePose = redLeftDeliverLoadedConePose;
-                        //pickConeIntermediatePose = redLeftPickupConeIntermediatePose;
-                        //pickupConePose = redLeftPickupConePose;
-                        //deliverSecondConePose = redLeftDeliverSecondConePose;
+                        pickConeIntermediatePose = redLeftPickupConeIntermediatePose;
+                        pickupConePose = redLeftPickupConePose;
+                        deliverSecondConePose = redLeftDeliverSecondConePose;
                         break;
                     }
                 }
@@ -254,18 +324,20 @@ public class Field {
                 switch (startingPosition) {
                     case Right: {
                         turnaroundPose = blueRightTurnaroundPose;
+                        noConeTurnaroundPoses = blueRightNoConeTurnAroundPoses;
                         deliverLoadedConePose = blueRightDeliverLoadedConePose;
-                        //pickConeIntermediatePose = blueRightPickupConeIntermediatePose;
-                        //pickupConePose = blueRightPickupConePose;
-                        //deliverSecondConePose = blueRightDeliverSecondConePose;
+                        pickConeIntermediatePose = blueRightPickupConeIntermediatePose;
+                        pickupConePose = blueRightPickupConePose;
+                        deliverSecondConePose = blueRightDeliverSecondConePose;
                         break;
                     }
                     case Left: {
                         turnaroundPose = blueLeftTurnaroundPose;
+                        noConeTurnaroundPoses = blueLeftNoConeTurnAroundPoses;
                         deliverLoadedConePose = blueLeftDeliverLoadedConePose;
-                        //pickConeIntermediatePose = blueLeftPickupConeIntermediatePose;
-                        //pickupConePose = blueLeftPickupConePose;
-                        //deliverSecondConePose = blueLeftDeliverSecondConePose;
+                        pickConeIntermediatePose = blueLeftPickupConeIntermediatePose;
+                        pickupConePose = blueLeftPickupConePose;
+                        deliverSecondConePose = blueLeftDeliverSecondConePose;
                         break;
                     }
                 }
@@ -276,16 +348,26 @@ public class Field {
                 accurateTrajectoryBuilder(startingPose, true)
                         .splineToConstantHeading(turnaroundPose.vec(), turnaroundPose.getHeading() + Math.toRadians(180.0))
                         .build();
+        for (int signalNumber = 1; signalNumber < 4; signalNumber++) {
+            noConeTurnAroundTrajectories[signalNumber-1] =
+                    accurateTrajectoryBuilder(startingPose, true)
+                            .splineToConstantHeading(noConeTurnaroundPoses[signalNumber-1].vec(), noConeTurnaroundPoses[signalNumber-1].getHeading() + Math.toRadians(180.0))
+                            .build();
+        }
         deliverLoadedConeTrajectory =
                 accurateTrajectoryBuilder(turnaroundPose, true)
                         .splineTo(deliverLoadedConePose.vec(), deliverLoadedConePose.getHeading()
                                 + Math.toRadians(180))
                         .build();
+        retractFor1CNavigationTrajectory =
+                accurateTrajectoryBuilder(deliverLoadedConeTrajectory.end(), deliverLoadedConeTrajectory.end().getHeading())
+                        .forward(6)
+                        .build();
         retractFromLoadedConeDeliveryTrajectory =
                 accurateTrajectoryBuilder(deliverLoadedConeTrajectory.end(), deliverLoadedConeTrajectory.end().getHeading())
-                        .forward(12)
+                        .forward(14)
                         .build();
-        /*pickupConeTrajectory = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
+        pickupConeTrajectory = accurateTrajectoryBuilder(retractFromLoadedConeDeliveryTrajectory.end(), true)
                 .splineTo(pickConeIntermediatePose.vec(), pickConeIntermediatePose.getHeading() + Math.toRadians(180))
                 .splineTo(pickupConePose.vec(), pickupConePose.getHeading() + Math.toRadians(180))
                 .build();
@@ -297,7 +379,7 @@ public class Field {
                 .build();
         retractFromSecondConeDeliveryTrajectory = accurateTrajectoryBuilder(deliverSecondConeTrajectory.end(), deliverSecondConeTrajectory.end().getHeading())
                 .splineTo(retractFromStackTrajectory.end().vec(), retractFromStackTrajectory.end().getHeading())
-                .build();*/
+                .build();
         for (int i = 0; i < 3; i++) {
             Pose2d intermediateNavigationPose = null;
             Pose2d navigationPose = null;

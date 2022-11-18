@@ -15,10 +15,17 @@ public class BearingOperation extends DriveToPositionOperation {
     protected double desiredBearing;
     private DriveTrain driveTrain;
 
+    /**
+     * Make the robot get to the desired bearing
+     * @param desiredBearing - the desired bearing in radians
+     * @param driveTrain
+     * @param title
+     * @param telemetry
+     */
     public BearingOperation(double desiredBearing, DriveTrain driveTrain, String title, Telemetry telemetry) {
         super(null, driveTrain, title, telemetry);
         this.title = title;
-        this.desiredBearing = desiredBearing;
+        this.desiredBearing = Math.toDegrees(desiredBearing);
         this.driveTrain = driveTrain;
     }
 

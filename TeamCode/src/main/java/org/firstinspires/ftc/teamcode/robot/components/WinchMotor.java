@@ -56,6 +56,10 @@ public class WinchMotor {
         this.setSpeed(1);
     }
 
+    public void lift() {
+        this.setPosition(winchMotor.getCurrentPosition() + 500);
+    }
+
     /**
      * Returns true if winch is within acceptable encoder error of desired position
      * @return

@@ -9,8 +9,9 @@ import java.util.Locale;
 public class WinchOperation extends Operation {
 
     public enum Type {
-        Ground, Low, Mid, High, Pickup,
+        Ground, Low, Mid, High, Pickup, TopStack, Lift
     }
+
     WinchMotor winch;
     FourBarMotor fourBarMotor;
     Type type;
@@ -29,8 +30,10 @@ public class WinchOperation extends Operation {
     }
 
     public boolean isComplete() {
-        raisedFourBar = fourBarMotor.isWithinRange();
-        if (raisedFourBar) {
+        if (!raisedFourBar) {
+            raisedFourBar = fourBarMotor.isWithinRange();
+            return false;
+        } else {
             if (!startedMovingWinch) {
                 startedMovingWinch = true;
                 switch (this.type) {
@@ -41,6 +44,9 @@ public class WinchOperation extends Operation {
                     case Ground: {
                         winch.setPosition(RobotConfig.WINCH_GROUND_POSITION);
                         break;
+                    }
+                    case TopStack: {
+                        winch.setPosition(RobotConfig.WINCH_TOP_STACK_PICKUP_POSITION);
                     }
                     case Low: {
                         winch.setPosition(RobotConfig.WINCH_LOW_POSITION);
@@ -54,27 +60,40 @@ public class WinchOperation extends Operation {
                         winch.setPosition(RobotConfig.WINCH_HIGH_POSITION);
                         break;
                     }
+                    case Lift: {
+                        winch.lift();
+                    }
                 }
             }
             movedWinch = winch.isWithinRange();
             if (movedWinch) {
-                switch (this.type) {
-                    case Ground:
-                    case Pickup: {
-                        fourBarMotor.setToBottomPosition();
-                        break;
+                if (!startedLoweringFourBar) {
+                    startedLoweringFourBar = true;
+                    switch (this.type) {
+                        case Ground:
+                        case Pickup:
+                        case TopStack: {
+                            fourBarMotor.setToBottomPosition();
+                            break;
+                        }
                     }
                 }
-                return fourBarMotor.isWithinRange();
+                else {
+                    loweredFourBar = fourBarMotor.isWithinRange();
+                }
+                if (loweredFourBar) {
+                    return true;
+                }
             }
             return false;
         }
-        return  false;
     }
 
     @Override
     public void startOperation() {
-        fourBarMotor.setToTopPosition();
+        if (type != Type.Lift) {
+            fourBarMotor.setToTopPosition();
+        }
         startedRaisingFourBar = true;
     }
 
