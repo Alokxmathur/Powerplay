@@ -313,32 +313,49 @@ public class Robot {
         We don't honor a and b buttons if start is also pressed as this might be when drivers are
         trying to register the controllers
          */
-            if (gamePad2.a) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Ground, "Ground"));
+            if (gamePad2.right_trigger > 0.2) {
+                if (gamePad2.a) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.StackFourth, "FourthCone"));
+                } else if (gamePad2.b) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.StackThird, "ThirdCone"));
+                } else if (gamePad2.y) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.StackSecond, "SecondCone"));
+                } else if (gamePad2.x) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.StackFirst, "FirstCone"));
+                } else if (gamePad1.a) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Pickup, "Pickup"));
+                } else if (gamePad2.left_stick_y < -.2) {
+                    this.winch.raise();
+                } else if (gamePad2.left_stick_y > .2) {
+                    this.winch.lower();
+                }
+                if (gamePad2.right_stick_y < -.2) {
+                    this.fourBeam.raise();
+                } else if (gamePad2.right_stick_y > .2) {
+                    this.fourBeam.lower();
+                }
             }
-            else if (gamePad2.b) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Low, "Low"));
-            }
-            else if (gamePad2.y) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Mid, "Mid"));
-            }
-            else if (gamePad2.x) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.High, "High"));
-            }
-            else if (gamePad1.a) {
-                queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Pickup, "Pickup"));
-            }
-            else if (gamePad2.left_stick_y < -.2) {
-                this.winch.raise();
-            }
-            else if (gamePad2.left_stick_y > .2) {
-                this.winch.lower();
-            }
-            if (gamePad2.right_stick_y < -.2) {
-                this.fourBeam.raise();
-            }
-            else if (gamePad2.right_stick_y > .2) {
-                this.fourBeam.lower();
+            else {
+                if (gamePad2.a) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Ground, "Ground"));
+                } else if (gamePad2.b) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Low, "Low"));
+                } else if (gamePad2.y) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Mid, "Mid"));
+                } else if (gamePad2.x) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.High, "High"));
+                } else if (gamePad1.a) {
+                    queueSecondaryOperation(new WinchOperation(winch, fourBeam, WinchOperation.Type.Pickup, "Pickup"));
+                } else if (gamePad2.left_stick_y < -.2) {
+                    this.winch.raise();
+                } else if (gamePad2.left_stick_y > .2) {
+                    this.winch.lower();
+                }
+                if (gamePad2.right_stick_y < -.2) {
+                    this.fourBeam.raise();
+                } else if (gamePad2.right_stick_y > .2) {
+                    this.fourBeam.lower();
+                }
             }
         }
     }
