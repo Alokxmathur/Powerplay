@@ -62,18 +62,23 @@ public class WinchOperation extends Operation {
                     }
                     case Lift: {
                         winch.lift();
+                        break;
                     }
                     case StackFirst: {
                         winch.setPosition(RobotConfig.WINCH_STACK_ONE_POSITION);
+                        break;
                     }
                     case StackSecond: {
                         winch.setPosition(RobotConfig.WINCH_STACK_TWO_POSITION);
+                        break;
                     }
                     case StackThird: {
                         winch.setPosition(RobotConfig.WINCH_STACK_THREE_POSITION);
+                        break;
                     }
                     case StackFourth: {
                         winch.setPosition(RobotConfig.WINCH_STACK_FOUR_POSITION);
+                        break;
                     }
                 }
             }
