@@ -39,7 +39,7 @@ public class RobotConfig {
     //Robot center from back is two and half inches and half of track length away
     public static double ROBOT_CENTER_FROM_BACK = (1.5 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     //Robot center from held cone is one inches farther than the rear of the robot
-    public static double ROBOT_CENTER_FROM_HELD_CONE = ROBOT_CENTER_FROM_BACK + 1.0*Field.MM_PER_INCH;
+    public static double ROBOT_CENTER_FROM_HELD_CONE = ROBOT_CENTER_FROM_BACK + 2.0*Field.MM_PER_INCH;
     //Robot center from front is two and a half inches and half of track length away
     public static double ROBOT_CENTER_FROM_FRONT = (3.325 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
     public static final double ROBOT_WIDTH = 13.5 * Field.MM_PER_INCH;
@@ -56,7 +56,7 @@ public class RobotConfig {
     public static final int WINCH_GROUND_POSITION = 500;
     public static final int WINCH_LOW_POSITION = 1290;
     public static final int WINCH_MID_POSITION = 2880;
-    public static final int WINCH_HIGH_POSITION = 4350;
+    public static final int WINCH_HIGH_POSITION = 4500;
     public static final int ACCEPTABLE_WINCH_ERROR = 10;
     public static final int WINCH_INCREMENT = 10;
 

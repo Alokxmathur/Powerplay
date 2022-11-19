@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.robot.operations.WinchOperation;
  * Autonomous routines for depositing one cone and navigating
  */
 
-public abstract class Autonomous1C extends AutonomousHelper {
+public abstract class  Autonomous1C extends AutonomousHelper {
 
     @Override
     public void start() {
@@ -93,7 +93,7 @@ public abstract class Autonomous1C extends AutonomousHelper {
                     (new BearingOperation(0, robot.getDriveTrain(), "Align", telemetry));
             state.addPrimaryOperation(
                     new DriveInDirectionOperation(
-                            Field.TILE_WIDTH * (3 - match.getSignalNumber()),
+                            Field.TILE_WIDTH * (3 - match.getSignalNumber()) + Field.TILE_WIDTH/2,
                             0,
                             0.5,
                             robot.getDriveTrain(),
@@ -101,12 +101,12 @@ public abstract class Autonomous1C extends AutonomousHelper {
         }
         state.addPrimaryOperation(new BearingOperation(field.getTurnaroundTrajectory().start().getHeading(),
                 robot.getDriveTrain(), "Rotate to fit", telemetry));
-        /*
+
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close claw"));
         state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Lower"));
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open claw"));
 
-         */
+
         states.add(state);
 
         Match.log("Created and added states");
