@@ -62,6 +62,6 @@ public class RobotConfig {
     public static final int WINCH_MID_POSITION = 2880;
     public static final int WINCH_HIGH_POSITION = 4500;
     public static final int ACCEPTABLE_WINCH_ERROR = 10;
-    public static final int WINCH_INCREMENT = 10;
+    public static final int WINCH_INCREMENT = 30;
 
 }

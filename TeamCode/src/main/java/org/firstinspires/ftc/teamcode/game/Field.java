@@ -48,7 +48,7 @@ public class Field {
     };
     public static final Pose2d redLeftTurnaroundPose = new Pose2d(
             (-TILE_WIDTH / 2) / MM_PER_INCH,
-            -(2.5 * TILE_WIDTH),
+            -(2.5 * TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(-90));
     public static final Pose2d redLeftDeliverLoadedConePose = new Pose2d(
             (-RobotConfig.ROBOT_CENTER_FROM_BACK / sqrtOfTwo) / MM_PER_INCH,
