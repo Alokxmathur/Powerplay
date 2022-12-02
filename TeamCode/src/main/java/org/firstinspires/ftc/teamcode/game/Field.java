@@ -130,6 +130,7 @@ public class Field {
             (TILE_WIDTH / 2) / MM_PER_INCH,
             (2.5 * TILE_WIDTH) / MM_PER_INCH,
             Math.toRadians(90));
+    //To far for -y and -x direction
     public static final Pose2d blueLeftDeliverLoadedConePose = new Pose2d(
             (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
             (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,

@@ -35,7 +35,6 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                 "Slide over",
                 telemetry
         ));
-        //Not close enough
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverLoadedConeTrajectory(),
                 robot.getDriveTrain(),
