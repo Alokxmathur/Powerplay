@@ -132,8 +132,8 @@ public class Field {
             Math.toRadians(90));
     //To far for -y and -x direction
     public static final Pose2d blueLeftDeliverLoadedConePose = new Pose2d(
-            (RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
-            (TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo) / MM_PER_INCH,
+            ((RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo)) / MM_PER_INCH + 1.5,
+            ((TILE_WIDTH + RobotConfig.ROBOT_CENTER_FROM_HELD_CONE / sqrtOfTwo)) / MM_PER_INCH + 1.5,
             Math.toRadians(45));
     public static final Pose2d blueLeftPickupConeIntermediatePose = new Pose2d(
             (TILE_WIDTH*.6) / MM_PER_INCH,
