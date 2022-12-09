@@ -46,12 +46,12 @@ public abstract class  Autonomous1C extends AutonomousHelper {
         state = new State("Deliver loaded cone and retract");
         state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.AutoDrop, "Drop Cone"));
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
-        /*state.addPrimaryOperation(new FollowTrajectory(
+        state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFor1CNavigationTrajectory(),
                 robot.getDriveTrain(),
                 "Retract from loaded cone delivery",
                 telemetry
-        ));*/
+        ));
         states.add(state);
 
         state = new State("Bonus points");
@@ -63,7 +63,7 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                             "Align", telemetry));
             state.addPrimaryOperation(
                     new DriveInDirectionOperation(
-                            Field.TILE_WIDTH * (match.getSignalNumber() - 1),
+                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2,
                             0,
                             0.5,
                             robot.getDriveTrain(),
@@ -83,7 +83,7 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                     (new BearingOperation(Math.toRadians(180), robot.getDriveTrain(), "Align", telemetry));
             state.addPrimaryOperation(
                     new DriveInDirectionOperation(
-                            Field.TILE_WIDTH * (match.getSignalNumber() - 1),
+                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2,
                             Math.toRadians(180),
                             0.5,
                             robot.getDriveTrain(),
