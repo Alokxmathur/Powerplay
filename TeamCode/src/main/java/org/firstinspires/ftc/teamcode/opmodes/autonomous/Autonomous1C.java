@@ -63,7 +63,7 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                             "Align", telemetry));
             state.addPrimaryOperation(
                     new DriveInDirectionOperation(
-                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2,
+                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH *(match.getSignalNumber() - 1)/4,
                             0,
                             0.5,
                             robot.getDriveTrain(),
@@ -83,7 +83,7 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                     (new BearingOperation(Math.toRadians(180), robot.getDriveTrain(), "Align", telemetry));
             state.addPrimaryOperation(
                     new DriveInDirectionOperation(
-                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2,
+                            Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2 ,
                             Math.toRadians(180),
                             0.5,
                             robot.getDriveTrain(),
