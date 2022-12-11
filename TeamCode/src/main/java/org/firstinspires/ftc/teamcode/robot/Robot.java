@@ -20,61 +20,58 @@ import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
 import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.WaitOperation;
 
 /**
  * This class represents our robot.
- *
+ * <p>
  * It supports the following controls:
- *  GamePad1:
- *         Left stick - drive, right stick - rotate
- *         x - abort pending operations
- *
- *         a - lowest arm level
- *         b - middle arm level
- *         y - top arm level
- *         Dpad Up - raise intake platform
- *         Dpad Down - lower intake platform
- *         Dpad Left - start intake
- *         Dpad right -
- *              if left trigger is pressed: expel
- *              otherwise - consume freight
- *
- *  GamePad2:
- *         Left stick - y axis - carousel speed
- *
- *         Dpad Up - raise output arm
- *         Dpad Down - lower output arm
- *
- *         Dpad Left -
- *          If right bumper is pressed
- *              Open Lid more
- *          Else
- *              retract output arm
- *         Dpad Right - extend output arm
- *          If right bumper is pressed
- *              Close Lid more
- *          Else
- *              extend output arm
- *
- *         Left trigger -
- *          If right bumper is pressed: open to capping position
- *          else open bucket
- *         Right trigger - close bucket
- *
- *         x - if left bumper is pressed, tell output that this is the correct intake level for intake
- *             otherwise
- *                  go to intake position
- *         a - if left bumper is pressed, tell output that this is the correct intake level for low level
- *             otherwise
- *                  go to lowest arm level
- *         b - if left bumper is pressed, tell output that this is the correct intake level for middle level
- *             otherwise
- *                  go to middle arm level
- *         y - if left bumper is pressed, tell output that this is the correct intake level for top level
- *             otherwise
- *                  go to top arm level
- *
- *
+ * GamePad1:
+ * Left stick - drive, right stick - rotate
+ * x - abort pending operations
+ * <p>
+ * a - lowest arm level
+ * b - middle arm level
+ * y - top arm level
+ * Dpad Up - raise intake platform
+ * Dpad Down - lower intake platform
+ * Dpad Left - forward rotator
+ * Dpad right -backward rotator
+ * <p>
+ * GamePad2:
+ * Left stick - y axis - carousel speed
+ * <p>
+ * Dpad Up - raise output arm
+ * Dpad Down - lower output arm
+ * <p>
+ * Dpad Left -
+ * If right bumper is pressed
+ * Open Lid more
+ * Else
+ * retract output arm
+ * Dpad Right - extend output arm
+ * If right bumper is pressed
+ * Close Lid more
+ * Else
+ * extend output arm
+ * <p>
+ * Left trigger -
+ * If right bumper is pressed: open to capping position
+ * else open bucket
+ * Right trigger - close bucket
+ * <p>
+ * x - if left bumper is pressed, tell output that this is the correct intake level for intake
+ * otherwise
+ * go to intake position
+ * a - if left bumper is pressed, tell output that this is the correct intake level for low level
+ * otherwise
+ * go to lowest arm level
+ * b - if left bumper is pressed, tell output that this is the correct intake level for middle level
+ * otherwise
+ * go to middle arm level
+ * y - if left bumper is pressed, tell output that this is the correct intake level for top level
+ * otherwise
+ * go to top arm level
  */
 
 public class Robot {
@@ -100,13 +97,13 @@ public class Robot {
 
     //our state
     String state = "pre-initialized";
+
     public Robot() {
         Log.d("SilverTitans", "Robot: got created");
     }
 
     /**
      * Initialize our robot
-     *
      */
     public void init(HardwareMap hardwareMap, Telemetry telemetry, Match match) {
         this.hardwareMap = hardwareMap;
@@ -174,35 +171,41 @@ public class Robot {
     public void queuePrimaryOperation(Operation operation) {
         this.operationThreadPrimary.queueUpOperation(operation);
     }
+
     public void queueSecondaryOperation(Operation operation) {
         this.operationThreadSecondary.queueUpOperation(operation);
     }
+
     public void queueTertiaryOperation(Operation operation) {
         this.operationThreadTertiary.queueUpOperation(operation);
     }
 
     /**
      * Returns the current x value of robot's center in mms
+     *
      * @return the current x position in mms
      */
     public double getCurrentX() {
-        return this.vslamCamera.getPoseEstimate().getX()*Field.MM_PER_INCH;
+        return this.vslamCamera.getPoseEstimate().getX() * Field.MM_PER_INCH;
     }
 
     /**
      * Returns the current y value of robot's center in mms
+     *
      * @return the current y position in mms
      */
     public double getCurrentY() {
-        return this.vslamCamera.getPoseEstimate().getY()*Field.MM_PER_INCH;
+        return this.vslamCamera.getPoseEstimate().getY() * Field.MM_PER_INCH;
     }
 
     /**
      * Returns the current heading of the robot in radians
+     *
      * @return the heading in radians
      */
     public double getCurrentTheta() {
-        return AngleUnit.normalizeRadians(this.vslamCamera.getPoseEstimate().getHeading());}
+        return AngleUnit.normalizeRadians(this.vslamCamera.getPoseEstimate().getHeading());
+    }
 
     public boolean allOperationsCompleted() {
         return primaryOperationsCompleted() && secondaryOperationsCompleted() && tertiaryOperationsCompleted();
@@ -239,6 +242,7 @@ public class Robot {
     public boolean fullyInitialized() {
         return this.everythingButCamerasInitialized && this.vslamCamera.isInitialized();
     }
+
     /*
         gamePad 2 dpad up/down open/close claw incrementally
         gamePad 2 dpad left/right open/close claw totally
@@ -272,7 +276,7 @@ public class Robot {
 
     public void handleArm(Gamepad gamePad1, Gamepad gamePad2) {
         /*
-            gamePad 1 dpad left/right open/close claw totally
+            gamePad 1 dpad left/right rotate claw totally
         */
         if (gamePad1.dpad_left) {
             arm.forwardRotator();
@@ -282,24 +286,13 @@ public class Robot {
         }
 
         /*
-            gamePad 1 dpad up/down move wrist incrementally if right trigger is also pressed
-            otherwise move rotator incrementally
+            gamePad 1 dpad up/down move rotator incrementally
         */
         if (gamePad1.dpad_up) {
-            if (gamePad1.right_trigger > .2) {
-                arm.raiseWrist();
-            }
-            else {
-                arm.backwardRotatorIncrementally();
-            }
+            arm.backwardRotatorIncrementally();
         }
         else if (gamePad1.dpad_down) {
-            if (gamePad1.right_trigger > .2) {
-                arm.lowerWrist();
-            }
-            else {
-                arm.forwardRotatorIncrementally();
-            }
+            arm.forwardRotatorIncrementally();
         }
 
         /*
@@ -316,49 +309,60 @@ public class Robot {
         */
         if (gamePad2.dpad_up) {
             arm.openClawIncrementally();
-        }
-        else if (gamePad2.dpad_down) {
+        } else if (gamePad2.dpad_down) {
             arm.closeClawIncrementally();
         }
 
         if (secondaryOperationsCompleted()) {
-            if (gamePad2.a) {
-                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Ground, "Ground"));
-            }
-            else if (gamePad2.b) {
-                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Low, "Low"));
-            }
-            else if (gamePad2.y) {
-                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid"));
-            }
-            else if (gamePad2.x) {
-                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High"));
-            }
-            else if (gamePad1.a) {
-                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
-            }
             //handle shoulder movement
             if (Math.abs(gamePad2.left_stick_y) > 0.05) {
                 this.arm.setShoulderPower(Math.pow(gamePad2.left_stick_y, 3) * RobotConfig.DRIVERS_SHOULDER_POWER);
-            }
-            else {
+            } else {
                 this.arm.retainShoulder();
             }
-            //handle elbow position
-            if (Math.abs(gamePad2.right_stick_y) > 0.05) {
-                this.arm.setElbowPower(Math.pow(gamePad2.right_stick_y, 7) * RobotConfig.DRIVERS_ELBOW_POWER);
-            }
-            else {
-                this.arm.retainElbow();
+            if (gamePad2.right_trigger > 0.2) {
+                //handle wrist position
+                if (Math.abs(gamePad2.right_stick_y) > 0.05) {
+                    this.arm.setWristPower(Math.pow(gamePad2.right_stick_y, 3) * RobotConfig.DRIVERS_WRIST_POWER);
+                } else {
+                    this.arm.retainElbow();
+                }
+            } else {
+                //handle elbow position
+                if (Math.abs(gamePad2.right_stick_y) > 0.05) {
+                    this.arm.setElbowPower(Math.pow(gamePad2.right_stick_y, 3) * RobotConfig.DRIVERS_ELBOW_POWER);
+                } else {
+                    this.arm.retainWrist();
+                }
             }
             //release / fold wrist
             if (gamePad2.left_bumper) {
                 this.arm.releaseWrist();
-            }
-            else if (gamePad2.right_bumper) {
+            } else if (gamePad2.right_bumper) {
                 this.arm.foldWrist();
             }
+
+            if (gamePad2.a) {
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Ground, "Ground Junction"));
+            } else if (gamePad2.b) {
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Low, "Low Junction"));
+            } else if (gamePad2.y) {
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid Junction"));
+            } else if (gamePad2.x) {
+                for (int i = 0; i < 10; i++) {
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Close, "Close claw"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimDeposit, "Interim Deposit Position"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High Junction"));
+                    //queueSecondaryOperation(new WaitOperation(1000, "Wait to settle"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Open, "Open claw"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup Position"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Back to Pickup"));
+                }
+            } else if (gamePad1.a) {
+                queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
+            }
         }
+
     }
 
     public void setInitialPose(Pose2d pose) {
@@ -387,6 +391,7 @@ public class Robot {
     public void setPattern(RevBlinkinLedDriver.BlinkinPattern pattern) {
         this.led.setPattern(pattern);
     }
+
     public String getVSLAMStatus() {
         return this.vslamCamera.getStatus();
     }

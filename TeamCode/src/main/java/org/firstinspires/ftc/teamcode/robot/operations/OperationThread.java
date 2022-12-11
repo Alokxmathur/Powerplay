@@ -52,6 +52,7 @@ public class OperationThread extends Thread {
                 }
                 if (this.operationsQueue.size() > 0) {
                     Operation operation = this.operationsQueue.get(0);
+                    //if we haven't already started this operation, start it
                     if (!operation.getOperationIsBeingProcessed()) {
                         Match.log(title + ": Starting operation: " + operation.toString());
                         operation.setOperationBeingProcessed();

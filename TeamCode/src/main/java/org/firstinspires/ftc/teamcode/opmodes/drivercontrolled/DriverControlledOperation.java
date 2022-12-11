@@ -100,8 +100,7 @@ public class DriverControlledOperation extends OpMode {
     @Override
     public void start() {
         match.setTeleopStartTime(new Date());
-        //get into intake mode
-        //robot.queueSecondaryOperation(new OutputOperation(robot.getOutPutter(), robot.getIntake(), OutputOperation.Type.Level_Intake, "Intake"));
+        robot.getArm().releaseWrist();
     }
 
     /*

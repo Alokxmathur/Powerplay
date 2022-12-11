@@ -70,6 +70,12 @@ public abstract class AutonomousHelper extends OpMode {
      */
     @Override
     public void init_loop() {
+        if (gamepad2.dpad_left) {
+            robot.getArm().openClaw();
+        }
+        if (gamepad2.dpad_right) {
+            robot.getArm().closeClaw();
+        }
         if (initErrorHappened) {
             telemetry.addData("State", "Error: " + initError);
         }
