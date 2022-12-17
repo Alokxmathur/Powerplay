@@ -26,7 +26,7 @@ public class RobotConfig {
     public static final double CLAW_CLENCH_POSITION = 1.0;
     public static final double CLAW_INCREMENT = .01;
     public static final int FOUR_BAR_INITIAL_POSITION = 0;
-    public static final int FOUR_BAR_TOP_POSITION = 115;
+    public static final int FOUR_BAR_TOP_POSITION = 110;
     public static final int FOUR_BAR_RELEASE_POSITION = 60;
     public static final int ACCEPTABLE_FOUR_BAR_ERROR = 10;
     public static final double MAX_FOUR_BAR_SPEED = 1.0;

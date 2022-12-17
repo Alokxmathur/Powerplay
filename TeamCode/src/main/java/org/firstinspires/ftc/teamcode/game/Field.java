@@ -69,8 +69,8 @@ public class Field {
 
     public static final Pose2d redRightStartingPose =
             new Pose2d(
-                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,
-                    (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,
+                    (TILE_WIDTH + RobotConfig.ROBOT_WIDTH / 2) / MM_PER_INCH,//30.75
+                    (-FIELD_WIDTH / 2 + RobotConfig.ROBOT_CENTER_FROM_FRONT) / MM_PER_INCH,//
                     Math.toRadians(-90));
     public static final Pose2d[] redRightNoConeTurnAroundPoses = {
             new Pose2d(
