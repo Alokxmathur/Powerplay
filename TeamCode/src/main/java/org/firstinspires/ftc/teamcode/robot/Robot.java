@@ -160,11 +160,21 @@ public class Robot {
     public void stop() {
         //Stop all of our motors
         Match.log("Stopping robot");
-        this.operationThreadPrimary.abort();
-        this.operationThreadSecondary.abort();
-        this.operationThreadTertiary.abort();
-        this.driveTrain.stop();
-        this.webcam.stop();
+        if (this.operationThreadPrimary != null) {
+            this.operationThreadPrimary.abort();
+        }
+        if (this.operationThreadSecondary != null) {
+            this.operationThreadSecondary.abort();
+        }
+        if (this.operationThreadTertiary != null) {
+            this.operationThreadTertiary.abort();
+        }
+        if (this.driveTrain != null) {
+            this.driveTrain.stop();
+        }
+        if (this.webcam != null) {
+            this.webcam.stop();
+        }
         Match.log(("Robot stopped"));
     }
 
@@ -290,8 +300,7 @@ public class Robot {
         */
         if (gamePad1.dpad_up) {
             arm.backwardRotatorIncrementally();
-        }
-        else if (gamePad1.dpad_down) {
+        } else if (gamePad1.dpad_down) {
             arm.forwardRotatorIncrementally();
         }
 
@@ -315,8 +324,11 @@ public class Robot {
 
         if (secondaryOperationsCompleted()) {
             //handle shoulder movement
-            if (Math.abs(gamePad2.left_stick_y) > 0.05) {
-                this.arm.setShoulderPower(Math.pow(gamePad2.left_stick_y, 3) * RobotConfig.DRIVERS_SHOULDER_POWER);
+            if (gamePad2.left_stick_y > 0.05) {
+                this.arm.raiseShoulderIncrementally();
+                //this.arm.setShoulderPower(Math.pow(gamePad2.left_stick_y, 3) * RobotConfig.DRIVERS_SHOULDER_POWER);
+            } else if (gamePad2.left_stick_y < -0.05) {
+                this.arm.lowerShoulderIncrementally();
             } else {
                 this.arm.retainShoulder();
             }
@@ -325,14 +337,17 @@ public class Robot {
                 if (Math.abs(gamePad2.right_stick_y) > 0.05) {
                     this.arm.setWristPower(Math.pow(gamePad2.right_stick_y, 3) * RobotConfig.DRIVERS_WRIST_POWER);
                 } else {
-                    this.arm.retainElbow();
+                    this.arm.retainWrist();
                 }
             } else {
                 //handle elbow position
-                if (Math.abs(gamePad2.right_stick_y) > 0.05) {
-                    this.arm.setElbowPower(Math.pow(gamePad2.right_stick_y, 3) * RobotConfig.DRIVERS_ELBOW_POWER);
+                if (gamePad2.right_stick_y > 0.05) {
+                    this.arm.raiseElbowIncrementally();
+                    //this.arm.setElbowPower(Math.pow(gamePad2.right_stick_y, 3) * RobotConfig.DRIVERS_ELBOW_POWER);
+                } else if (gamePad2.right_stick_y < -0.05) {
+                    this.arm.lowerElbowIncrementally();
                 } else {
-                    this.arm.retainWrist();
+                    this.arm.retainElbow();
                 }
             }
             //release / fold wrist
@@ -350,13 +365,14 @@ public class Robot {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid Junction"));
             } else if (gamePad2.x) {
                 for (int i = 0; i < 10; i++) {
+                    arm.openClaw();
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup"));
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Close, "Close claw"));
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimDeposit, "Interim Deposit Position"));
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High Junction"));
                     //queueSecondaryOperation(new WaitOperation(1000, "Wait to settle"));
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Open, "Open claw"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup Position"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Back to Pickup"));
                 }
             } else if (gamePad1.a) {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));

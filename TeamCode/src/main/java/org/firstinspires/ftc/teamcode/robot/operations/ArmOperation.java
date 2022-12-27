@@ -57,7 +57,6 @@ public class ArmOperation extends Operation {
             case Release:
             case Pickup:
             case InterimPickup:
-            case InterimDeposit:
             case Ground:
             case Low:
             case Mid:

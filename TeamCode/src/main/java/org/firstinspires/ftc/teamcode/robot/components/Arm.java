@@ -44,6 +44,7 @@ public class Arm {
     public void ensureMotorDirections() {
         this.elbow.setDirection(DcMotorSimple.Direction.REVERSE);
         this.shoulder.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.wrist.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void assumeInitialPosition() {
@@ -52,9 +53,22 @@ public class Arm {
         this.wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setWristPosition(0);
+        setWristPosition(RobotConfig.WRIST_INITIAL_POSITION);
         setElbowPosition(0);
         setShoulderPosition(0);
+    }
+
+    public void raiseShoulderIncrementally() {
+        setShoulderPosition(shoulder.getTargetPosition() + RobotConfig.SHOULDER_INCREMENT);
+    }
+    public void lowerShoulderIncrementally() {
+        setShoulderPosition(shoulder.getTargetPosition() - RobotConfig.SHOULDER_INCREMENT);
+    }
+    public void raiseElbowIncrementally() {
+        setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
+    }
+    public void lowerElbowIncrementally() {
+        setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
     }
 
     public void openClawIncrementally() {
@@ -131,7 +145,6 @@ public class Arm {
      * @param position
      */
     public void setShoulderPosition(int position) {
-        this.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.shoulder.setTargetPosition(position);
         this.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.shoulder.setPower(RobotConfig.MAX_SHOULDER_POWER);
@@ -189,7 +202,6 @@ public class Arm {
      * @param position
      */
     public void setWristPosition(int position) {
-        this.wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.wrist.setTargetPosition(position);
         this.wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.wrist.setPower(RobotConfig.MAX_WRIST_POWER);

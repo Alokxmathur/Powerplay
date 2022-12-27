@@ -9,10 +9,10 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Silver Titans on 10/12/17.
+ * Drive in the direction specified in degrees, the amount specified in mms at the speed specified
  */
-
 public class DriveInDirectionOperation extends DriveForDistanceOperation {
+
     protected double distance;
     protected double speed;
     protected double direction;

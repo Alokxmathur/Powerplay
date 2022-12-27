@@ -42,25 +42,27 @@
 
     public static final long SERVO_REQUIRED_TIME = 500; //500 milli-seconds for servo to function
 
-    public static final int WRIST_INITIAL_POSITION = 0;
-    public static final int WRIST_DEPOSIT_POSITION = 0;
-    public static final int WRIST_INTERIM_POSITION = 0;
-    public static final int WRIST_RELEASED_POSITION = 0;
+    public static final int WRIST_INITIAL_POSITION = 22;
+    public static final int WRIST_DEPOSIT_POSITION = 390;
+    public static final int WRIST_INTERIM_POSITION = 300;
+    public static final int WRIST_RELEASED_POSITION = 390;
 
     public static final int ACCEPTABLE_WRIST_ERROR = 10;
-    public static final double MAX_WRIST_POWER = 0.3;
+    public static final double MAX_WRIST_POWER = 0.2;
     public static final double DRIVERS_WRIST_POWER = .5;
 
     public static final int ACCEPTABLE_ELBOW_ERROR = 10;
-    public static final double MAX_ELBOW_POWER = 0.3;
+    public static final double MAX_ELBOW_POWER = 0.5;
     public static final double DRIVERS_ELBOW_POWER = .5;
+    public static final int ELBOW_INCREMENT = 10;
 
     public static final int ACCEPTABLE_SHOULDER_ERROR = 10;
     public static final double MAX_SHOULDER_POWER = 0.25;
     public static final double DRIVERS_SHOULDER_POWER = 0.5;
+    public static final int SHOULDER_INCREMENT = 10;
 
-    public static final ArmPosition ARM_PICKUP_POSITION = new ArmPosition(0, 1280, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_INTERIM_PICKUP_POSITION = new ArmPosition(0, 800, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_INTERIM_DEPOSIT_POSITION = new ArmPosition(300, 850, WRIST_INTERIM_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_HIGH_JUNCTION_POSITION = new ArmPosition(1000, 900, WRIST_DEPOSIT_POSITION, ROTATOR_TURNED_OVER_POSITION);
+    public static final ArmPosition ARM_PICKUP_POSITION = new ArmPosition(0, 1200, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_INTERIM_PICKUP_POSITION = new ArmPosition(0, 400, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_INTERIM_DEPOSIT_POSITION = new ArmPosition(1300, 1015, WRIST_INTERIM_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_HIGH_JUNCTION_POSITION = new ArmPosition(1470, 1015, WRIST_DEPOSIT_POSITION, ROTATOR_TURNED_OVER_POSITION);
  }
