@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
+import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.robot.operations.BearingOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.ClawOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.DriveForTimeOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.DriveInDirectionOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.FollowTrajectory;
 import org.firstinspires.ftc.teamcode.robot.operations.State;
@@ -47,6 +49,14 @@ public abstract class  Autonomous1C extends AutonomousHelper {
                 "Get to delivery point of loaded cone",
                 telemetry
         ));
+        /*state.addPrimaryOperation(new DriveForTimeOperation(
+                2,
+                field.getDeliverLoadedConeTrajectory().start().getHeading(),
+                60.0,
+                robot.getDriveTrain(),
+                "Align using V"
+                ));
+        */
         states.add(state);
 
         state = new State("Deliver loaded cone and retract");
