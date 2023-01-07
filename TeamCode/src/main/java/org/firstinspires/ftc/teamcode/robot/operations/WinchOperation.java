@@ -9,7 +9,7 @@ import java.util.Locale;
 public class WinchOperation extends Operation {
 
     public enum Type {
-        Ground, Low, Mid, High, Pickup, TopStack, Lift, StackFirst, StackSecond, StackThird, StackFourth, AutoDrop
+        Initial, Ground, Low, Mid, High, Pickup, TopStack, Lift, StackFirst, StackSecond, StackThird, StackFourth, AutoDrop
     }
 
     WinchMotor winch;
@@ -37,6 +37,10 @@ public class WinchOperation extends Operation {
             if (!startedMovingWinch) {
                 startedMovingWinch = true;
                 switch (this.type) {
+                    case Initial:{
+                        winch.setPosition(RobotConfig.WINCH_INITIAL_POSITION);
+                        break;
+                    }
                     case Pickup: {
                         winch.setPosition(RobotConfig.WINCH_PICKUP_POSITION);
                         break;
@@ -89,6 +93,7 @@ public class WinchOperation extends Operation {
                 if (!startedLoweringFourBar) {
                     startedLoweringFourBar = true;
                     switch (this.type) {
+                        case Initial:
                         case Ground:
                         case Pickup:
                         case TopStack:

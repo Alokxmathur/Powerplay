@@ -50,7 +50,8 @@ public class RobotConfig {
     public static final long SERVO_REQUIRED_TIME = 500; //500 milli-seconds for servo to function
 
     public static final double MAX_WINCH_SPEED = 1.0;
-    public static final int WINCH_PICKUP_POSITION = 0;
+    public static final int WINCH_INITIAL_POSITION = 0;
+    public static final int WINCH_PICKUP_POSITION = 30;
     public static final int WINCH_TOP_STACK_PICKUP_POSITION = 800;
     public static final int WINCH_STACK_INCREMENT = 430;
     public static final int WINCH_STACK_ONE_POSITION = 1000;

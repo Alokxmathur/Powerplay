@@ -28,6 +28,12 @@ public abstract class  Autonomous1C extends AutonomousHelper {
 
         state = new State("Clear starting position");
         //raise cone to high level
+        state.addPrimaryOperation(new DriveInDirectionOperation(
+                -1*Field.MM_PER_INCH,
+                (field.getStartingPose().getHeading()),
+                0.4,
+                robot.getDriveTrain(),
+                "Clear Wall"));
         state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getTurnaroundTrajectory(),
@@ -44,7 +50,7 @@ public abstract class  Autonomous1C extends AutonomousHelper {
         states.add(state);
 
         state = new State("Deliver loaded cone and retract");
-        state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.AutoDrop, "Drop Cone"));
+        state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Drop Cone"));
         state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFor1CNavigationTrajectory(),
