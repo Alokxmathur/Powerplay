@@ -63,47 +63,68 @@ public abstract class  Autonomous1C extends AutonomousHelper {
         state = new State("Bonus points");
         if (match.getAlliance() == Alliance.Color.RED && match.getStartingPosition() == Field.StartingPosition.Right) {
             state.addPrimaryOperation
-                    (new BearingOperation(
-                            0,
-                            robot.getDriveTrain(),
-                            "Align", telemetry));
-            state.addPrimaryOperation(
+                    (new BearingOperation(0,robot.getDriveTrain(), "Align", telemetry));
+            state.addPrimaryOperation(new FollowTrajectory(
+                    field.getNavigationTrajectory(robot.getSignalNumber()),
+                    robot.getDriveTrain(),
+                    "Move to Bonus Point area",
+                    telemetry
+                    ));
+            /*state.addPrimaryOperation(
                     new DriveInDirectionOperation(
                             Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH *(match.getSignalNumber() - 1)/4,
                             0,
                             0.5,
                             robot.getDriveTrain(),
-                            "Move to proper tile"));
+                            "Move to proper tile"));*/
         } else if (match.getAlliance() == Alliance.Color.RED && match.getStartingPosition() == Field.StartingPosition.Left) {
             state.addPrimaryOperation
                     (new BearingOperation(Math.toRadians(180), robot.getDriveTrain(), "Align", telemetry));
-            state.addPrimaryOperation(
+            state.addPrimaryOperation(new FollowTrajectory(
+                            field.getNavigationTrajectory(robot.getSignalNumber()),
+                            robot.getDriveTrain(),
+                            "Move to Bonus Point area",
+                            telemetry
+                    ));
+            /*state.addPrimaryOperation(
                     new DriveInDirectionOperation(
                             Field.TILE_WIDTH * (3 - match.getSignalNumber()) + Field.TILE_WIDTH/4,
                             Math.toRadians(180),
                             0.5,
                             robot.getDriveTrain(),
-                            "Move to proper tile"));
+                            "Move to proper tile"));*/
         } else if (match.getAlliance() == Alliance.Color.BLUE && match.getStartingPosition() == Field.StartingPosition.Right) {
             state.addPrimaryOperation
                     (new BearingOperation(Math.toRadians(180), robot.getDriveTrain(), "Align", telemetry));
-            state.addPrimaryOperation(
+            state.addPrimaryOperation(new FollowTrajectory(
+                    field.getNavigationTrajectory(robot.getSignalNumber()),
+                    robot.getDriveTrain(),
+                    "Move to Bonus Point area",
+                    telemetry
+            ));
+            /*state.addPrimaryOperation(
                     new DriveInDirectionOperation(
                             Field.TILE_WIDTH * (match.getSignalNumber() - 1) + Field.TILE_WIDTH/2 ,
                             Math.toRadians(180),
                             0.5,
                             robot.getDriveTrain(),
-                            "Move to proper tile"));
+                            "Move to proper tile"));*/
         } else if (match.getAlliance() == Alliance.Color.BLUE && match.getStartingPosition() == Field.StartingPosition.Left) {
             state.addPrimaryOperation
                     (new BearingOperation(0, robot.getDriveTrain(), "Align", telemetry));
-            state.addPrimaryOperation(
+            state.addPrimaryOperation(new FollowTrajectory(
+                    field.getNavigationTrajectory(robot.getSignalNumber()),
+                    robot.getDriveTrain(),
+                    "Move to Bonus Point area",
+                    telemetry
+            ));
+            /*state.addPrimaryOperation(
                     new DriveInDirectionOperation(
                             Field.TILE_WIDTH * (3 - match.getSignalNumber()) + Field.TILE_WIDTH/4,
                             0,
                             0.5,
                             robot.getDriveTrain(),
-                            "Move to proper tile"));
+                            "Move to proper tile"));*/
         }
         state.addPrimaryOperation(new BearingOperation(field.getTurnaroundTrajectory().start().getHeading(),
                 robot.getDriveTrain(), "Rotate to fit", telemetry));
