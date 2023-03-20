@@ -274,7 +274,7 @@ public class Robot {
 
     public void handleDriveTrain(Gamepad gamePad1) {
         if (this.primaryOperationsCompleted()) {
-            double multiplier = gamePad1.right_trigger > 0.1 ? .6 : (gamePad1.left_trigger > 0.1 ? 1 : .3);
+            double multiplier = gamePad1.right_trigger > 0.1 ? 1 : (gamePad1.left_trigger > 0.3 ? 1 : .6);
             double x = Math.pow(gamePad1.left_stick_x, 5) * multiplier; // Get left joystick's x-axis value.
             double y = -Math.pow(gamePad1.left_stick_y, 5) * multiplier; // Get left joystick's y-axis value.
 
@@ -364,7 +364,7 @@ public class Robot {
             } else if (gamePad2.y) {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid Junction"));
             } else if (gamePad2.x) {
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 1; i++) {
                     arm.openClaw();
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup"));
                     queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));

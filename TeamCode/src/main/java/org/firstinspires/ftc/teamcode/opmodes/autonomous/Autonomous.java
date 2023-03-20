@@ -1,7 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+
+import org.firstinspires.ftc.teamcode.game.Alliance;
+import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansMecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.components.Arm;
 import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
+import org.firstinspires.ftc.teamcode.robot.operations.BearingOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.FollowTrajectory;
 import org.firstinspires.ftc.teamcode.robot.operations.State;
 import org.firstinspires.ftc.teamcode.robot.operations.WaitOperation;
@@ -17,81 +24,54 @@ public abstract class Autonomous extends AutonomousHelper {
         //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Low, "Raise enough to clear low pole"));
         states.add(state);
 
-        state = new State("Clear starting position");
+        state = new State("Move forward position");
         //raise cone to high level
-        //state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
+        state.addSecondaryOperation(new ArmOperation(robot.getArm(), ArmOperation.Type.High_Reversed_Interim, "Go interim high"));
+        state.addSecondaryOperation(new ArmOperation(robot.getArm(), ArmOperation.Type.High_Reversed, "Go High"));
         state.addPrimaryOperation(new FollowTrajectory(
-                field.getTurnaroundTrajectory(),
+                field.getReleaseTrajectory(),
                 robot.getDriveTrain(),
-                "Slide over",
+                "Move forward",
                 telemetry
         ));
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getDeliverLoadedConeTrajectory(),
+        double bearingToDepositCone = 0;
+        if (match.getAlliance() == Alliance.Color.RED && match.getStartingPosition() == Field.StartingPosition.Right) {
+            bearingToDepositCone = -45.0;
+        }
+        if (match.getAlliance() == Alliance.Color.RED && match.getStartingPosition() == Field.StartingPosition.Left) {
+            bearingToDepositCone = 225.0;
+        }
+        if (match.getAlliance() == Alliance.Color.BLUE && match.getStartingPosition() == Field.StartingPosition.Right) {
+            bearingToDepositCone = 135.0;
+        }
+        if (match.getAlliance() == Alliance.Color.BLUE && match.getStartingPosition() == Field.StartingPosition.Left) {
+            bearingToDepositCone = 45.0;
+        }
+
+        state.addPrimaryOperation(new BearingOperation(
+                bearingToDepositCone,
                 robot.getDriveTrain(),
-                "Get to delivery point of loaded cone",
+                "Rotate to deposit cone",
                 telemetry
         ));
+        state.addPrimaryOperation(new ArmOperation(robot.getArm(), ArmOperation.Type.Open, "Release cone"));
         states.add(state);
 
-        state = new State("Deliver loaded cone");
-        state.addPrimaryOperation(new ArmOperation(robot.getArm(), ArmOperation.Type.Open, "Open Claw"));
-        states.add(state);
-
-        state = new State("Reach stack");
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getRetractFromLoadedConeDeliveryTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from loaded cone delivery",
-                telemetry
-        ));
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getPickupConeTrajectory(),
-                robot.getDriveTrain(),
-                "Reach pickup area",
-                telemetry
-        ));
-        //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Reach stack level"));
-        states.add(state);
-
-        state = new State("Grab second cone");
-        //state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Close, "Close Claw"));
-        //state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Level High"));
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getRetractFromStackTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from stack",
-                telemetry
-        ));
-
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getDeliverSecondConeTrajectory(),
-                robot.getDriveTrain(),
-                "Deliver second cone",
-                telemetry
-        ));
-        //state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
-
-        states.add(state);
 
         state = new State("Navigate");
-
-
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getRetractFromSecondConeDeliveryTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from second cone",
-                telemetry
-        ));
-
-        state.addPrimaryOperation(new FollowTrajectory(
-                field.getNavigationTrajectory(match.getSignalNumber()),
-                robot.getDriveTrain(),
-                "Reach right tile to navigate",
-                telemetry
-        ));
-        //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Lower"));
+        Trajectory navigationTrajectory = field.getNavigationTrajectory(match.getSignalNumber());
+        if (navigationTrajectory != null) {
+            state.addPrimaryOperation(new BearingOperation(
+                    match.getAlliance() == Alliance.Color.RED ? 0 : 180,
+                    robot.getDriveTrain(),
+                    "Rotate to travel in channel",
+                    telemetry
+            ));
+            state.addPrimaryOperation(new FollowTrajectory(navigationTrajectory, robot.getDriveTrain(), "Get to right tile", telemetry));
+        }
+        state.addPrimaryOperation(new BearingOperation(Math.toDegrees(field.getStartingPose().getHeading()), robot.getDriveTrain(), "Rotate to fit", telemetry));
         states.add(state);
+
 
         Match.log("Created and added state");
     }

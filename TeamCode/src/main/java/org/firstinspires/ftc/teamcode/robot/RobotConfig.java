@@ -1,6 +1,7 @@
  package org.firstinspires.ftc.teamcode.robot;
 
  import org.firstinspires.ftc.teamcode.game.Field;
+ import org.firstinspires.ftc.teamcode.roadrunner.drive.SilverTitansDriveConstants;
  import org.firstinspires.ftc.teamcode.robot.components.Arm;
  import org.firstinspires.ftc.teamcode.robot.components.ArmPosition;
 
@@ -27,16 +28,18 @@
     public static final double ROTATOR_TURNED_OVER_POSITION = .930;
     public static final double ROTATOR_INCREMENT = .01;
 
-    //Robot center from back is five and half inches away
-    public static double ROBOT_CENTER_FROM_BACK = 5.5 * Field.MM_PER_INCH;
-    //Robot center from held cone is three inches farther than the rear of the robot
-    public static double ROBOT_CENTER_FROM_HELD_CONE = ROBOT_CENTER_FROM_BACK + 3*Field.MM_PER_INCH;
-    //Robot center from front is four and a half inches
-    public static double ROBOT_CENTER_FROM_FRONT = 4.5 * Field.MM_PER_INCH;
-    public static double ROBOT_CENTER_FROM_VSLAM = 3.25 * Field.MM_PER_INCH;
+    //Robot center from back
+    public static double ROBOT_CENTER_FROM_BACK = (2.25 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
+    //Robot center from front
+    public static double ROBOT_CENTER_FROM_FRONT = (2.25 + SilverTitansDriveConstants.TRACK_LENGTH/2) * Field.MM_PER_INCH;
+    public static final double ROBOT_LENGTH = ROBOT_CENTER_FROM_BACK + ROBOT_CENTER_FROM_FRONT;
     public static final double ROBOT_WIDTH = 14.5 * Field.MM_PER_INCH;
 
-    public static final double ROBOT_LENGTH = ROBOT_CENTER_FROM_BACK + ROBOT_CENTER_FROM_FRONT;
+    public static double ROBOT_CENTER_FROM_VSLAM = ROBOT_LENGTH/2 - (4.5 * Field.MM_PER_INCH);
+
+    //For the high goal, Robot center from held cone is twenty inches from the center of the robot
+    public static double ROBOT_CENTER_FROM_HELD_CONE = 20 * Field.MM_PER_INCH;
+
     public static final double ALLOWED_BEARING_ERROR = 0.75;
     public static final double ALLOWED_POSITIONAL_ERROR = .25;
 
@@ -57,12 +60,16 @@
     public static final int ELBOW_INCREMENT = 10;
 
     public static final int ACCEPTABLE_SHOULDER_ERROR = 10;
-    public static final double MAX_SHOULDER_POWER = 0.25;
-    public static final double DRIVERS_SHOULDER_POWER = 0.5;
+    public static final double MAX_SHOULDER_POWER = 0.35;
+    public static final double DRIVERS_SHOULDER_POWER = 0.35;
     public static final int SHOULDER_INCREMENT = 10;
 
-    public static final ArmPosition ARM_PICKUP_POSITION = new ArmPosition(0, 1200, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_INTERIM_PICKUP_POSITION = new ArmPosition(0, 400, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_INTERIM_DEPOSIT_POSITION = new ArmPosition(1300, 1015, WRIST_INTERIM_POSITION, ROTATOR_INITIAL_POSITION);
-    public static final ArmPosition ARM_HIGH_JUNCTION_POSITION = new ArmPosition(1470, 1015, WRIST_DEPOSIT_POSITION, ROTATOR_TURNED_OVER_POSITION);
+    public static final ArmPosition ARM_PICKUP_POSITION = new ArmPosition(130, 1450, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_INTERIM_PICKUP_POSITION = new ArmPosition(130, 1010, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_INTERIM_DEPOSIT_POSITION = new ArmPosition(1230, 840, WRIST_INTERIM_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_HIGH_JUNCTION_POSITION = new ArmPosition(1310, 840, WRIST_DEPOSIT_POSITION, ROTATOR_TURNED_OVER_POSITION);
+
+    public static final ArmPosition ARM_HIGH_JUNCTION_REVERSED_POSITION = new ArmPosition(1820, 2780, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_HIGH_JUNCTION_REVERSED_INTERIM_POSITION = new ArmPosition(1620, 0, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
+    public static final ArmPosition ARM_MIDDLE_JUNCTION_REVERSED_POSITION = new ArmPosition(1570, 2280, WRIST_DEPOSIT_POSITION, ROTATOR_INITIAL_POSITION);
  }

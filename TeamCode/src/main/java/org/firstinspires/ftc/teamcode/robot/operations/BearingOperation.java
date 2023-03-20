@@ -15,6 +15,13 @@ public class BearingOperation extends DriveToPositionOperation {
     protected double desiredBearing;
     private DriveTrain driveTrain;
 
+    /**
+     * Operation to get robot to a particular bearing
+     * @param desiredBearing in degrees
+     * @param driveTrain
+     * @param title
+     * @param telemetry
+     */
     public BearingOperation(double desiredBearing, DriveTrain driveTrain, String title, Telemetry telemetry) {
         super(null, driveTrain, title, telemetry);
         this.title = title;

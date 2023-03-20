@@ -26,7 +26,7 @@ import java.util.Locale;
 public class ArmOperation extends Operation {
 
     public enum Type {
-        Release, Open, Close, Ground, Low, Mid, High, Pickup, InterimPickup, InterimDeposit, Stack5, Stack4, Stack3, Stack2, Stack1
+        Release, Open, Close, Ground, Low, Mid, Mid_Reversed, High, High_Reversed_Interim, High_Reversed, Pickup, InterimPickup, InterimDeposit, Stack5, Stack4, Stack3, Stack2, Stack1
     }
     Arm arm;
     Type type;
@@ -60,7 +60,10 @@ public class ArmOperation extends Operation {
             case Ground:
             case Low:
             case Mid:
+            case Mid_Reversed:
             case High:
+            case High_Reversed_Interim:
+            case High_Reversed:
             case Stack1:
             case Stack2:
             case Stack3:

@@ -170,7 +170,7 @@ public class DriveTrain extends SilverTitansMecanumDrive {
     public void handleOperation(DriveForDistanceOperation operation) {
         stop();
 
-        int encoderChange = SilverTitansDriveConstants.mmToEncoderTicks(operation.getDistance());
+        int encoderChange = SilverTitansDriveConstants.mmToEncoderTicks(operation.getDistance() * 1.4);
         this.leftFront.setTargetPosition(leftFront.getCurrentPosition() + encoderChange);
         this.rightFront.setTargetPosition(rightFront.getCurrentPosition() + encoderChange);
         this.leftRear.setTargetPosition(leftRear.getCurrentPosition() + encoderChange);

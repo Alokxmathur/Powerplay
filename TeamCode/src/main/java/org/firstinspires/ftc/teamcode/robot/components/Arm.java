@@ -49,7 +49,7 @@ public class Arm {
 
     public void assumeInitialPosition() {
         this.rotator.setPosition(RobotConfig.ROTATOR_INITIAL_POSITION);
-        this.claw.setPosition(RobotConfig.CLAW_OPEN_POSITION);
+        closeClaw();
         this.wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -68,7 +68,7 @@ public class Arm {
         setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
     }
     public void lowerElbowIncrementally() {
-        setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
+        setElbowPosition(elbow.getTargetPosition() - RobotConfig.ELBOW_INCREMENT);
     }
 
     public void openClawIncrementally() {
@@ -123,8 +123,20 @@ public class Arm {
                 setPositions(RobotConfig.ARM_INTERIM_PICKUP_POSITION);
                 break;
             }
+            case Mid_Reversed: {
+                setPositions(RobotConfig.ARM_MIDDLE_JUNCTION_REVERSED_POSITION);
+                break;
+            }
             case High: {
                 setPositions(RobotConfig.ARM_HIGH_JUNCTION_POSITION);
+                break;
+            }
+            case High_Reversed_Interim: {
+                setPositions(RobotConfig.ARM_HIGH_JUNCTION_REVERSED_INTERIM_POSITION);
+                break;
+            }
+            case High_Reversed: {
+                setPositions(RobotConfig.ARM_HIGH_JUNCTION_REVERSED_POSITION);
                 break;
             }
             default : {
