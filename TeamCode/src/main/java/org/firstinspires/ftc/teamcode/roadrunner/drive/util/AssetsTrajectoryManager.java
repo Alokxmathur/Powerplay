@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.roadrunner.drive.util;
 
-import androidx.annotation.Nullable;
-
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfig;
@@ -12,6 +10,8 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import androidx.annotation.Nullable;
 
 /**
  * Set of utilities for loading trajectories from assets (the plugin save location).

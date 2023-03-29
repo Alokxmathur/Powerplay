@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
 import org.firstinspires.ftc.teamcode.game.Field;
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 import java.util.Locale;
 
@@ -11,8 +10,8 @@ import java.util.Locale;
 
 public class TurnClockwiseOperation extends DriveForDistanceOperation {
 
-    public TurnClockwiseOperation(double distance, double speed, DriveTrain driveTrain, String title) {
-        super(distance, speed, driveTrain, title);
+    public TurnClockwiseOperation(double distance, double speed, String title) {
+        super(distance, speed, title);
     }
 
     public String toString() {

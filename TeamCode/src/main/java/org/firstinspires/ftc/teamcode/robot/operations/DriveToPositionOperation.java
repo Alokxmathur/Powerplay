@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.robot.operations;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
-
 import java.util.Locale;
 
 /**
@@ -31,8 +28,13 @@ public class DriveToPositionOperation extends FollowTrajectory {
         this.trajectoryStarted = trajectoryStarted;
     }
 
-    public DriveToPositionOperation(Pose2d desiredPose, DriveTrain driveTrain, String title, Telemetry telemetry) {
-        super( null, driveTrain, title, telemetry);
+    /**
+     * Get the robot to the desired pose
+     * @param desiredPose
+     * @param title
+     */
+    public DriveToPositionOperation(Pose2d desiredPose, String title) {
+        super( null, title);
         this.desiredPose = desiredPose;
         this.title = title;
     }

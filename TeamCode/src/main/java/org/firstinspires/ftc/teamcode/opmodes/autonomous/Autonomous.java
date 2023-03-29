@@ -22,15 +22,11 @@ public abstract class Autonomous extends AutonomousHelper {
         //state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Go High"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getTurnaroundTrajectory(),
-                robot.getDriveTrain(),
-                "Slide over",
-                telemetry
+                "Slide over"
         ));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverLoadedConeTrajectory(),
-                robot.getDriveTrain(),
-                "Get to delivery point of loaded cone",
-                telemetry
+                "Get to delivery point of loaded cone"
         ));
         states.add(state);
 
@@ -41,15 +37,11 @@ public abstract class Autonomous extends AutonomousHelper {
         state = new State("Reach stack");
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromLoadedConeDeliveryTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from loaded cone delivery",
-                telemetry
+                "Retract from loaded cone delivery"
         ));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getPickupConeTrajectory(),
-                robot.getDriveTrain(),
-                "Reach pickup area",
-                telemetry
+                "Reach pickup area"
         ));
         //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Reach stack level"));
         states.add(state);
@@ -59,16 +51,12 @@ public abstract class Autonomous extends AutonomousHelper {
         //state.addSecondaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.High, "Level High"));
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromStackTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from stack",
-                telemetry
+                "Retract from stack"
         ));
 
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getDeliverSecondConeTrajectory(),
-                robot.getDriveTrain(),
-                "Deliver second cone",
-                telemetry
+                "Deliver second cone"
         ));
         //state.addPrimaryOperation(new ClawOperation(robot.getClaw(), ClawOperation.Type.Open, "Open Claw"));
 
@@ -79,16 +67,12 @@ public abstract class Autonomous extends AutonomousHelper {
 
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getRetractFromSecondConeDeliveryTrajectory(),
-                robot.getDriveTrain(),
-                "Retract from second cone",
-                telemetry
+                "Retract from second cone"
         ));
 
         state.addPrimaryOperation(new FollowTrajectory(
                 field.getNavigationTrajectory(match.getSignalNumber()),
-                robot.getDriveTrain(),
-                "Reach right tile to navigate",
-                telemetry
+                "Reach right tile to navigate"
         ));
         //state.addPrimaryOperation(new WinchOperation(robot.getWinch(), robot.getFourBar(), WinchOperation.Type.Ground, "Lower"));
         states.add(state);

@@ -11,16 +11,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Field;
 import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.components.LED;
 import org.firstinspires.ftc.teamcode.robot.components.Arm;
+import org.firstinspires.ftc.teamcode.robot.components.LED;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
-import org.firstinspires.ftc.teamcode.robot.components.vision.AprilTagsWebcam;
-import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
+import org.firstinspires.ftc.teamcode.robot.components.vision.ObjectDetectorWebcam;
 import org.firstinspires.ftc.teamcode.robot.components.vision.VslamCamera;
+import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
 import org.firstinspires.ftc.teamcode.robot.operations.Operation;
 import org.firstinspires.ftc.teamcode.robot.operations.OperationThread;
-import org.firstinspires.ftc.teamcode.robot.operations.ArmOperation;
-import org.firstinspires.ftc.teamcode.robot.operations.WaitOperation;
 
 /**
  * This class represents our robot.
@@ -88,7 +86,7 @@ public class Robot {
     LED led;
     Arm arm;
 
-    AprilTagsWebcam webcam;
+    ObjectDetectorWebcam webcam;
     VslamCamera vslamCamera;
 
     boolean everythingButCamerasInitialized = false;
@@ -150,8 +148,8 @@ public class Robot {
         Match.log("Initializing Webcam");
         telemetry.addData("Status", "Initializing Webcam, please wait");
         telemetry.update();
-        this.webcam = new AprilTagsWebcam();
-        this.webcam.init(hardwareMap, telemetry, OpenCVWebcam.ELEMENT_COLOR_MIN, OpenCVWebcam.ELEMENT_COLOR_MAX);
+        this.webcam = new ObjectDetectorWebcam();
+        this.webcam.init(hardwareMap, telemetry);
     }
 
     /**
@@ -364,16 +362,22 @@ public class Robot {
             } else if (gamePad2.y) {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Mid, "Mid Junction"));
             } else if (gamePad2.x) {
-                for (int i = 0; i < 10; i++) {
-                    arm.openClaw();
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Close, "Close claw"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimDeposit, "Interim Deposit Position"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High Junction"));
-                    //queueSecondaryOperation(new WaitOperation(1000, "Wait to settle"));
-                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Open, "Open claw"));
+                if (gamePad2.right_trigger > 0.1) {
+                    for (int i = 0; i < 10; i++) {
+                        arm.openClaw();
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimPickup, "Interim Pickup"));
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Close, "Close claw"));
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.InterimDeposit, "Interim Deposit Position"));
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High Junction"));
+                        //queueSecondaryOperation(new WaitOperation(1000, "Wait to settle"));
+                        queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Open, "Open claw"));
+                    }
                 }
+                else {
+                    queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.High, "High Junction"));
+                }
+
             } else if (gamePad1.a) {
                 queueSecondaryOperation(new ArmOperation(arm, ArmOperation.Type.Pickup, "Pickup"));
             }
@@ -412,10 +416,6 @@ public class Robot {
         return this.vslamCamera.getStatus();
     }
 
-    public int getSignalNumber() {
-        return this.webcam.getSignalNumber();
-    }
-
     public RevBlinkinLedDriver.BlinkinPattern getLEDStatus() {
         return led.getPattern();
     }
@@ -426,5 +426,9 @@ public class Robot {
 
     public Arm getArm() {
         return this.arm;
+    }
+
+    public ObjectDetectorWebcam getWebcam() {
+        return this.webcam;
     }
 }

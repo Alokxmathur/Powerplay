@@ -4,17 +4,16 @@ import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 public abstract class DriveTrainOperation extends Operation {
-    protected DriveTrain driveTrain;
-
-    public DriveTrainOperation(DriveTrain driveTrain) {
+    DriveTrain driveTrain;
+    public DriveTrainOperation() {
         super();
-        this.driveTrain = driveTrain;
+        this.driveTrain = Match.getInstance().getRobot().getDriveTrain();
     }
 
     @Override
     public void abortOperation() {
         try {
-            this.driveTrain.stop();
+            driveTrain.stop();
         }
         catch (Throwable e) {}
         Match.log("Aborted " + this.title);

@@ -26,7 +26,6 @@ public class Match {
     public static String TEAM = "SilverTitans";
     private Robot robot = null;
     private Field field = null;
-    private Telemetry telemetry;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
     private final Telemetry dashboardTelemetry = dashboard.getTelemetry();
     private Date startTime = new Date();
@@ -37,19 +36,15 @@ public class Match {
 
     private Field.StartingPosition startingPosition;
     private String trajectoryError = "";
-    private double distanceTraveledForFreight;
 
-    public Match(Telemetry telemetry) {
-        this.telemetry = telemetry;
-    }
-    synchronized public static Match getNewInstance(Telemetry telemetry) {
-        match = new Match(telemetry);
+    synchronized public static Match getNewInstance() {
+        match = new Match();
         return match;
     }
 
-    synchronized public static Match getInstance(Telemetry telemetry) {
+    synchronized public static Match getInstance() {
         if (match == null) {
-            return getNewInstance(telemetry);
+            return getNewInstance();
         }
         else {
             return match;
@@ -107,7 +102,7 @@ public class Match {
      * Give the driver station a state of the union
      *
      */
-    public void updateTelemetry(String status) {
+    public void updateTelemetry(Telemetry telemetry, String status) {
 
         if (robot != null && field != null) {
             // Send telemetry message to signify robot context;
@@ -117,7 +112,8 @@ public class Match {
             telemetry.addData("LED", robot.getLEDStatus().toString());
             telemetry.addData("TrajectoryErr", getTrajectoryError());
             telemetry.addData("Arm", robot.getArmStatus());
-            updateDashBoard();
+            telemetry.addData("Camera", robot.getWebcam().getStatus());
+            updateDashBoard(status);
         }
         else {
             telemetry.addData("Context", "Robot not initialized");
@@ -141,7 +137,7 @@ public class Match {
         this.startingPosition = startingPosition;
     }
 
-    public void updateDashBoard() {
+    public void updateDashBoard(String status) {
         TelemetryPacket packet = new TelemetryPacket();
         Canvas field = packet.fieldOverlay();
 
@@ -193,9 +189,13 @@ public class Match {
         field.strokeLine(x1, y1, px, py);
         field.strokeLine(x2, y2, px, py);
 
-        packet.put("x", pose2d.getX());
-        packet.put("y", pose2d.getY());
-        packet.put("theta", pose2d.getHeading());
+        packet.put("State", status + ", signal: " + getSignalNumber());
+        packet.put("Position", robot.getPosition());
+        packet.put("Drive", robot.getDriveTrain().getStatus());
+        packet.put("LED", robot.getLEDStatus().toString());
+        packet.put("TrajectoryErr", getTrajectoryError());
+        packet.put("Arm", robot.getArmStatus());
+        packet.put("Camera", robot.getWebcam().getStatus());
 
         dashboard.sendTelemetryPacket(packet);
     }

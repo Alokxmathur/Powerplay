@@ -19,13 +19,13 @@ public class StrafeLeftForDistanceWithHeadingOperation extends DriveTrainOperati
     /**
      * Create a Strafe Left maintaining heading operation
      * @param distance - in mm
-     * @param heading - in degrees
+     * @param heading - in radians
      * @param speed
      * @param driveTrain
      * @param title
      */
     public StrafeLeftForDistanceWithHeadingOperation(double distance, double heading, double speed, DriveTrain driveTrain, String title) {
-        super(driveTrain);
+        super();
         this.distance = distance;
         this.heading = heading;
         this.speed = speed;
@@ -46,7 +46,7 @@ public class StrafeLeftForDistanceWithHeadingOperation extends DriveTrainOperati
         }
         else {
             // adjust relative SPEED based on desiredHeading error.
-            double bearingError = AngleUnit.normalizeDegrees(heading - Math.toDegrees(driveTrain.getExternalHeading()));
+            double bearingError = AngleUnit.normalizeDegrees(Math.toDegrees(heading) - Math.toDegrees(driveTrain.getExternalHeading()));
             double steer = DriveTrain.getSteer(bearingError, DriveTrain.P_DRIVE_COEFFICIENT);
 
             // if driving in reverse, the motor correction also needs to be reversed

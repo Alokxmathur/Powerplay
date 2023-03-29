@@ -21,6 +21,7 @@
 
 package org.firstinspires.ftc.teamcode.robot.components.vision;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,12 +29,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
+import org.firstinspires.ftc.teamcode.robot.components.vision.detector.ObjectDetector;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -43,33 +46,26 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-public class OpenCVWebcam {
+public class ObjectDetectorWebcam {
 
     public static final double CAMERA_OFFSET_FRONT = 6.5;
     public static final int FOCAL_LENGTH = 1500;
 
-    public static final Scalar ELEMENT_COLOR_MIN = new Scalar(0, 0, 205);
-    public static final Scalar ELEMENT_COLOR_MAX = new Scalar(255, 45, 255);
-
     public static final int Y_PIXEL_COUNT = 1920;
     public static final int X_PIXEL_COUNT = 1080;
-    public static final int MINIMUM_AREA = 200;
+    public static final int MINIMUM_AREA = 4000;
 
     OpenCvWebcam webcam;
     Pipeline pipeline;
-    Scalar colorMin;
-    Scalar colorMax;
-
-    Telemetry telemetry;
 
     public static final Object synchronizer = new Object();
-    public void init(HardwareMap hardwareMap, Telemetry telemetry, Scalar colorMin, Scalar colorMax) {
-        this.colorMin = colorMin;
-        this.colorMax = colorMax;
+    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         pipeline = new Pipeline();
-
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, RobotConfig.WEBCAM_ID), cameraMonitorViewId);
         pipeline.setTelemetry(telemetry);
@@ -119,7 +115,7 @@ public class OpenCVWebcam {
                 Match.log("Unable to open " + RobotConfig.WEBCAM_ID);
             }
         });
-        //FtcDashboard.getInstance().startCameraStream(webcam, 10);
+        FtcDashboard.getInstance().startCameraStream(webcam, 10);
     }
 
     /**
@@ -153,119 +149,69 @@ public class OpenCVWebcam {
     }
 
     public void decrementMinX() {
-        pipeline.contourDetector.decrementMinAllowedX();
+        pipeline.objectDetector.decrementMinAllowedX();
     }
 
     public void incrementMinX() {
-        pipeline.contourDetector.incrementMinAllowedX();
+        pipeline.objectDetector.incrementMinAllowedX();
     }
     public void decrementMaxX() {
-        pipeline.contourDetector.decrementMaxAllowedX();
+        pipeline.objectDetector.decrementMaxAllowedX();
     }
     public void incrementMaxX() {
-        pipeline.contourDetector.incrementMaxAllowedX();
+        pipeline.objectDetector.incrementMaxAllowedX();
     }
     public void decrementMinY() {
-        pipeline.contourDetector.decrementMinAllowedY();
+        pipeline.objectDetector.decrementMinAllowedY();
     }
     public void incrementMinY() {
-        pipeline.contourDetector.incrementMinAllowedY();
+        pipeline.objectDetector.incrementMinAllowedY();
     }
     public void decrementMaxY() {
-        pipeline.contourDetector.decrementMaxAllowedY();
+        pipeline.objectDetector.decrementMaxAllowedY();
     }
     public void incrementMaxY() {
-        pipeline.contourDetector.incrementMaxAllowedY();
-    }
-    public void decrementMinHue() {pipeline.contourDetector.decrementMinHue();}
-    public void decrementMaxHue() {pipeline.contourDetector.decrementMaxHue();}
-    public void incrementMinHue() {pipeline.contourDetector.incrementMinHue();}
-    public void incrementMaxHue() {pipeline.contourDetector.incrementMaxHue();}
-    public void decrementMinSaturation() {pipeline.contourDetector.decrementMinSaturation();}
-    public void decrementMaxSaturation() {pipeline.contourDetector.decrementMaxSaturation();}
-    public void incrementMinSaturation() {pipeline.contourDetector.incrementMinSaturation();}
-    public void incrementMaxSaturation() {pipeline.contourDetector.incrementMaxSaturation();}
-    public void decrementMinValue() {pipeline.contourDetector.decrementMinValue();}
-    public void decrementMaxValue() {pipeline.contourDetector.decrementMaxValue();}
-    public void incrementMinValue() {pipeline.contourDetector.incrementMinValue();}
-    public void incrementMaxValue() {pipeline.contourDetector.incrementMaxValue();}
-
-    public String getBounds() {
-        return (pipeline.contourDetector.getBounds());
+        pipeline.objectDetector.incrementMaxAllowedY();
     }
 
-    public int getMinX() {
-        return pipeline.contourDetector.contourMinX;
+    public double getXPositionOfLargestObject(ObjectDetector.ObjectType objectType) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getXPositionOfLargestObject(objectType);
+        }
     }
-    public int getMaxX() {
-        return pipeline.contourDetector.contourMaxX;
-    }
-    public int getMinY() {
-        return pipeline.contourDetector.contourMinY;
-    }
-    public int getMaxY() {
-        return pipeline.contourDetector.contourMaxY;
+    public double getYPositionOfLargestObject(ObjectDetector.ObjectType objectType) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getYPositionOfLargestObject(objectType);
+        }
     }
 
-    public double getXPosition() {
-        return pipeline.contourDetector.getXPosition();
-    }
-    public double getYPosition() {
-        return pipeline.contourDetector.getYPosition();
-    }
-
-    /**
-     * Return the distance to object in inches
-     * @return
-     */
-    public double getDistanceToObjectFromCamera() { return pipeline.contourDetector.distanceToObjectFromCamera;}
-    public double getDistanceToObjectFromCenter() { return pipeline.contourDetector.distanceFromCenterOfRobot();}
-    public double getAngleToObjectFromCamera() { return pipeline.contourDetector.angleToObjectFromCamera;}
-    public double getAngleToObjectFromCenter() { return pipeline.contourDetector.angleFromCenterOfRobot();}
-    public Scalar getMean() {
-        return pipeline.contourDetector.getMean();
+    public double getWidthOfLargestObject(ObjectDetector.ObjectType objectType) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getWidthOfLargestObject(objectType);
+        }
     }
 
-    public int getWidth() {
-        return getMaxY() - getMinY();
+    public double getHeightOfLargestObject(ObjectDetector.ObjectType objectType) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getHeightOfLargestObject(objectType);
+        }
     }
 
-    public int getHeight() {
-        return getMaxX() - getMinX();
+    public boolean seeingObject(ObjectDetector.ObjectType objectName) {
+        synchronized (synchronizer) {
+            return getLargestArea(objectName) > 0;
+        }
     }
 
-    public boolean seeingObject() {
-        return pipeline.contourDetector.getLargestArea() > 0;
+    public double getLargestArea(ObjectDetector.ObjectType objectName) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getLargestArea(objectName);
+        }
     }
 
-    public double getLargestArea() {
-        return pipeline.contourDetector.getLargestArea();
-    }
-
-    /**
-     * Return where the team scoring element is on the bar code
-     *
-     * @return 1,2, or 3 depending on whether the object is on the left, center or right
-     */
-    public int getSignalNumber() {
-        if (Match.getInstance(telemetry).getAlliance() == Alliance.Color.RED) {
-            if (seeingObject()) {
-                if (getMinY() > 650) {
-                    return 1;
-                } else if (getMinY() > 200) {
-                    return 2;
-                }
-            }
-            return 3;
-        } else {
-            if (seeingObject()) {
-                if (getMinY() > 1400) {
-                    return 1;
-                } else if (getMinY() > 1000) {
-                    return 2;
-                }
-            }
-            return 3;
+    public double getDistanceToLargestObject(ObjectDetector.ObjectType objectType) {
+        synchronized (synchronizer) {
+            return pipeline.objectDetector.getDistanceFromCameraOfLargestObject(objectType);
         }
     }
 
@@ -280,29 +226,67 @@ public class OpenCVWebcam {
          */
         final Scalar RED = new Scalar(255, 0, 0);
         final Scalar GREEN = new Scalar(0, 255, 0);
-        final Scalar BLUE = new Scalar(0, 0, 255);
         final Scalar SILVER = new Scalar(192, 192, 192);
 
-        ContourDetector contourDetector = new ContourDetector(colorMin, colorMax,
-                530, 1080, 0, 1920);
+        ObjectDetector objectDetector = new ObjectDetector(
+                0, X_PIXEL_COUNT, 0, Y_PIXEL_COUNT, MINIMUM_AREA);
 
         @Override
         public Mat processFrame(Mat input) {
             synchronized (synchronizer) {
-                List<MatOfPoint> contours = contourDetector.process(input);
-                Imgproc.drawContours(input, contours, -1, GREEN, 5);
-                MatOfPoint largestContour = contourDetector.getLargestContour();
-                if (largestContour != null) {
-                    List<MatOfPoint> largestContours = new ArrayList<>();
-                    largestContours.add(largestContour);
-                    Imgproc.drawContours(input, largestContours, -1, RED, 10);
+                Map<ObjectDetector.ObjectType, ObjectDetector.DetectableObject> detectedObjects = objectDetector.process(input);
+                for (ObjectDetector.ObjectType objectType: detectedObjects.keySet()) {
+                    ObjectDetector.DetectableObject detectableObject = detectedObjects.get(objectType);
+                    //Imgproc.drawContours(input, detectableObject.foundObjects, -1, SILVER, 2);
+                    MatOfPoint largestContour = detectableObject.getLargestObject();
+                    if (largestContour != null) {
+                        List<MatOfPoint> largestContours = new ArrayList<>();
+                        largestContours.add(detectableObject.getLargestObject());
+                        Imgproc.drawContours(input, largestContours, -1, GREEN, 2);
+                        RotatedRect rotatedRectangle = detectableObject.getRotatedRectangleOfLargestObject();
+                        if (rotatedRectangle != null) {
+                            Point[] vertices = new Point[4];
+                            rotatedRectangle.points(vertices);
+                            MatOfPoint points = new MatOfPoint(vertices);
+                            Imgproc.drawContours(input, Arrays.asList(points), -1, RED, 1);
+                        }
+                        Point point = new Point(detectableObject.getXPositionOfLargestObject(), detectableObject.getYPositionOfLargestObject());
+                        double distance = objectDetector.getDistanceFromCameraOfLargestObject(objectType);
+                        /*
+                        Imgproc.putText(input,
+                                String.format(Locale.getDefault(), "%s %.2f\" away",
+                                        objectType, distance),
+                                point,
+                                Imgproc.FONT_HERSHEY_SIMPLEX,
+                                1,
+                                SILVER,
+                                2
+                                );
+                         */
+                        Scalar mean = detectableObject.getMeanOfLargestObject();
+                        Imgproc.putText(input,
+                                String.format(Locale.getDefault(), "%s %.0f,%.0f,%.0f",
+                                        objectType, mean.val[0], mean.val[1], mean.val[2]),
+                                point,
+                                Imgproc.FONT_HERSHEY_SIMPLEX,
+                                1,
+                                SILVER,
+                                2
+                        );
+                    }
                 }
-                Rect limitsRectangle = contourDetector.getAreaOfInterest();
-                Imgproc.rectangle(input, limitsRectangle, RED, 6);
+                Rect limitsRectangle = objectDetector.getRectangleOfInterest();
+                Imgproc.rectangle(input, limitsRectangle, RED, 2);
                 Thread.yield();
+
                 return input;
             }
         }
+    }
+
+    public String getStatus() {
+        return pipeline.objectDetector.getStatus();
+
     }
      public void stop() {
         //webcam.stopStreaming();

@@ -30,7 +30,7 @@ import java.util.Locale;
 public class DriveTrain extends SilverTitansMecanumDrive {
     public static final int WITHIN_RANGE = 30;
     public static final double     P_TURN_COEFFICIENT            = 1;     // Larger is more responsive, but also less stable
-    public static final double P_DRIVE_COEFFICIENT = 0.025;     // Larger is more responsive, but also less stable
+    public static final double P_DRIVE_COEFFICIENT = 0.025 * Math.PI;     // Larger is more responsive, but also less stable
 
     int lastLeftFrontEncoderValue;
     int lastLeftRearEncoderValue;
@@ -134,9 +134,9 @@ public class DriveTrain extends SilverTitansMecanumDrive {
             Pose2d currentPose = getPoseEstimate();
             Pose2d desiredPose =
                     currentPose.plus(
-                            new Pose2d(.5,
-                                    .5,
-                                    Math.toRadians(operation.getDesiredBearing())-currentPose.getHeading()));
+                            new Pose2d(.05,
+                                    .05,
+                                    operation.getDesiredBearing() -currentPose.getHeading()));
             Date start = new Date();
             Thread createTrajectoryThread = new Thread(() -> {
                 Trajectory trajectory = trajectoryBuilder(currentPose)

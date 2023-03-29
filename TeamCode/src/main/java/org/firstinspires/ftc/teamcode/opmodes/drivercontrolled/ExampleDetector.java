@@ -23,12 +23,13 @@ package org.firstinspires.ftc.teamcode.opmodes.drivercontrolled;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.robot.components.vision.OpenCVWebcam;
-import org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.ObjectDetectorPipeline;
+import org.firstinspires.ftc.teamcode.robot.components.vision.ObjectDetectorWebcam;
+import org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.ExampleDetectorPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -37,23 +38,24 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Arrays;
 
 @TeleOp
+@Disabled
 public class ExampleDetector extends LinearOpMode
 {
     OpenCvWebcam webcam;
     FtcDashboard dashboard;
-    ObjectDetectorPipeline objectDetectorPipeline;
+    ExampleDetectorPipeline exampleDetectorPipeline;
 
     @Override
     public void runOpMode() {
-        objectDetectorPipeline = new ObjectDetectorPipeline(true);
+        exampleDetectorPipeline = new ExampleDetectorPipeline(true);
 
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        webcam.setPipeline(objectDetectorPipeline);
+        webcam.setPipeline(exampleDetectorPipeline);
         webcam.setMillisecondsPermissionTimeout(2500); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(OpenCVWebcam.X_PIXEL_COUNT, OpenCVWebcam.Y_PIXEL_COUNT, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(ObjectDetectorWebcam.X_PIXEL_COUNT, ObjectDetectorWebcam.Y_PIXEL_COUNT, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -78,7 +80,7 @@ public class ExampleDetector extends LinearOpMode
             telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
-            telemetry.addData("Detected Position", Arrays.toString(objectDetectorPipeline.getPosition()));
+            telemetry.addData("Detected Position", Arrays.toString(exampleDetectorPipeline.getPosition()));
             telemetry.update();
 
             handleDashboard();
@@ -93,7 +95,7 @@ public class ExampleDetector extends LinearOpMode
         packet.put("Pipeline time ms", webcam.getPipelineTimeMs());
         packet.put("Overhead time ms", webcam.getOverheadTimeMs());
         packet.put("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
-        packet.put("Detected Position", Arrays.toString(objectDetectorPipeline.getPosition()));
+        packet.put("Detected Position", Arrays.toString(exampleDetectorPipeline.getPosition()));
 
         dashboard.sendTelemetryPacket(packet);
     }

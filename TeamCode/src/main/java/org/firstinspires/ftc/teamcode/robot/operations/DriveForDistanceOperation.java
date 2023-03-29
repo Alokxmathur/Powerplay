@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
 import org.firstinspires.ftc.teamcode.game.Field;
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 import java.util.Locale;
 
@@ -13,8 +12,14 @@ public class DriveForDistanceOperation extends DriveTrainOperation {
     protected double distance;
     protected double speed;
 
-    public DriveForDistanceOperation(double distance, double speed, DriveTrain driveTrain, String title) {
-        super(driveTrain);
+    /**
+     * Drive forward for the distance specified at the speed specfied
+     * @param distance - distance to travel in mms
+     * @param speed -1 to 1
+     * @param title
+     */
+    public DriveForDistanceOperation(double distance, double speed, String title) {
+        super();
         this.distance = distance;
         this.speed = speed;
         this.title = title;

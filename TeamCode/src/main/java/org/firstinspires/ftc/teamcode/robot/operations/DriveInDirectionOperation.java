@@ -17,13 +17,19 @@ public class DriveInDirectionOperation extends DriveForDistanceOperation {
     protected double speed;
     protected double direction;
 
+    /**
+     * Create an operation to drive in the specified heading
+     * @param travelDistance - distance in mms
+     * @param heading - the heading in radians
+     * @param speed
+     * @param title
+     */
     public DriveInDirectionOperation(double travelDistance, double heading,
-                                     double speed, DriveTrain driveTrain, String title) {
-        super(travelDistance, travelDistance, driveTrain, title);
+                                     double speed, String title) {
+        super(travelDistance, travelDistance, title);
         this.distance = travelDistance;
         this.speed = speed;
         this.direction = heading;
-        this.driveTrain = driveTrain;
         this.title = title;
     }
 
@@ -39,7 +45,7 @@ public class DriveInDirectionOperation extends DriveForDistanceOperation {
             return true;
         } else {
             // adjust relative speed based on heading error.
-            double bearingError = AngleUnit.normalizeDegrees(direction - currentBearing);
+            double bearingError = AngleUnit.normalizeDegrees(Math.toDegrees(direction) - currentBearing);
             double steer = DriveTrain.getSteer(bearingError, DriveTrain.P_DRIVE_COEFFICIENT);
 
             // if driving in reverse, the motor correction also needs to be reversed

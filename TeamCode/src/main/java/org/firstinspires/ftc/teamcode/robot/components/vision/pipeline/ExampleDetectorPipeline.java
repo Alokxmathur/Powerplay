@@ -5,8 +5,13 @@ import android.graphics.Bitmap;
 import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.opencv.android.Utils;
-import org.opencv.core.*;
-import org.opencv.imgproc.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Co
 import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Constants.VALUE_MAX;
 import static org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.Constants.VALUE_MIN;
 
-public class ObjectDetectorPipeline extends OpenCvPipeline
+public class ExampleDetectorPipeline extends OpenCvPipeline
 {
     private boolean enableDashboard;
     private FtcDashboard dashboard;
@@ -36,7 +41,7 @@ public class ObjectDetectorPipeline extends OpenCvPipeline
     private int largestX, largestY;
     private double largestArea;
 
-    public ObjectDetectorPipeline(boolean enableDashboard) {
+    public ExampleDetectorPipeline(boolean enableDashboard) {
         this.enableDashboard = enableDashboard;
 
         if(enableDashboard)

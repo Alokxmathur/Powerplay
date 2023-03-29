@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
-
 import java.util.Date;
 import java.util.Locale;
 
@@ -22,8 +20,16 @@ public class DriveForTimeOperation extends DriveTrainOperation {
         return time;
     }
 
-    public DriveForTimeOperation(long time, double heading, double speed, DriveTrain driveTrain, String title) {
-        super(driveTrain);
+    /**
+     * Drive for the specified time
+     * @param time
+     * @param heading - the heading relative to the robot in radians
+     *                This is not the field heading
+     * @param speed
+     * @param title
+     */
+    public DriveForTimeOperation(long time, double heading, double speed, String title) {
+        super();
         this.time = time;
         this.robotRelativeHeading = heading;
         this.speed = speed;

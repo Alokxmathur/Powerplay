@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 public class TestT265Camera extends OpMode
 {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
-    private Match match = Match.getNewInstance(telemetry);
+    private Match match = Match.getNewInstance();
 
     private Robot robot = match.getRobot();
 
@@ -41,6 +41,6 @@ public class TestT265Camera extends OpMode
     @Override
     public void loop() {
         robot.handleGameControllers(gamepad1, gamepad2);
-        match.updateTelemetry("Running");
+        match.updateTelemetry(telemetry,"Running");
     }
 }

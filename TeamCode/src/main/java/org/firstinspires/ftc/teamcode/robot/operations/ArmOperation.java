@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
-import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.Arm;
 
@@ -26,7 +25,7 @@ import java.util.Locale;
 public class ArmOperation extends Operation {
 
     public enum Type {
-        Release, Open, Close, Ground, Low, Mid, High, Pickup, InterimPickup, InterimDeposit, Stack5, Stack4, Stack3, Stack2, Stack1
+        Release, Open, Close, Ground, Low, Mid, High, ObjectFinder, Pickup, InterimPickup, InterimDeposit, Stack5, Stack4, Stack3, Stack2, Stack1
     }
     Arm arm;
     Type type;
@@ -54,6 +53,7 @@ public class ArmOperation extends Operation {
     @Override
     public void startOperation() {
         switch (this.type) {
+            case ObjectFinder:
             case Release:
             case Pickup:
             case InterimPickup:

@@ -11,12 +11,6 @@ import java.util.Date;
  */
 
 public abstract class Operation {
-    public enum TYPE {
-        DRIVE_FOR_TIME, DRIVE_FOR_DISTANCE, DRIVE_IN_DIRECTION, DRIVE_TO_POSITION,
-        STRAFE_LEFT_FOR_DISTANCE, STRAFE_LEFT_FOR_DISTANCE_WITH_HEADING, ROTATION,
-        WAIT_TIME, BEARING,
-        CAMERA, TURN, FOLLOW_TRAJECTORY
-    }
     protected boolean operationIsBeingProcessed = false;
 
     public boolean isAborted() {

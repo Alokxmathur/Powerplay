@@ -1,7 +1,6 @@
  package org.firstinspires.ftc.teamcode.robot;
 
  import org.firstinspires.ftc.teamcode.game.Field;
- import org.firstinspires.ftc.teamcode.robot.components.Arm;
  import org.firstinspires.ftc.teamcode.robot.components.ArmPosition;
 
  public class RobotConfig {
@@ -19,12 +18,12 @@
     public static final String ROTATOR = "rotator";
     public static final String CLAW = "claw";
 
-    public static final double CLAW_OPEN_POSITION = 0.2;
+    public static final double CLAW_OPEN_POSITION = 0.4;
     public static final double CLAW_CLENCH_POSITION = 0.8;
     public static final double CLAW_INCREMENT = .01;
 
-    public static final double ROTATOR_INITIAL_POSITION = 0.24;
-    public static final double ROTATOR_TURNED_OVER_POSITION = .930;
+    public static final double ROTATOR_INITIAL_POSITION = 0.1;
+    public static final double ROTATOR_TURNED_OVER_POSITION = .880;
     public static final double ROTATOR_INCREMENT = .01;
 
     //Robot center from back is five and half inches away
@@ -65,4 +64,5 @@
     public static final ArmPosition ARM_INTERIM_PICKUP_POSITION = new ArmPosition(0, 400, WRIST_RELEASED_POSITION, ROTATOR_INITIAL_POSITION);
     public static final ArmPosition ARM_INTERIM_DEPOSIT_POSITION = new ArmPosition(1300, 1015, WRIST_INTERIM_POSITION, ROTATOR_INITIAL_POSITION);
     public static final ArmPosition ARM_HIGH_JUNCTION_POSITION = new ArmPosition(1470, 1015, WRIST_DEPOSIT_POSITION, ROTATOR_TURNED_OVER_POSITION);
+    public static final ArmPosition OBJECT_FINDER_POSITION = new ArmPosition(1250, 0, WRIST_INITIAL_POSITION, ROTATOR_INITIAL_POSITION);
  }

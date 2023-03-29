@@ -19,8 +19,7 @@ public class TestTrajectory extends AutonomousHelper {
                 DriveTrain.trajectoryBuilder(field.getStartingPose())
                         .splineToLinearHeading
                                 (field.getStartingPose().plus(new Pose2d(-12,12,45)), 0)
-                        .build(),
-                robot.getDriveTrain(), "Forward", telemetry);
+                        .build(), "Forward");
         navigate.addPrimaryOperation(followTrajectory);
         states.add(navigate);
     }

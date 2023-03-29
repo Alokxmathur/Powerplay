@@ -68,7 +68,7 @@ public class Arm {
         setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
     }
     public void lowerElbowIncrementally() {
-        setElbowPosition(elbow.getTargetPosition() + RobotConfig.ELBOW_INCREMENT);
+        setElbowPosition(elbow.getTargetPosition() - RobotConfig.ELBOW_INCREMENT);
     }
 
     public void openClawIncrementally() {
@@ -125,6 +125,10 @@ public class Arm {
             }
             case High: {
                 setPositions(RobotConfig.ARM_HIGH_JUNCTION_POSITION);
+                break;
+            }
+            case ObjectFinder: {
+                setPositions(RobotConfig.OBJECT_FINDER_POSITION);
                 break;
             }
             default : {

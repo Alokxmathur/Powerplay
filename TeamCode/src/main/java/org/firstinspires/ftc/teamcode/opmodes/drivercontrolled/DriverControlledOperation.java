@@ -59,7 +59,7 @@ import java.util.Date;
 //@Disabled
 public class DriverControlledOperation extends OpMode {
 
-    protected Robot robot = Match.getInstance(telemetry).getRobot();
+    protected Robot robot = Match.getInstance().getRobot();
 
     protected Match match;
     /*
@@ -67,13 +67,13 @@ public class DriverControlledOperation extends OpMode {
      */
     @Override
     public void init() {
-        this.match = Match.getInstance(telemetry);
+        this.match = Match.getInstance();
         match.setTeleopStartTime(new Date());
         robot.reset();
 
         try {
             robot.setState("Initialized");
-            Match.getInstance(telemetry).updateTelemetry("Press start now");
+            Match.getInstance().updateTelemetry(telemetry,"Press start now");
         } catch (Throwable e) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -94,7 +94,7 @@ public class DriverControlledOperation extends OpMode {
      */
     @Override
     public void init_loop() {
-        match.updateTelemetry("TeleOpReady");
+        match.updateTelemetry(telemetry,"TeleOpReady");
     }
 
     @Override
@@ -111,7 +111,7 @@ public class DriverControlledOperation extends OpMode {
         if (robot.fullyInitialized()) {
             try {
                 robot.handleGameControllers(gamepad1, gamepad2);
-                match.updateTelemetry(robot.getState());
+                match.updateTelemetry(telemetry, robot.getState());
             } catch (Throwable e) {
                 StringWriter stringWriter = new StringWriter();
                 PrintWriter printWriter = new PrintWriter(stringWriter);

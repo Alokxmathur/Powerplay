@@ -28,7 +28,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.game.Match;
 import org.firstinspires.ftc.teamcode.robot.RobotConfig;
 import org.firstinspires.ftc.teamcode.robot.components.vision.pipeline.AprilTagsPipeline;
-import org.opencv.core.Scalar;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -53,8 +52,6 @@ public class AprilTagsWebcam {
 
     OpenCvWebcam webcam;
     AprilTagsPipeline pipeline;
-    Scalar colorMin;
-    Scalar colorMax;
 
     AprilTagDetection tagOfInterest = null;
 
@@ -62,10 +59,8 @@ public class AprilTagsWebcam {
 
     public static final Object synchronizer = new Object();
 
-    public void init(HardwareMap hardwareMap, Telemetry telemetry, Scalar colorMin, Scalar colorMax) {
+    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.colorMin = colorMin;
-        this.colorMax = colorMax;
         pipeline = new AprilTagsPipeline(tagsize, fx, fy, cx, cy, telemetry);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());

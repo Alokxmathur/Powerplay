@@ -37,14 +37,14 @@ public class OperationThread extends Thread {
                     if (operation.getOperationIsBeingProcessed()) {
                         if (operation.isAborted()) {
                             Match.log(title + ": Aborted operation: " + operation.toString()
-                                    + " at " + Match.getInstance(telemetry).getElapsed()
+                                    + " at " + Match.getInstance().getElapsed()
                                     + " in " + (new Date().getTime() - operation.getStartTime().getTime())
                                     + " mSecs");
                         }
                         else if (operation.isComplete()) {
                             this.operationsQueue.remove(0);
                             Match.log(title + ": Completed operation: " + operation.toString()
-                                    + " at " + Match.getInstance(telemetry).getElapsed()
+                                    + " at " + Match.getInstance().getElapsed()
                                     + " in " + (new Date().getTime() - operation.getStartTime().getTime())
                                     + " mSecs");
                         }

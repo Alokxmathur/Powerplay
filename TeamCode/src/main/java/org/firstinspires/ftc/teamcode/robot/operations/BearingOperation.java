@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 import java.util.Locale;
@@ -15,8 +14,13 @@ public class BearingOperation extends DriveToPositionOperation {
     protected double desiredBearing;
     private DriveTrain driveTrain;
 
-    public BearingOperation(double desiredBearing, DriveTrain driveTrain, String title, Telemetry telemetry) {
-        super(null, driveTrain, title, telemetry);
+    /**
+     * Create a bearing operation
+     * @param desiredBearing - desired bearing (radians)
+     * @param title
+     */
+    public BearingOperation(double desiredBearing, String title) {
+        super(null, title);
         this.title = title;
         this.desiredBearing = desiredBearing;
         this.driveTrain = driveTrain;

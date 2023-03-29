@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode.robot.operations;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.game.Match;
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 import java.util.Locale;
 
@@ -18,14 +16,11 @@ public class FollowTrajectory extends DriveTrainOperation {
     public static final int DEFAULT_CORRECTION_COUNT = 1;
 
     protected Trajectory trajectory;
-    Telemetry telemetry;
 
-    public FollowTrajectory(Trajectory trajectory, DriveTrain driveTrain, String title, Telemetry telemetry) {
-        super(driveTrain);
+    public FollowTrajectory(Trajectory trajectory, String title) {
+        super();
         this.trajectory = trajectory;
-        this.driveTrain = driveTrain;
         this.title = title;
-        this.telemetry = telemetry;
     }
     public void setTrajectory(Trajectory trajectory) {
         this.trajectory = trajectory;
@@ -42,7 +37,7 @@ public class FollowTrajectory extends DriveTrainOperation {
         driveTrain.update();
         Pose2d currentPose = driveTrain.getPoseEstimate();
         String error = getError(currentPose, trajectory);
-        Match.getInstance(telemetry).setTrajectoryError(error);
+        Match.getInstance().setTrajectoryError(error);
         boolean busy = driveTrain.isBusy();
         if (!busy) {
             Match.log(String.format("Finished trajectory %s with error %s, at %s",

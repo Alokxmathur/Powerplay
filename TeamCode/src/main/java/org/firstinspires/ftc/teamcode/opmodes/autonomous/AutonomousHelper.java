@@ -42,7 +42,7 @@ public abstract class AutonomousHelper extends OpMode {
             cameraPoseSet = false;
             statesAdded = false;
 
-            this.match = Match.getNewInstance(telemetry);
+            this.match = Match.getNewInstance();
             match.init();
             Match.log("Match initialized, setting alliance to " + alliance
                     + " and starting position to " + startingPosition);
@@ -80,8 +80,8 @@ public abstract class AutonomousHelper extends OpMode {
             telemetry.addData("Position", robot.getVSLAMStatus());
         }
         else if (robot.fullyInitialized()) {
-            int signalNumber = robot.getSignalNumber();
-            match.setSignalNumber(signalNumber);
+            //int signalNumber = robot.getSignalNumber();
+            //match.setSignalNumber(signalNumber);
             if (!robot.havePosition()) {
                 telemetry.addData("State", "Waiting for VSLAM.");
                 telemetry.addData("Position", robot.getVSLAMStatus());
@@ -118,7 +118,7 @@ public abstract class AutonomousHelper extends OpMode {
                     telemetry.addData("Signal", String.valueOf(match.getSignalNumber()));
                     //robot.setInitialPose(field.getStartingPose());
                 } else {
-                    match.updateTelemetry("Ready");
+                    match.updateTelemetry(telemetry, "Ready");
                 }
             }
         }
@@ -148,10 +148,10 @@ public abstract class AutonomousHelper extends OpMode {
         for (State state : states) {
             if (!state.isReached(robot)) {
                 if (state.isQueued()) {
-                    match.updateTelemetry("Attempting " + state.getTitle());
+                    match.updateTelemetry(telemetry,"Attempting " + state.getTitle());
                 } else {
                     //queue state if it has not been queued
-                    match.updateTelemetry("Queueing " + state.getTitle());
+                    match.updateTelemetry(telemetry,"Queueing " + state.getTitle());
                     Match.log("Queueing state: " + state.getTitle());
                     state.queue(robot);
                 }

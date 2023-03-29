@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.operations;
 
 import org.firstinspires.ftc.teamcode.game.Field;
-import org.firstinspires.ftc.teamcode.robot.components.drivetrain.DriveTrain;
 
 import java.util.Locale;
 
@@ -13,8 +12,8 @@ public class StrafeLeftForDistanceOperation extends DriveTrainOperation {
     private double distance;
     private double speed;
 
-    public StrafeLeftForDistanceOperation(double distance, double speed, DriveTrain driveTrain, String title) {
-        super(driveTrain);
+    public StrafeLeftForDistanceOperation(double distance, double speed, String title) {
+        super();
         this.distance = distance;
         this.speed = speed;
         this.driveTrain = driveTrain;
