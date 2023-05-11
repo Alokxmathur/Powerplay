@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A class to detect objects on the field
@@ -29,35 +30,35 @@ public class ObjectDetector {
     }
 
     // Detectable objects
-    private HashMap<ObjectType, DetectableObject> detectableObjects = new HashMap<>();
+    private final HashMap<ObjectType, DetectableObject> detectableObjects = new HashMap<>();
     {
-        HsvBounds redConeBounds[] = {
+        HsvBounds[] redConeBounds = {
                new HsvBounds(new Scalar(0, 50, 70), new Scalar(10, 210, 255)),
-               //new HsvBounds(new Scalar(170, 50, 70), new Scalar(180, 210, 255)),
+               new HsvBounds(new Scalar(170, 50, 70), new Scalar(180, 210, 255)),
         };
         this.addObject(new DetectableObject(ObjectType.RedCone, redConeBounds, 4, 5));
 
-        HsvBounds redTapeBounds[] = {
+        HsvBounds[] redTapeBounds = {
                 new HsvBounds(new Scalar(0, 211, 70), new Scalar(10, 255, 255)),
                 //new HsvBounds(new Scalar(170, 211, 70), new Scalar(180, 255, 255))
         };
         this.addObject(new DetectableObject(ObjectType.RedTape, redTapeBounds, 4, 5));
 
-        HsvBounds blueTapeBounds[] = {
+        HsvBounds[] blueTapeBounds = {
                 new HsvBounds(new Scalar(120, 50, 70), new Scalar(155, 255, 200))
         };
         this.addObject(new DetectableObject(ObjectType.BlueTape, blueTapeBounds, 4, 5));
 
-        HsvBounds blueConeBounds[] = {
+        HsvBounds[] blueConeBounds = {
                 new HsvBounds(new Scalar(161, 50, 70), new Scalar(170, 255, 200))
         };
         this.addObject(new DetectableObject(ObjectType.BlueCone, blueConeBounds, 4, 5));
 
-        HsvBounds yellowPoleBounds[] = {
+        HsvBounds[] yellowPoleBounds = {
                 new HsvBounds(new Scalar(18, 50, 70), new Scalar(45, 255, 255))
         };
         this.addObject(new DetectableObject(ObjectType.Pole, yellowPoleBounds, 1, 10));
-    };
+    }
 
     Rect areaOfInterest;
 
@@ -103,9 +104,9 @@ public class ObjectDetector {
     }
 
     public String getDetectionStatus() {
-        StringBuffer status = new StringBuffer();
+        StringBuilder status = new StringBuilder();
         for (ObjectType objectType: detectableObjects.keySet()) {
-            status.append(objectType + ": " + detectableObjects.get(objectType).getFoundObjects().size() + ", ");
+            status.append(objectType).append(": ").append(Objects.requireNonNull(detectableObjects.get(objectType)).getFoundObjects().size()).append(", ");
         }
         return status.toString();
     }
@@ -120,11 +121,13 @@ public class ObjectDetector {
      * @return
      */
     public Map<ObjectType, DetectableObject> process(Mat rgbaImage) {
+        //pyramid down twice
         Imgproc.pyrDown(rgbaImage, mPyrDownMat);
         Imgproc.pyrDown(mPyrDownMat, mPyrDownMat);
         //convert to HSV so we can use hsv range of objects to filter
         Imgproc.cvtColor(mPyrDownMat, mHsvMat, Imgproc.COLOR_RGB2HSV_FULL);
 
+        //go though each of our detectable objects
         for (ObjectType objectType : detectableObjects.keySet()) {
             mMask = Mat.zeros(ObjectDetectorWebcam.Y_PIXEL_COUNT, ObjectDetectorWebcam.X_PIXEL_COUNT, CvType.CV_8UC1);
 
@@ -133,7 +136,7 @@ public class ObjectDetector {
             //go through each specified hsv bounds of the detectable object
             for (HsvBounds bounds : detectableObject.getHsvBounds()) {
                 //Match.log("Looking for " + objectType + " objects hsv values " + bounds.toString());
-                mMask = Mat.zeros(ObjectDetectorWebcam.Y_PIXEL_COUNT, ObjectDetectorWebcam.X_PIXEL_COUNT, CvType.CV_8UC1);
+                //mMask = Mat.zeros(ObjectDetectorWebcam.Y_PIXEL_COUNT, ObjectDetectorWebcam.X_PIXEL_COUNT, CvType.CV_8UC1);
                 //remove all aspects of the image except those within the hsv bounds
                 Core.inRange(mHsvMat, bounds.getLowerBound(), bounds.getUpperBound(), mSingularMask);
                 Core.bitwise_or(mMask, mSingularMask, mMask);
